@@ -125,14 +125,35 @@
     footer a { color: #1a4fa0; text-decoration: none; }
 
     @media (max-width: 600px) {
-      header { padding: 0 16px; }
-      .logo-wrap img { height: 52px; }
-      .hero { padding: 36px 20px 28px; }
-      .content { padding: 24px 16px 60px; }
-      .row-stats { gap: 6px; }
-      .stat-pill { font-size: 0.7rem; padding: 3px 8px; }
-      .tab-bar { padding: 0 8px; }
-      .tab { padding: 12px 14px; font-size: 0.8rem; }
+      header { padding: 0 12px; height: 60px; }
+      .logo-wrap img { height: 44px; }
+      .header-nav { gap: 6px; }
+      .nav-link { font-size: 0.72rem; padding: 5px 10px; }
+      .nav-link.primary { padding: 5px 10px; }
+      .nav-link:not(.primary):not(:first-child) { display: none; }
+      .hero { padding: 28px 16px 24px; }
+      .content { padding: 20px 12px 60px; }
+      .tab-bar { padding: 0 4px; gap: 0; }
+      .tab { padding: 10px 10px; font-size: 0.75rem; }
+
+      /* Stack leaderboard rows vertically on mobile */
+      .board-row {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 14px 14px;
+      }
+      .row-info { flex: 1 1 60%; min-width: 0; }
+      .row-name { font-size: 0.88rem; white-space: normal; }
+      .row-stats {
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+      }
+      .stat-pill { font-size: 0.72rem; padding: 4px 10px; }
+      .rank { width: 24px; font-size: 1rem; }
+      .row-favicon { width: 28px; height: 28px; }
+      .streak-badge { font-size: 0.65rem; }
     }
   </style>
 </head>
