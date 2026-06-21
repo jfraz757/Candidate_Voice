@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share Your Experience – CandidateVoice.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #f5f6fa; font-family: 'Inter', Arial, sans-serif; color: #1a1a2e; }
+
+    header {
+      position: sticky; top: 0; width: 100%;
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      z-index: 100; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    .logo-wrap img { height: 72px; width: auto; }
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+    .nav-link {
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; padding: 7px 16px;
+      border: 1.5px solid #a8c0e8; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+
+    .hero {
+      background: linear-gradient(135deg, #0d2d6b 0%, #1a4fa0 100%);
+      padding: 48px 40px 40px; text-align: center; color: #ffffff;
+    }
+    .hero h1 { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 700; margin-bottom: 10px; }
+    .hero h1 span { color: #f5a623; }
+    .hero p { font-size: 0.95rem; color: rgba(255,255,255,0.75); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    .form-wrap { max-width: 640px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .form-card {
+      background: #ffffff; border: 1.5px solid #e8eaf0;
+      border-radius: 16px; padding: 36px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .step-label {
+      font-size: 0.72rem; font-weight: 700; color: #1a4fa0;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+      padding-bottom: 12px; border-bottom: 1.5px solid #e8eaf0;
+    }
+
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: #374151; margin-bottom: 6px;
+    }
+
+    .form-group label .required { color: #dc2626; margin-left: 2px; }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #1a1a2e;
+      background: #f9fafb;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #1a4fa0;
+      background: #ffffff;
+    }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group .hint { font-size: 0.75rem; color: #9ca3af; margin-top: 5px; }
+
+    /* ─── Employer Autocomplete ───────────────────────────────── */
+    .ac-wrap { position: relative; }
+
+    .ac-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #ffffff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 50;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .ac-dropdown.visible { display: block; }
+
+    .ac-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; font-size: 0.88rem;
+      color: #1a1a2e; cursor: pointer;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background 0.15s;
+    }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.highlighted { background: #f0f5ff; }
+
+    .ac-item img { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+
+    .ac-item .ac-meta {
+      margin-left: auto; font-size: 0.72rem;
+      color: #9ca3af; white-space: nowrap;
+    }
+
+    .ac-item .ac-website {
+      font-size: 0.72rem; color: #9ca3af; display: block; margin-top: 1px;
+    }
+
+    .ac-new {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; font-size: 0.88rem;
+      font-weight: 600; color: #f5a623; cursor: default;
+      border-top: 1.5px solid #f3f4f6;
+    }
+
+    .ac-filled {
+      border-color: #1a4fa0 !important;
+      background: #f0f5ff !important;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .section-divider {
+      border: none; border-top: 1.5px solid #e8eaf0;
+      margin: 28px 0 24px;
+    }
+
+    .section-heading {
+      font-size: 0.82rem; font-weight: 700; color: #374151;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+
+    .optional-tag {
+      font-size: 0.7rem; font-weight: 500; color: #9ca3af;
+      background: #f3f4f6; padding: 2px 8px; border-radius: 10px;
+    }
+
+    .structured-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #f5a623; border: none; color: #ffffff;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+      padding: 14px; border-radius: 8px; cursor: pointer;
+      margin-top: 8px; transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #e09410; }
+    .btn-submit:disabled { opacity: 0.6; cursor: default; }
+
+    .form-success {
+      display: none; text-align: center; padding: 40px 24px;
+    }
+    .form-success.visible { display: block; }
+    .form-success-icon { font-size: 3rem; margin-bottom: 16px; }
+    .form-success h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; }
+    .form-success p { font-size: 0.9rem; color: #6b7280; line-height: 1.7; margin-bottom: 20px; }
+    .btn-back {
+      display: inline-block; background: #1a4fa0; color: #ffffff;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600;
+      padding: 10px 24px; border-radius: 8px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-back:hover { background: #163d7d; }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 0.75rem;
+      color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
+    }
+    footer a { color: #1a4fa0; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .logo-wrap img { height: 36px; }
+      .hero { padding: 36px 20px 28px; }
+      .form-wrap { padding: 28px 16px 60px; }
+      .form-card { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .structured-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Share Your <span>Experience</span></h1>
+  <p>All reviews are 100% anonymous. Help the next candidate know what to expect.</p>
+</div>
+
+<div class="form-wrap">
+  <div class="form-card">
+
+    <div id="submit-form">
+      <div class="step-label">Employer Information</div>
+
+      <div class="form-group">
+        <label>Employer or Recruitment Agency <span class="required">*</span></label>
+        <div class="ac-wrap">
+          <input type="text" id="employer" placeholder="Start typing a company name..." autocomplete="off" />
+          <div class="ac-dropdown" id="employer-dropdown"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Employer Website <span class="required">*</span></label>
+        <div style="position:relative;">
+          <input type="text" id="website" placeholder="company.com" autocomplete="off" />
+          <div id="website-status" style="font-size:0.75rem;margin-top:5px;display:none;"></div>
+        </div>
+        <div class="hint" id="website-hint" style="display:none;">✓ Auto-filled from existing record — update if needed</div>
+      </div>
+      <div class="form-group">
+        <label>Position Applied For</label>
+        <input type="text" id="position" placeholder="Job title" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date Applied</label>
+          <input type="date" id="date-applied" />
+        </div>
+        <div class="form-group">
+          <label>Date Rejected (if known)</label>
+          <input type="date" id="date-rejected" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Industry</label>
+        <select id="industry">
+          <option value="">Select an industry...</option>
+          <option value="Accounting & Finance">Accounting & Finance</option>
+          <option value="Advocacy & Social Justice">Advocacy & Social Justice</option>
+          <option value="Arts & Entertainment">Arts & Entertainment</option>
+          <option value="Community Development">Community Development</option>
+          <option value="Consulting">Consulting</option>
+          <option value="Education">Education</option>
+          <option value="Energy & Environment">Energy & Environment</option>
+          <option value="Foundation & Philanthropy">Foundation & Philanthropy</option>
+          <option value="Government & Public Sector">Government & Public Sector</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Human Resources & People Operations">Human Resources & People Operations</option>
+          <option value="Legal">Legal</option>
+          <option value="Nonprofit & Social Services">Nonprofit & Social Services</option>
+          <option value="Policy & Research">Policy & Research</option>
+          <option value="Recruitment & Staffing">Recruitment & Staffing</option>
+          <option value="Supply Chain & Logistics">Supply Chain & Logistics</option>
+          <option value="Technology">Technology</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <hr class="section-divider" />
+      <div class="step-label">What Happened</div>
+
+      <div class="form-group">
+        <label>Outcome <span class="required">*</span></label>
+        <select id="ghosted-status">
+          <option value="">Select an outcome...</option>
+          <option value="ghosted">👻 I was ghosted (no contact for 2+ weeks)</option>
+          <option value="formal_rejection">✉️ I received a formal rejection within 2 weeks</option>
+          <option value="interviewing">🤝 I'm currently interviewing</option>
+          <option value="got_the_job">🎉 I got the job!</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="when-ghosted-wrap" style="display:none;">
+        <label>When were you ghosted?</label>
+        <select id="when-ghosted">
+          <option value="">Select...</option>
+          <option value="after_applying">After applying</option>
+          <option value="after_interview_invite">After receiving an interview invite</option>
+          <option value="after_interviewing">After interviewing</option>
+          <option value="after_offer">After receiving an offer</option>
+        </select>
+      </div>
+
+      <hr class="section-divider" />
+      <div class="section-heading">
+        Application Details
+        <span class="optional-tag">Optional — used to calculate your score</span>
+      </div>
+
+      <div class="structured-grid">
+        <div class="form-group" style="margin:0;">
+          <label>Salary Disclosed in Listing?</label>
+          <select id="salary">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Cover Letter Required?</label>
+          <select id="cover">
+            <option value="">Skip</option>
+            <option value="yes">Yes — required</option>
+            <option value="optional">Optional</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Take-Home Assignment?</label>
+          <select id="takehome">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Essay Responses Required?</label>
+          <select id="essay">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Had to Re-enter Resume?</label>
+          <select id="reentry">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Received Interview Invite?</label>
+          <select id="interview-invite">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="section-divider" />
+      <div class="section-heading">
+        Your Review
+        <span class="optional-tag">Optional</span>
+      </div>
+
+      <div class="form-group">
+        <label>Overall Experience</label>
+        <textarea id="review" placeholder="What was the application process like? Be honest — this helps other candidates."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Best Part</label>
+          <textarea id="best" placeholder="What went well?" style="min-height:80px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Worst Part</label>
+          <textarea id="worst" placeholder="What was frustrating?" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="form-group">
+        <label>Your Email (Optional)</label>
+        <input type="email" id="email" placeholder="Used only to allow future updates — never displayed publicly" />
+        <div class="hint">We don't store your email publicly and will never contact you for marketing purposes.</div>
+      </div>
+
+      <!-- Honeypot — hidden from real users, bots will fill this in -->
+      <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden;" aria-hidden="true">
+        <label for="company_confirm">Leave this blank</label>
+        <input type="text" id="company_confirm" name="company_confirm" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button class="btn-submit" id="submit-btn" onclick="submitReview()">SUBMIT REVIEW</button>
+    </div>
+
+    <div class="form-success" id="form-success">
+      <div class="form-success-icon">✓</div>
+      <h2>Review Submitted</h2>
+      <p>Thank you for sharing your experience. Your review will appear on the site after a quick moderation check. Every submission helps the next candidate make a more informed decision.</p>
+      <a href="index.html" class="btn-back">Back to Reviews</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="about.html">About</a> &nbsp;|&nbsp;
+  <a href="about.html#guidelines">Community Guidelines</a>
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://lawteswyjpkovzagnshn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz";
+
+  // ─── EMPLOYER AUTOCOMPLETE ────────────────────────────────
+  let allEmployers = [];
+  let acHighlight  = -1;
+
+  async function loadEmployers() {
+    try {
+      const res  = await fetch(SUPABASE_URL + "/rest/v1/reviews?select=employer_name,employer_website&status=eq.approved", {
+        headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY }
+      });
+      const data = await res.json();
+      const map  = {};
+      data.forEach(r => {
+        const key = r.employer_name.toLowerCase().trim();
+        if (!map[key]) map[key] = { name: r.employer_name, website: r.employer_website, count: 0 };
+        map[key].count++;
+      });
+      allEmployers = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+    } catch(e) {}
+  }
+
+  function highlightMatch(name, query) {
+    const idx = name.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return name;
+    return name.slice(0, idx) +
+      '<strong style="color:#1a4fa0;">' + name.slice(idx, idx + query.length) + '</strong>' +
+      name.slice(idx + query.length);
+  }
+
+  function showDropdown(query) {
+    const dropdown = document.getElementById("employer-dropdown");
+    if (!query) { dropdown.classList.remove("visible"); return; }
+
+    const q       = query.toLowerCase();
+    const matches = allEmployers.filter(e => e.name.toLowerCase().includes(q)).slice(0, 8);
+    acHighlight   = -1;
+
+    let html = matches.map(e => {
+      const favicon = e.website
+        ? '<img src="https://www.google.com/s2/favicons?domain=' + e.website + '&sz=32" onerror="this.style.display=\'none\'" />'
+        : '<span style="width:20px;display:inline-block;"></span>';
+      const safeName = e.name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+      const safeWeb  = (e.website || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+      return '<div class="ac-item" data-name="' + e.name + '" data-website="' + (e.website || "") + '" onclick="selectEmployer(\'' + safeName + '\', \'' + safeWeb + '\')">' +
+        favicon +
+        '<div>' +
+          '<div>' + highlightMatch(e.name, query) + '</div>' +
+          (e.website ? '<span class="ac-website">' + e.website.replace(/https?:\/\//, '') + '</span>' : '') +
+        '</div>' +
+        '<span class="ac-meta">' + e.count + ' review' + (e.count !== 1 ? 's' : '') + '</span>' +
+      '</div>';
+    }).join("");
+
+    const exactMatch = allEmployers.some(e => e.name.toLowerCase() === q);
+    if (!exactMatch) {
+      html += '<div class="ac-new">➕ New company — fill in the website below</div>';
+    }
+
+    if (!matches.length && exactMatch) { dropdown.classList.remove("visible"); return; }
+
+    dropdown.innerHTML = html;
+    dropdown.classList.add("visible");
+  }
+
+  function selectEmployer(name, website) {
+    const employerInput = document.getElementById("employer");
+    const websiteInput  = document.getElementById("website");
+    const hint          = document.getElementById("website-hint");
+
+    employerInput.value = name;
+    document.getElementById("employer-dropdown").classList.remove("visible");
+
+    if (website) {
+      websiteInput.value = website;
+      websiteInput.classList.add("ac-filled");
+      hint.style.display = "block";
+    }
+  }
+
+  document.getElementById("employer").addEventListener("input", function() {
+    // Clear auto-fill indicator if user edits manually
+    document.getElementById("website").classList.remove("ac-filled");
+    document.getElementById("website-hint").style.display = "none";
+    showDropdown(this.value.trim());
+  });
+
+  document.getElementById("employer").addEventListener("keydown", function(e) {
+    const dropdown = document.getElementById("employer-dropdown");
+    const items    = dropdown.querySelectorAll(".ac-item");
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      acHighlight = Math.min(acHighlight + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle("highlighted", i === acHighlight));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      acHighlight = Math.max(acHighlight - 1, 0);
+      items.forEach((el, i) => el.classList.toggle("highlighted", i === acHighlight));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (acHighlight >= 0 && items[acHighlight]) {
+        const el = items[acHighlight];
+        selectEmployer(el.dataset.name, el.dataset.website);
+      }
+      dropdown.classList.remove("visible");
+    } else if (e.key === "Escape") {
+      dropdown.classList.remove("visible");
+    }
+  });
+
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".ac-wrap")) {
+      document.getElementById("employer-dropdown").classList.remove("visible");
+    }
+  });
+
+  loadEmployers();
+
+  // ─── WEBSITE FIELD HELPERS ────────────────────────────────
+  const websiteInput  = document.getElementById("website");
+  const websiteStatus = document.getElementById("website-status");
+
+  // Auto-prefix https:// when user starts typing
+  websiteInput.addEventListener("focus", function() {
+    if (!this.value) {
+      this.value = "https://";
+    }
+  });
+
+  websiteInput.addEventListener("input", function() {
+    const val = this.value.trim();
+    // If user clears the field, reset
+    if (!val) return;
+    // If they typed something without a protocol, prepend
+    if (val && !val.startsWith("http://") && !val.startsWith("https://") && val !== "https://" && val !== "http://") {
+      // Don't interfere while they're still typing the protocol
+    }
+    websiteStatus.style.display = "none";
+  });
+
+  // On blur: clean up and validate
+  websiteInput.addEventListener("blur", function() {
+    let val = this.value.trim();
+    if (!val || val === "https://" || val === "http://") {
+      this.value = "";
+      websiteStatus.style.display = "none";
+      return;
+    }
+    // Auto-prefix if missing
+    if (!val.startsWith("http://") && !val.startsWith("https://")) {
+      val = "https://" + val;
+      this.value = val;
+    }
+    // Remove trailing slashes for cleanliness
+    this.value = val.replace(/\/+$/, "");
+    validateWebsite(this.value);
+  });
+
+  function validateWebsite(url) {
+    websiteStatus.style.display = "none";
+    let domain;
+    try {
+      domain = new URL(url).hostname;
+    } catch(e) {
+      websiteStatus.innerHTML = '⚠️ That doesn\'t look like a valid URL — try <em>company.com</em>';
+      websiteStatus.style.color = "#d97706";
+      websiteStatus.style.display = "block";
+      return;
+    }
+
+    // Use Google favicon as a proxy to check if domain exists
+    const img = new Image();
+    const timer = setTimeout(() => {
+      websiteStatus.innerHTML = '⚠️ Could not verify this URL — double-check it\'s correct';
+      websiteStatus.style.color = "#d97706";
+      websiteStatus.style.display = "block";
+    }, 4000);
+
+    img.onload = function() {
+      clearTimeout(timer);
+      // Google returns a default icon for unknown domains — check size
+      if (img.naturalWidth <= 16 && img.naturalHeight <= 16) {
+        // Might be real but no custom favicon — show neutral
+        websiteStatus.innerHTML = '✓ URL looks valid';
+        websiteStatus.style.color = "#059669";
+      } else {
+        websiteStatus.innerHTML = '✓ Website found';
+        websiteStatus.style.color = "#059669";
+      }
+      websiteStatus.style.display = "block";
+    };
+
+    img.onerror = function() {
+      clearTimeout(timer);
+      websiteStatus.innerHTML = '⚠️ Could not verify this domain — double-check it\'s correct';
+      websiteStatus.style.color = "#d97706";
+      websiteStatus.style.display = "block";
+    };
+
+    img.src = "https://www.google.com/s2/favicons?domain=" + domain + "&sz=32&t=" + Date.now();
+  }
+  const SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz";
+
+  document.getElementById("ghosted-status").addEventListener("change", function() {
+    document.getElementById("when-ghosted-wrap").style.display =
+      this.value === "ghosted" ? "block" : "none";
+  });
+
+  async function submitReview() {
+    const employer = document.getElementById("employer").value.trim();
+    let   website  = document.getElementById("website").value.trim();
+    const outcome  = document.getElementById("ghosted-status").value;
+
+    // Auto-prefix if user forgot
+    if (website && !website.startsWith("http://") && !website.startsWith("https://")) {
+      website = "https://" + website;
+    }
+    // Clear bare protocol
+    if (website === "https://" || website === "http://") website = "";
+
+    // Honeypot check — real users never fill this in
+    if (document.getElementById("company_confirm").value) return;
+
+    if (!employer || !website || !outcome) {
+      alert("Please fill in the required fields: Employer Name, Website, and Outcome.");
+      return;
+    }
+
+    const btn = document.getElementById("submit-btn");
+    btn.textContent = "Submitting...";
+    btn.disabled    = true;
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/submissions`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({
+          employer_name:         employer,
+          employer_website:      website || null,
+          position_applied:      document.getElementById("position").value.trim() || null,
+          date_applied:          document.getElementById("date-applied").value || null,
+          date_rejected:         document.getElementById("date-rejected").value || null,
+          ghosted_status:        outcome,
+          industry:              document.getElementById("industry").value || null,
+          when_ghosted:          document.getElementById("when-ghosted").value || null,
+          salary_disclosed:      document.getElementById("salary").value || null,
+          cover_letter_required: document.getElementById("cover").value || null,
+          take_home_assignment:  document.getElementById("takehome").value || null,
+          essay_responses:       document.getElementById("essay").value || null,
+          resume_reentry:        document.getElementById("reentry").value || null,
+          interview_invite:      document.getElementById("interview-invite").value || null,
+          review_general:        document.getElementById("review").value.trim() || null,
+          review_best:           document.getElementById("best").value.trim() || null,
+          review_worst:          document.getElementById("worst").value.trim() || null,
+          submitter_email:       document.getElementById("email").value.trim() || null,
+          status: "pending"
+        })
+      });
+
+      if (res.ok || res.status === 201) {
+        document.getElementById("submit-form").style.display = "none";
+        document.getElementById("form-success").classList.add("visible");
+      } else {
+        throw new Error("Submission failed");
+      }
+
+    } catch(e) {
+      alert("Submission failed. Please try again.");
+      console.error(e);
+    }
+
+    btn.textContent = "SUBMIT REVIEW";
+    btn.disabled    = false;
+  }
+</script>
+</body>
+</html>

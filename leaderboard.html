@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard – CandidateVoice.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #f5f6fa; font-family: 'Inter', Arial, sans-serif; color: #1a1a2e; }
+
+    header {
+      position: sticky; top: 0; width: 100%;
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      z-index: 100; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    .logo-wrap img { height: 72px; width: auto; }
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+    .nav-link {
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; padding: 7px 16px;
+      border: 1.5px solid #a8c0e8; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+    .nav-link.primary { background: #f5a623; color: #fff; border-color: #f5a623; }
+    .nav-link.primary:hover { background: #e09410; border-color: #e09410; }
+
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0d2d6b 0%, #1a4fa0 100%);
+      padding: 52px 40px 44px; text-align: center; color: #ffffff;
+    }
+    .hero h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 10px; }
+    .hero h1 span { color: #f5a623; }
+    .hero p { font-size: 0.95rem; color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    /* ─── Tab Row ─────────────────────────────────────────────── */
+    .tab-bar {
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      display: flex; justify-content: center; gap: 4px; padding: 0 40px;
+    }
+
+    .tab {
+      font-size: 0.85rem; font-weight: 600; color: #6b7280;
+      padding: 14px 24px; cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: all 0.2s; background: none; border-top: none;
+      border-left: none; border-right: none; font-family: 'Inter', sans-serif;
+    }
+    .tab:hover { color: #1a4fa0; }
+    .tab.active { color: #1a4fa0; border-bottom-color: #1a4fa0; }
+
+    /* ─── Content ─────────────────────────────────────────────── */
+    .content { max-width: 900px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    .board-label {
+      font-size: 0.72rem; font-weight: 700; color: #9ca3af;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+    }
+
+    /* ─── Leaderboard Row ────────────────────────────────────── */
+    .board-row {
+      display: flex; align-items: center; gap: 14px;
+      background: #ffffff; border: 1.5px solid #e8eaf0;
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 10px;
+      text-decoration: none; color: inherit;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .board-row:hover { box-shadow: 0 4px 16px rgba(26,79,160,0.1); border-color: #a8c0e8; }
+
+    .rank {
+      font-size: 1.1rem; font-weight: 700; color: #d1d5db;
+      width: 32px; text-align: center; flex-shrink: 0;
+    }
+    .rank.gold   { color: #f5a623; }
+    .rank.silver { color: #9ca3af; }
+    .rank.bronze { color: #cd7c3e; }
+
+    .row-favicon {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid #e8eaf0; flex-shrink: 0;
+    }
+
+    .row-info { flex: 1; min-width: 0; }
+    .row-name { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .row-meta { font-size: 0.75rem; color: #9ca3af; }
+
+    .row-stats { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+
+    .stat-pill {
+      font-size: 0.75rem; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+    }
+
+    .pill-ghosted  { background: #fee2e2; color: #dc2626; }
+    .pill-score    { background: #f0f5ff; color: #1a4fa0; }
+    .pill-reviews  { background: #f3f4f6; color: #6b7280; }
+    .pill-good     { background: #d1fae5; color: #059669; }
+    .pill-fair     { background: #fef3c7; color: #d97706; }
+    .pill-poor     { background: #fee2e2; color: #dc2626; }
+    .pill-excellent{ background: #fff7e6; color: #f5a623; border: 1px solid #f5a623; }
+
+    /* ─── Streak Badge ────────────────────────────────────────── */
+    .streak-badge {
+      font-size: 0.7rem; font-weight: 700;
+      background: #fee2e2; color: #dc2626;
+      padding: 2px 8px; border-radius: 10px;
+      border: 1px solid #fca5a5;
+      white-space: nowrap;
+    }
+
+    .state-msg { text-align: center; padding: 60px 20px; color: #9ca3af; }
+
+    /* ─── Section Divider ─────────────────────────────────────── */
+    .section-gap { margin-top: 36px; }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 0.75rem;
+      color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
+    }
+    footer a { color: #1a4fa0; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .logo-wrap img { height: 52px; }
+      .hero { padding: 36px 20px 28px; }
+      .content { padding: 24px 16px 60px; }
+      .row-stats { gap: 6px; }
+      .stat-pill { font-size: 0.7rem; padding: 3px 8px; }
+      .tab-bar { padding: 0 8px; }
+      .tab { padding: 12px 14px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>The <span>Hall of Shame</span> & Honor</h1>
+  <p>Ranked by candidate experience. Who's ghosting the most — and who's actually treating applicants like humans.</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab('worst', this)">👻 Worst Offenders</button>
+  <button class="tab" onclick="switchTab('most', this)">📋 Most Reviewed</button>
+  <button class="tab" onclick="switchTab('best', this)">⭐ Best Experience</button>
+  <button class="tab" onclick="switchTab('ghosted', this)">📊 Ghosting Rate</button>
+</div>
+
+<div class="content">
+  <div class="board-label" id="board-label">Loading...</div>
+  <div id="board-list"><div class="state-msg">Loading leaderboard...</div></div>
+</div>
+
+<footer>
+  &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="index.html">Reviews</a> &nbsp;|&nbsp;
+  <a href="about.html">About</a>
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://lawteswyjpkovzagnshn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz";
+
+  let allReviews = [];
+  let activeTab  = "worst";
+
+  const tabLabels = {
+    worst:   "Companies with the worst candidate experience scores",
+    most:    "Companies with the most reviews",
+    best:    "Companies with the best candidate experience scores",
+    ghosted: "Companies with the highest ghosting rates (min. 2 reviews)"
+  };
+
+  function rankStyle(i) {
+    if (i === 0) return "rank gold";
+    if (i === 1) return "rank silver";
+    if (i === 2) return "rank bronze";
+    return "rank";
+  }
+
+  function rankEmoji(i) {
+    if (i === 0) return "🥇";
+    if (i === 1) return "🥈";
+    if (i === 2) return "🥉";
+    return `#${i + 1}`;
+  }
+
+  function scorePill(band, score) {
+    if (!band || score == null) return `<span class="stat-pill pill-reviews">No score</span>`;
+    const cls    = { poor: "pill-poor", fair: "pill-fair", good: "pill-good", excellent: "pill-excellent" };
+    const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
+    const pct    = Math.round(score);
+    const display = pct > 0 ? `${labels[band]} · ${pct}%` : `Avg Experience: ${labels[band]}`;
+    return `<span class="stat-pill ${cls[band]}">${display}</span>`;
+  }
+
+  function ghostStreakBadge(reviews) {
+    // Count consecutive ghosted reviews from most recent
+    const sorted  = [...reviews].sort((a, b) => new Date(b.date_applied || b.created_at) - new Date(a.date_applied || a.created_at));
+    let streak = 0;
+    for (const r of sorted) {
+      if (r.ghosted_status === "ghosted") streak++;
+      else break;
+    }
+    if (streak >= 3) return `<span class="streak-badge">👻 ${streak} in a row</span>`;
+    return "";
+  }
+
+  function buildCompanyMap(reviews) {
+    const map = {};
+    reviews.forEach(r => {
+      const key = r.employer_name;
+      if (!map[key]) map[key] = {
+        name: r.employer_name,
+        website: r.employer_website,
+        reviews: [],
+        totalScore: 0,
+        scoredCount: 0,
+        ghostedCount: 0
+      };
+      map[key].reviews.push(r);
+      if (r.experience_score != null) {
+        map[key].totalScore  += parseFloat(r.experience_score);
+        map[key].scoredCount++;
+      }
+      if (r.ghosted_status === "ghosted") map[key].ghostedCount++;
+    });
+
+    return Object.values(map).map(c => ({
+      ...c,
+      count:       c.reviews.length,
+      avgScore:    c.scoredCount > 0 ? c.totalScore / c.scoredCount : null,
+      avgBand:     c.scoredCount > 0
+        ? (c.totalScore / c.scoredCount < 25 ? "poor"
+          : c.totalScore / c.scoredCount < 50 ? "fair"
+          : c.totalScore / c.scoredCount < 75 ? "good" : "excellent")
+        : null,
+      ghostedPct:  Math.round(c.ghostedCount / c.reviews.length * 100),
+      streak:      ghostStreakBadge(c.reviews)
+    }));
+  }
+
+  function buildRow(c, i) {
+    const favicon = c.website
+      ? `<img class="row-favicon" src="https://www.google.com/s2/favicons?domain=${c.website}&sz=64" onerror="this.style.display='none'" />`
+      : `<div style="width:36px;"></div>`;
+
+    const websiteStr = c.website
+      ? ` · <span style="color:#9ca3af;">${c.website.replace(/https?:\/\//, '')}</span>` : "";
+
+    return `
+      <a class="board-row" href="company.html?name=${encodeURIComponent(c.name)}">
+        <div class="${rankStyle(i)}">${rankEmoji(i)}</div>
+        ${favicon}
+        <div class="row-info">
+          <div class="row-name">${c.name} ${c.streak}</div>
+          <div class="row-meta">${c.count} review${c.count !== 1 ? "s" : ""}${websiteStr}</div>
+        </div>
+        <div class="row-stats">
+          ${scorePill(c.avgBand, c.avgScore)}
+          <span class="stat-pill pill-ghosted">👻 ${c.ghostedPct}% ghosted</span>
+        </div>
+      </a>`;
+  }
+
+  function render() {
+    const companies = buildCompanyMap(allReviews);
+    document.getElementById("board-label").textContent = tabLabels[activeTab];
+
+    let sorted;
+
+    switch(activeTab) {
+      case "worst":
+        sorted = companies
+          .filter(c => c.avgScore != null)
+          .sort((a, b) => a.avgScore - b.avgScore)
+          .slice(0, 15);
+        break;
+      case "most":
+        sorted = companies
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 15);
+        break;
+      case "best":
+        sorted = companies
+          .filter(c => c.avgScore != null)
+          .sort((a, b) => b.avgScore - a.avgScore)
+          .slice(0, 15);
+        break;
+      case "ghosted":
+        sorted = companies
+          .filter(c => c.count >= 2)
+          .sort((a, b) => b.ghostedPct - a.ghostedPct)
+          .slice(0, 15);
+        break;
+    }
+
+    if (!sorted.length) {
+      document.getElementById("board-list").innerHTML =
+        `<div class="state-msg">Not enough data yet for this ranking.</div>`;
+      return;
+    }
+
+    document.getElementById("board-list").innerHTML = sorted.map((c, i) => buildRow(c, i)).join("");
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    activeTab = tab;
+    render();
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/reviews?select=*&status=eq.approved&order=created_at.desc&limit=1000`,
+        { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+      );
+      allReviews = await res.json();
+      render();
+    } catch(e) {
+      document.getElementById("board-list").innerHTML =
+        `<div class="state-msg">Could not load leaderboard. Please try again.</div>`;
+    }
+  }
+
+  load();
+</script>
+</body>
+</html>

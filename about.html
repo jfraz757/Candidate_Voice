@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About – CandidateVoice.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #f5f6fa; font-family: 'Inter', Arial, sans-serif; color: #1a1a2e; }
+
+    header {
+      position: sticky; top: 0; width: 100%;
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      z-index: 100; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    .logo-wrap img { height: 72px; width: auto; }
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+    .nav-link {
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; padding: 7px 16px;
+      border: 1.5px solid #a8c0e8; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+    .nav-link.primary { background: #f5a623; color: #fff; border-color: #f5a623; }
+    .nav-link.primary:hover { background: #e09410; border-color: #e09410; }
+
+    .hero {
+      background: linear-gradient(135deg, #0d2d6b 0%, #1a4fa0 100%);
+      padding: 56px 40px 48px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .hero h1 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; margin-bottom: 12px; }
+    .hero h1 span { color: #f5a623; }
+    .hero p { font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    .content { max-width: 720px; margin: 0 auto; padding: 52px 24px 80px; }
+
+    .about-section { margin-bottom: 48px; }
+
+    .about-section h2 {
+      font-size: 1.1rem; font-weight: 700; color: #1a4fa0;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 2px solid #e8eaf0;
+    }
+
+    .about-section p {
+      font-size: 0.95rem; color: #374151; line-height: 1.85; margin-bottom: 16px;
+    }
+
+    .about-section p:last-child { margin-bottom: 0; }
+
+    .pull-quote {
+      border-left: 4px solid #f5a623;
+      padding: 16px 20px;
+      margin: 24px 0;
+      background: #fff7e6;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .pull-quote p { font-size: 1rem; font-weight: 600; color: #1a1a2e; line-height: 1.6; margin: 0 !important; }
+
+    .score-explainer {
+      background: #ffffff;
+      border: 1.5px solid #e8eaf0;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .score-explainer h3 { font-size: 0.85rem; font-weight: 700; color: #1a4fa0; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .score-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem;
+    }
+    .score-row:last-child { border-bottom: none; }
+    .score-row-label { color: #374151; }
+    .score-row-points { font-weight: 700; }
+    .positive { color: #059669; }
+    .negative { color: #dc2626; }
+
+    .cta-block {
+      background: linear-gradient(135deg, #0d2d6b 0%, #1a4fa0 100%);
+      border-radius: 16px; padding: 40px 32px;
+      text-align: center; color: #ffffff; margin-top: 40px;
+    }
+
+    .cta-block p { font-size: 0.95rem; color: rgba(255,255,255,0.8); margin-bottom: 20px; line-height: 1.7; }
+
+    .btn-cta {
+      display: inline-block;
+      background: #f5a623; color: #ffffff;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700;
+      padding: 13px 32px; border-radius: 8px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .btn-cta:hover { background: #e09410; }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 0.75rem;
+      color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
+    }
+    footer a { color: #1a4fa0; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .logo-wrap img { height: 36px; }
+      .hero { padding: 40px 20px 32px; }
+      .content { padding: 36px 16px 60px; }
+      .cta-block { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">← Reviews</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Exposing the Ghosters.<br><span>Finding the Humans.</span></h1>
+  <p>The collective voice of the job seeker. Anonymous. Honest. Overdue.</p>
+</div>
+
+<div class="content">
+
+  <div class="about-section">
+    <h2>What This Is</h2>
+    <p>Candidate Voice is a free, anonymous platform where job seekers share their experiences with employer hiring processes. Not the job itself — the process. The application portal. The ghosting. The essay responses nobody asked for. The rejection that came three months after you forgot you applied.</p>
+    <div class="pull-quote">
+      <p>As a job seeker, you do not have to be powerless. Candidate Voice is the collective voice of the applicant.</p>
+    </div>
+    <p>We use verified user reports to uplift employers who respect candidates' time and put on blast those who don't. We want you to know what to expect from a company before you spend hours on their application.</p>
+  </div>
+
+  <div class="about-section">
+    <h2>How the Experience Score Works</h2>
+    <p>Every review generates a Candidate Experience Score — a proportional rating calculated only from the fields the reviewer actually answered. Skipped fields and "I don't remember" responses are excluded from both the numerator and denominator, so the score reflects only what was reported.</p>
+
+    <div class="score-explainer">
+      <h3>Score Factors</h3>
+      <div class="score-row">
+        <span class="score-row-label">Ghosted (no contact for 2+ weeks)</span>
+        <span class="score-row-points negative">0 / 30 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Formal rejection within 2 weeks</span>
+        <span class="score-row-points positive">20 / 30 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Currently interviewing / Got the job</span>
+        <span class="score-row-points positive">25 / 30 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Salary disclosed in listing</span>
+        <span class="score-row-points positive">15 / 15 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Salary not disclosed</span>
+        <span class="score-row-points negative">0 / 15 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">No cover letter required</span>
+        <span class="score-row-points positive">10 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Cover letter optional</span>
+        <span class="score-row-points positive">6 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Cover letter required</span>
+        <span class="score-row-points negative">2 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">No take-home assignment</span>
+        <span class="score-row-points positive">10 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Take-home assignment required</span>
+        <span class="score-row-points negative">0 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">No essay responses</span>
+        <span class="score-row-points positive">10 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Essay responses required</span>
+        <span class="score-row-points negative">0 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">No resume re-entry required</span>
+        <span class="score-row-points positive">10 / 10 pts</span>
+      </div>
+      <div class="score-row">
+        <span class="score-row-label">Had to re-enter resume</span>
+        <span class="score-row-points negative">0 / 10 pts</span>
+      </div>
+    </div>
+
+    <p>Each field is scored proportionally — only answered fields count toward your score. Skipped fields and "Don't remember" responses are excluded entirely. Scores are displayed as a percentage and grouped into four bands: <strong>Poor</strong> (below 25%), <strong>Fair</strong> (25–49%), <strong>Good</strong> (50–74%), and <strong>Excellent</strong> (75%+). A ghosted-only entry scores Poor. A timely formal rejection with no other data scores Good (~67%). Excellent requires a positive outcome plus multiple favorable application conditions. Company pages show an average score across all their reviews, plus a ghosting rate and hire count.</p>
+  </div>
+
+  <div class="about-section">
+    <h2>Why This Exists</h2>
+    <p>Like many of you, the frustration of today's job market is real — the endless cycle of applying, the silence, the generic rejections six months after the fact, and the application portals that make you wonder if anyone actually thought about the candidate experience. This platform was built to reclaim some sense of justice in a process that too often treats applicants as disposable.</p>
+    <p>Employers pour resources into employer branding. Candidates deserve the same transparency in return. If a company has a pattern of ghosting applicants, requiring unpaid labor through take-home assignments, or hiding salary information, job seekers should know that before they invest their time.</p>
+    <p>All reviews are anonymous. All data is community-contributed. The platform is free and always will be.</p>
+  </div>
+
+  <div class="about-section">
+    <h2>Community Guidelines</h2>
+    <p>Reviews must be based on your genuine personal experience with a hiring process. Do not fabricate experiences, impersonate others, or submit reviews intended to harm a company for reasons unrelated to the hiring process. Personal attacks on individual employees are not permitted. Reviews may be removed at any time if they violate these guidelines.</p>
+    <p>Have a question or concern? <a href="mailto:contact@candidatevoice.org" style="color:#1a4fa0;">Contact us</a>.</p>
+  </div>
+
+  <div class="cta-block">
+    <p>Had an experience worth sharing? Add it to the record. Every review helps the next candidate make a more informed decision.</p>
+    <a href="submit.html" class="btn-cta">Share Your Experience</a>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="index.html">Reviews</a> &nbsp;|&nbsp;
+  <a href="mailto:contact@candidatevoice.org">Contact</a>
+</footer>
+
+</body>
+</html>

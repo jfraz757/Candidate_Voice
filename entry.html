@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Review – CandidateVoice.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #f5f6fa; font-family: 'Inter', Arial, sans-serif; color: #1a1a2e; }
+
+    header {
+      position: sticky; top: 0; width: 100%;
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      z-index: 100; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    .logo-wrap img { height: 72px; width: auto; }
+
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+
+    .nav-link {
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; padding: 7px 16px;
+      border: 1.5px solid #a8c0e8; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+    .nav-link.primary { background: #f5a623; color: #fff; border-color: #f5a623; }
+    .nav-link.primary:hover { background: #e09410; border-color: #e09410; }
+
+    .content { max-width: 760px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; margin-bottom: 24px; transition: gap 0.2s;
+    }
+    .back-link:hover { gap: 10px; }
+
+    .entry-card {
+      background: #ffffff;
+      border: 1.5px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .entry-header {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 20px; padding-bottom: 20px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .entry-favicon { width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0; border: 1px solid #e8eaf0; }
+
+    .entry-header-text { flex: 1; }
+    .entry-employer { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .entry-website { font-size: 0.8rem; color: #9ca3af; text-decoration: none; }
+    .entry-website:hover { color: #1a4fa0; }
+    .entry-position { font-size: 1rem; font-weight: 600; color: #374151; margin-bottom: 20px; }
+
+    .score-block {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 24px; padding: 18px 20px;
+      border-radius: 10px; background: #f0f5ff;
+      border: 1.5px solid #c7d8f5;
+    }
+
+    .score-label { font-size: 0.75rem; font-weight: 700; color: #1a4fa0; letter-spacing: 0.5px; text-transform: uppercase; }
+    .score-sub   { font-size: 0.78rem; color: #6b7280; margin-top: 2px; }
+
+    .score-badge {
+      font-size: 0.82rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .score-poor      { background: #fee2e2; color: #dc2626; }
+    .score-fair      { background: #fef3c7; color: #d97706; }
+    .score-good      { background: #d1fae5; color: #059669; }
+    .score-excellent { background: #fff7e6; color: #f5a623; border: 1px solid #f5a623; }
+    .score-none      { background: #f3f4f6; color: #9ca3af; }
+
+    .score-pct { font-size: 2rem; font-weight: 700; color: #1a4fa0; margin-left: auto; }
+
+    /* ─── Score Tooltip ───────────────────────────────────────── */
+    .tooltip-wrap { position: relative; display: inline-block; }
+
+    .tooltip-wrap .tooltip-box {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      width: 260px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      z-index: 10;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .tooltip-wrap .tooltip-box::after {
+      content: "";
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1a1a2e;
+    }
+
+    .tooltip-wrap:hover .tooltip-box { display: block; }
+
+    .tooltip-row {
+      display: flex; justify-content: space-between;
+      padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .tooltip-row:last-child { border-bottom: none; }
+    .tooltip-row .t-label { color: rgba(255,255,255,0.75); }
+    .tooltip-row .t-points { font-weight: 700; }
+    .tooltip-row .t-pos { color: #4ade80; }
+    .tooltip-row .t-neg { color: #f87171; }
+    .tooltip-row .t-neu { color: #9ca3af; }
+    .tooltip-title {
+      font-size: 0.7rem; font-weight: 700; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+
+    .meta-tag {
+      display: inline-block; font-size: 0.78rem; font-weight: 500;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .tag-ghosted    { background: #fee2e2; color: #dc2626; }
+    .tag-rejection  { background: #dcfce7; color: #16a34a; }
+    .tag-interview  { background: #fef9c3; color: #ca8a04; }
+    .tag-hired      { background: #d1fae5; color: #059669; }
+
+    .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+
+    .field-item {
+      background: #f9fafb; border: 1px solid #e8eaf0;
+      border-radius: 8px; padding: 12px 14px;
+    }
+
+    .field-label {
+      font-size: 0.7rem; font-weight: 700; color: #9ca3af;
+      letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;
+    }
+
+    .field-value { font-size: 0.88rem; font-weight: 500; color: #1a1a2e; }
+    .field-value.positive { color: #059669; }
+    .field-value.negative { color: #dc2626; }
+    .field-value.neutral  { color: #9ca3af; }
+
+    .review-section { margin-bottom: 20px; }
+
+    .review-section h3 {
+      font-size: 0.72rem; font-weight: 700; color: #9ca3af;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+    }
+
+    .review-section p { font-size: 0.92rem; color: #374151; line-height: 1.8; }
+
+    .review-best  { border-left: 3px solid #10b981; padding-left: 14px; }
+    .review-worst { border-left: 3px solid #ef4444; padding-left: 14px; }
+
+    .entry-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 20px; border-top: 1px solid #f3f4f6; margin-top: 20px;
+    }
+
+    .upvote-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: #f9fafb; border: 1.5px solid #e5e7eb;
+      color: #6b7280; font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
+    }
+    .upvote-btn:hover { border-color: #f5a623; color: #f5a623; }
+    .upvote-btn.voted { background: #fff7e6; border-color: #f5a623; color: #f5a623; }
+
+    .company-link { font-size: 0.82rem; font-weight: 600; color: #1a4fa0; text-decoration: none; }
+    .company-link:hover { text-decoration: underline; }
+
+    .update-link {
+      font-size: 0.78rem; font-weight: 500; color: #9ca3af;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; text-decoration: underline;
+      transition: color 0.2s; padding: 0;
+    }
+    .update-link:hover { color: #1a4fa0; }
+
+    /* ─── Edit Modal ──────────────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 200;
+      overflow-y: auto; padding: 40px 20px;
+    }
+    .modal-overlay.visible { display: flex; align-items: flex-start; justify-content: center; }
+
+    .modal {
+      background: #ffffff; border-radius: 16px; padding: 36px;
+      width: 100%; max-width: 600px; position: relative; margin: auto;
+    }
+
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; font-size: 1.4rem;
+      color: #9ca3af; cursor: pointer;
+    }
+    .modal-close:hover { color: #1a1a2e; }
+
+    .modal-title { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .modal-subtitle { font-size: 0.85rem; color: #6b7280; margin-bottom: 24px; line-height: 1.6; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .form-group select,
+    .form-group textarea,
+    .form-group input {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      color: #1a1a2e; background: #f9fafb; outline: none; transition: border-color 0.2s;
+    }
+    .form-group select:focus,
+    .form-group textarea:focus,
+    .form-group input:focus { border-color: #1a4fa0; background: #ffffff; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn-submit-edit {
+      width: 100%; background: #f5a623; border: none; color: #ffffff;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700;
+      padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 8px; transition: background 0.2s;
+    }
+    .btn-submit-edit:hover { background: #e09410; }
+    .btn-submit-edit:disabled { opacity: 0.6; cursor: default; }
+
+    .edit-success { display: none; text-align: center; padding: 32px 0 16px; }
+    .edit-success.visible { display: block; }
+    .edit-success-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .edit-success h3 { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+    .edit-success p { font-size: 0.88rem; color: #6b7280; line-height: 1.6; }
+
+    .state-msg { text-align: center; padding: 80px 20px; color: #9ca3af; font-size: 0.9rem; }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 0.75rem;
+      color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
+    }
+    footer a { color: #1a4fa0; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .logo-wrap img { height: 36px; }
+      .content { padding: 24px 16px 60px; }
+      .entry-card { padding: 20px; }
+      .fields-grid { grid-template-columns: 1fr; }
+      .score-pct { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </nav>
+</header>
+
+<div class="content">
+  <a href="index.html" class="back-link">← Back to all reviews</a>
+  <div id="entry-container">
+    <div class="state-msg">Loading review...</div>
+  </div>
+</div>
+
+<!-- ─── Edit Modal ─────────────────────────────────────────── -->
+<div class="modal-overlay" id="edit-modal" onclick="closeEditOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEdit()">&times;</button>
+
+    <div id="edit-form">
+      <div class="modal-title">Update Your Review</div>
+      <div class="modal-subtitle">Your update will be reviewed before going live. All fields are optional — only fill in what you want to change.</div>
+
+      <div class="form-group">
+        <label>Outcome</label>
+        <select id="edit-ghosted">
+          <option value="">No change</option>
+          <option value="ghosted">👻 I was ghosted</option>
+          <option value="formal_rejection">✉️ Formal rejection within 2 weeks</option>
+          <option value="interviewing">🤝 Currently interviewing</option>
+          <option value="got_the_job">🎉 I got the job!</option>
+        </select>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div class="form-group" style="margin:0;">
+          <label>Salary Disclosed?</label>
+          <select id="edit-salary">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Cover Letter Required?</label>
+          <select id="edit-cover">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="optional">Optional</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Take-Home Assignment?</label>
+          <select id="edit-takehome">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Essay Responses?</label>
+          <select id="edit-essay">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;grid-column:1/-1;">
+          <label>Resume Re-entry?</label>
+          <select id="edit-reentry">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Update Your Review</label>
+        <textarea id="edit-review" placeholder="What changed or what do you want to add?"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Best Part</label>
+          <textarea id="edit-best" placeholder="What went well?" style="min-height:70px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Worst Part</label>
+          <textarea id="edit-worst" placeholder="What was frustrating?" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Date Rejected (if now known)</label>
+        <input type="date" id="edit-date-rejected" />
+      </div>
+
+      <button class="btn-submit-edit" id="edit-submit-btn" onclick="submitEdit()">SUBMIT UPDATE</button>
+    </div>
+
+    <div class="edit-success" id="edit-success">
+      <div class="edit-success-icon">✓</div>
+      <h3>Update Submitted</h3>
+      <p>Thanks for keeping your review current. Your update will appear after a quick review.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="about.html">About</a> &nbsp;|&nbsp;
+  <a href="terms.html">Community Guidelines</a>
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://lawteswyjpkovzagnshn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz";
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const id        = urlParams.get("id");
+  let currentReview = {};
+
+  function scoreBadge(band) {
+    if (!band) return `<span class="score-badge score-none">Not Scored</span>`;
+    const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
+    return `<span class="score-badge score-${band}">${labels[band]}</span>`;
+  }
+
+  function statusTag(status) {
+    const map = {
+      ghosted:          `<span class="meta-tag tag-ghosted">👻 Ghosted</span>`,
+      formal_rejection: `<span class="meta-tag tag-rejection">✉️ Formal Rejection</span>`,
+      interviewing:     `<span class="meta-tag tag-interview">🤝 Interviewing</span>`,
+      got_the_job:      `<span class="meta-tag tag-hired">🎉 Got the Job</span>`
+    };
+    return map[status] || "";
+  }
+
+  function fieldVal(val, positiveVals, negativeVals) {
+    if (!val || val === "dont_remember") {
+      return `<span class="field-value neutral">${val === "dont_remember" ? "Don't remember" : "—"}</span>`;
+    }
+    const cls = positiveVals?.includes(val) ? "positive" : negativeVals?.includes(val) ? "negative" : "";
+    const labels = {
+      yes: "Yes", no: "No", optional: "Optional",
+      after_applying: "After applying",
+      after_interview_invite: "After interview invite",
+      after_interviewing: "After interviewing",
+      after_offer: "After offer"
+    };
+    return `<span class="field-value ${cls}">${labels[val] || val}</span>`;
+  }
+
+  function fmtDate(d) {
+    if (!d) return "—";
+    return new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function responseTime(dateApplied, dateRejected) {
+    if (!dateApplied || !dateRejected) return null;
+    const days = Math.round((new Date(dateRejected) - new Date(dateApplied)) / (1000 * 60 * 60 * 24));
+    if (days < 0) return null;
+    if (days === 0) return "Same day";
+    if (days === 1) return "1 day";
+    if (days < 7)  return days + " days";
+    const weeks = Math.round(days / 7);
+    if (weeks === 1) return "1 week";
+    if (weeks < 8)  return weeks + " weeks";
+    const months = Math.round(days / 30);
+    return months + " month" + (months !== 1 ? "s" : "");
+  }
+
+  function buildTooltipRows(r) {
+    const rows = [];
+
+    const statusMap = {
+      ghosted:          { label: "Ghosted",                  pts: 0,  max: 30, cls: "t-neg" },
+      formal_rejection: { label: "Formal rejection",         pts: 20, max: 30, cls: "t-pos" },
+      interviewing:     { label: "Currently interviewing",   pts: 25, max: 30, cls: "t-pos" },
+      got_the_job:      { label: "Got the job",              pts: 25, max: 30, cls: "t-pos" }
+    };
+
+    if (r.ghosted_status && statusMap[r.ghosted_status]) {
+      const s = statusMap[r.ghosted_status];
+      rows.push({ label: s.label, pts: s.pts, max: s.max, cls: s.cls });
+    }
+
+    const fieldMap = [
+      { field: r.salary_disclosed,      label: "Salary disclosed",
+        yes: { pts: 15, max: 15, cls: "t-pos" }, no: { pts: 0, max: 15, cls: "t-neg" } },
+      { field: r.cover_letter_required,  label: "Cover letter",
+        no: { pts: 10, max: 10, cls: "t-pos" }, optional: { pts: 6, max: 10, cls: "t-pos" }, yes: { pts: 2, max: 10, cls: "t-neg" } },
+      { field: r.take_home_assignment,   label: "Take-home assignment",
+        no: { pts: 10, max: 10, cls: "t-pos" }, yes: { pts: 0, max: 10, cls: "t-neg" } },
+      { field: r.essay_responses,        label: "Essay responses",
+        no: { pts: 10, max: 10, cls: "t-pos" }, yes: { pts: 0, max: 10, cls: "t-neg" } },
+      { field: r.resume_reentry,         label: "Resume re-entry",
+        no: { pts: 10, max: 10, cls: "t-pos" }, yes: { pts: 0, max: 10, cls: "t-neg" } }
+    ];
+
+    fieldMap.forEach(f => {
+      if (!f.field || f.field === "dont_remember") return;
+      const val = f[f.field];
+      if (val) rows.push({ label: f.label, pts: val.pts, max: val.max, cls: val.cls });
+    });
+
+    if (!rows.length) return `<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;">Not enough data to break down.</div>`;
+
+    return rows.map(row => `
+      <div class="tooltip-row">
+        <span class="t-label">${row.label}</span>
+        <span class="t-points ${row.cls}">${row.pts}${row.max ? ' / ' + row.max : ''} pts</span>
+      </div>`).join("");
+  }
+
+  async function loadEntry() {
+    if (!id) {
+      document.getElementById("entry-container").innerHTML =
+        `<div class="state-msg">No review ID provided. <a href="index.html">Go back</a></div>`;
+      return;
+    }
+
+    try {
+      const res  = await fetch(`${SUPABASE_URL}/rest/v1/reviews?id=eq.${id}&status=eq.approved`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      const data = await res.json();
+      const r    = data[0];
+      currentReview = r || {};
+
+      if (!r) {
+        document.getElementById("entry-container").innerHTML =
+          `<div class="state-msg">Review not found. <a href="index.html">Go back</a></div>`;
+        return;
+      }
+
+      document.title = `${r.employer_name} – CandidateVoice.org`;
+
+      const favicon = r.employer_website
+        ? `<img class="entry-favicon" src="https://www.google.com/s2/favicons?domain=${r.employer_website}&sz=128" onerror="this.style.display='none'" />`
+        : "";
+
+      const scoreBlock = `
+        <div class="score-block">
+          <div>
+            <div class="score-label">Candidate Experience Score</div>
+            <div class="score-sub">Hover the badge to see the breakdown</div>
+            <div style="margin-top:10px;" class="tooltip-wrap">
+              ${scoreBadge(r.score_band)}
+              <div class="tooltip-box">
+                <div class="tooltip-title">Score Breakdown</div>
+                ${buildTooltipRows(r)}
+              </div>
+            </div>
+          </div>
+          ${r.experience_score != null ? `<div class="score-pct">${Math.round(r.experience_score)}%</div>` : ""}
+        </div>`;
+
+      const whenGhostedField = r.when_ghosted ? `
+        <div class="field-item">
+          <div class="field-label">When Ghosted</div>
+          ${fieldVal(r.when_ghosted)}
+        </div>` : "";
+
+      const reviewSection  = r.review_general ? `<div class="review-section"><h3>Review</h3><p>${r.review_general}</p></div>` : "";
+      const bestSection    = r.review_best    ? `<div class="review-section review-best"><h3>Best Part</h3><p>${r.review_best}</p></div>` : "";
+      const worstSection   = r.review_worst   ? `<div class="review-section review-worst"><h3>Worst Part</h3><p>${r.review_worst}</p></div>` : "";
+
+      document.getElementById("entry-container").innerHTML = `
+        <div class="entry-card">
+          <div class="entry-header">
+            ${favicon}
+            <div class="entry-header-text">
+              <div class="entry-employer">${r.employer_name}${r.verified ? ' <span style="font-size:0.7rem;font-weight:700;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;">✓ Verified</span>' : ""}</div>
+              ${r.employer_website ? `<a href="${r.employer_website}" target="_blank" class="entry-website">${r.employer_website.replace(/https?:\/\//,'')}</a>` : ""}
+            </div>
+            <div>${statusTag(r.ghosted_status)}</div>
+          </div>
+
+          ${r.position_applied ? `<div class="entry-position">${r.position_applied}</div>` : ""}
+
+          ${scoreBlock}
+
+          <div class="fields-grid">
+            <div class="field-item">
+              <div class="field-label">Date Applied</div>
+              <div class="field-value">${fmtDate(r.date_applied)}</div>
+            </div>
+            <div class="field-item">
+              <div class="field-label">Date Rejected</div>
+              <div class="field-value">${fmtDate(r.date_rejected)}</div>
+            </div>
+            ${(() => {
+              const rt = responseTime(r.date_applied, r.date_rejected);
+              return rt ? `<div class="field-item" style="grid-column:1/-1;background:#f0f5ff;border-color:#c7d8f5;">
+                <div class="field-label" style="color:#1a4fa0;">Time to Hear Back</div>
+                <div class="field-value" style="color:#1a4fa0;font-size:1rem;">⏱ ${rt}</div>
+              </div>` : "";
+            })()}
+            ${whenGhostedField}
+            <div class="field-item">
+              <div class="field-label">Salary Disclosed</div>
+              ${fieldVal(r.salary_disclosed, ['yes'], ['no'])}
+            </div>
+            <div class="field-item">
+              <div class="field-label">Cover Letter Required</div>
+              ${fieldVal(r.cover_letter_required, ['no','optional'], ['yes'])}
+            </div>
+            <div class="field-item">
+              <div class="field-label">Take-Home Assignment</div>
+              ${fieldVal(r.take_home_assignment, ['no'], ['yes'])}
+            </div>
+            <div class="field-item">
+              <div class="field-label">Essay Responses</div>
+              ${fieldVal(r.essay_responses, ['no'], ['yes'])}
+            </div>
+            <div class="field-item">
+              <div class="field-label">Resume Re-entry</div>
+              ${fieldVal(r.resume_reentry, ['no'], ['yes'])}
+            </div>
+            <div class="field-item">
+              <div class="field-label">Interview Invite</div>
+              ${fieldVal(r.interview_invite, ['yes'], ['no'])}
+            </div>
+            ${r.industry ? `<div class="field-item" style="grid-column:1/-1;">
+              <div class="field-label">Industry</div>
+              <div class="field-value" style="color:#7c3aed;">${r.industry}</div>
+            </div>` : ""}
+          </div>
+
+          ${reviewSection}
+          ${bestSection}
+          ${worstSection}
+
+          <div class="entry-footer">
+            <button class="upvote-btn" id="upvote-btn" onclick="upvote(${r.id}, ${r.upvotes || 0})">
+              🙋 <span id="upvote-count">${r.upvotes > 0 ? r.upvotes : ""}</span> This happened to me too
+            </button>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <button onclick="shareReview('${encodeURIComponent(r.employer_name)}')" style="background:none;border:none;cursor:pointer;font-size:0.82rem;font-weight:600;color:#6b7280;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#1a4fa0'" onmouseout="this.style.color='#6b7280'">
+                🔗 Share
+              </button>
+              <button onclick="openEdit()" class="update-link">✏️ Update this review</button>
+              <a href="company.html?name=${encodeURIComponent(r.employer_name)}" class="company-link">
+                All ${r.employer_name} reviews →
+              </a>
+            </div>
+          </div>
+        </div>`;
+
+      if (localStorage.getItem(`voted_${r.id}`)) {
+        document.getElementById("upvote-btn").classList.add("voted");
+      }
+
+    } catch(e) {
+      document.getElementById("entry-container").innerHTML =
+        `<div class="state-msg">Could not load review. <a href="index.html">Go back</a></div>`;
+      console.error(e);
+    }
+  }
+
+  async function upvote(id, current) {
+    const btn   = document.getElementById("upvote-btn");
+    const voted = localStorage.getItem(`voted_${id}`);
+    if (voted) { btn.classList.add("voted"); return; }
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/reviews?id=eq.${id}`, {
+        method: "PATCH",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({ upvotes: current + 1 })
+      });
+      document.getElementById("upvote-count").textContent = current + 1;
+      localStorage.setItem(`voted_${id}`, "1");
+      btn.classList.add("voted");
+    } catch(e) { console.error(e); }
+  }
+
+  function shareReview(employerEncoded) {
+    const url  = window.location.href;
+    const text = "Check out this candidate experience review for " + decodeURIComponent(employerEncoded) + " on CandidateVoice.org";
+    if (navigator.share) {
+      navigator.share({ title: "CandidateVoice.org", text, url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = event.target.closest("button");
+        const orig = btn.innerHTML;
+        btn.innerHTML = "✓ Copied!";
+        btn.style.color = "#059669";
+        setTimeout(() => { btn.innerHTML = orig; btn.style.color = ""; }, 2000);
+      });
+    }
+  }
+
+  // ─── EDIT MODAL ───────────────────────────────────────────
+  function openEdit() {
+    document.getElementById("edit-modal").classList.add("visible");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeEdit() {
+    document.getElementById("edit-modal").classList.remove("visible");
+    document.body.style.overflow = "";
+    document.getElementById("edit-success").classList.remove("visible");
+    document.getElementById("edit-form").style.display = "block";
+  }
+
+  function closeEditOutside(e) {
+    if (e.target === document.getElementById("edit-modal")) closeEdit();
+  }
+
+  async function submitEdit() {
+    const btn = document.getElementById("edit-submit-btn");
+    btn.textContent = "Submitting...";
+    btn.disabled    = true;
+
+    const payload = {
+      employer_name:         currentReview.employer_name,
+      employer_website:      currentReview.employer_website,
+      position_applied:      currentReview.position_applied,
+      ghosted_status:        document.getElementById("edit-ghosted").value || currentReview.ghosted_status,
+      salary_disclosed:      document.getElementById("edit-salary").value     || null,
+      cover_letter_required: document.getElementById("edit-cover").value      || null,
+      take_home_assignment:  document.getElementById("edit-takehome").value   || null,
+      essay_responses:       document.getElementById("edit-essay").value      || null,
+      resume_reentry:        document.getElementById("edit-reentry").value    || null,
+      review_general:        document.getElementById("edit-review").value.trim() || null,
+      review_best:           document.getElementById("edit-best").value.trim()   || null,
+      review_worst:          document.getElementById("edit-worst").value.trim()  || null,
+      date_rejected:         document.getElementById("edit-date-rejected").value || null,
+      update_notes:          `Update to review ID ${id}`,
+      status:                "pending"
+    };
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/submissions`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Supabase error:", data);
+        alert("Submission failed: " + (data.message || data.hint || JSON.stringify(data)));
+        btn.textContent = "SUBMIT UPDATE";
+        btn.disabled    = false;
+        return;
+      }
+
+      document.getElementById("edit-form").style.display = "none";
+      document.getElementById("edit-success").classList.add("visible");
+    } catch(e) {
+      alert("Submission failed. Please try again.");
+      console.error(e);
+      btn.textContent = "SUBMIT UPDATE";
+      btn.disabled    = false;
+    }
+  }
+
+  loadEntry();
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Company Reviews – CandidateVoice.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; background: #f5f6fa; font-family: 'Inter', Arial, sans-serif; color: #1a1a2e; }
+
+    header {
+      position: sticky; top: 0; width: 100%;
+      background: #ffffff; border-bottom: 2px solid #e8eaf0;
+      z-index: 100; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    .logo-wrap img { height: 72px; width: auto; }
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+    .nav-link {
+      font-size: 0.82rem; font-weight: 600; color: #1a4fa0;
+      text-decoration: none; padding: 7px 16px;
+      border: 1.5px solid #a8c0e8; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+    .nav-link.primary { background: #f5a623; color: #fff; border-color: #f5a623; }
+    .nav-link.primary:hover { background: #e09410; border-color: #e09410; }
+
+    .company-hero {
+      background: linear-gradient(135deg, #0d2d6b 0%, #1a4fa0 100%);
+      padding: 40px 40px 36px;
+      color: #ffffff;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.75);
+      text-decoration: none; margin-bottom: 20px; transition: color 0.2s;
+    }
+    .back-link:hover { color: #ffffff; }
+
+    .company-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
+    }
+
+    .company-favicon {
+      width: 56px; height: 56px; border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.3); flex-shrink: 0;
+    }
+
+    .company-name { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; margin-bottom: 4px; }
+    .company-website { font-size: 0.85rem; color: rgba(255,255,255,0.6); text-decoration: none; }
+    .company-website:hover { color: #f5a623; }
+
+    .company-stats {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      padding: 20px 24px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .company-stat-number { font-size: 1.6rem; font-weight: 700; color: #f5a623; }
+    .company-stat-label  { font-size: 0.7rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+    .score-badge {
+      font-size: 0.82rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px; text-transform: uppercase;
+    }
+    .score-poor      { background: #fee2e2; color: #dc2626; }
+    .score-fair      { background: #fef3c7; color: #d97706; }
+    .score-good      { background: #d1fae5; color: #059669; }
+    .score-excellent { background: #fff7e6; color: #f5a623; border: 1px solid #f5a623; }
+    .score-none      { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
+
+    .content { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    .section-title {
+      font-size: 0.75rem; font-weight: 700; color: #9ca3af;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+    }
+
+    .card {
+      background: #ffffff; border: 1.5px solid #e8eaf0;
+      border-radius: 12px; padding: 20px; margin-bottom: 14px;
+      text-decoration: none; color: inherit; display: block;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(26,79,160,0.1); border-color: #a8c0e8; }
+
+    .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .card-position { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; }
+    .card-date { font-size: 0.78rem; color: #9ca3af; margin-left: auto; }
+
+    .meta-tag {
+      font-size: 0.72rem; font-weight: 500;
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .tag-ghosted    { background: #fee2e2; color: #dc2626; }
+    .tag-rejection  { background: #dcfce7; color: #16a34a; }
+    .tag-interview  { background: #fef9c3; color: #ca8a04; }
+    .tag-hired      { background: #d1fae5; color: #059669; }
+
+    .card-review {
+      font-size: 0.85rem; color: #4b5563; line-height: 1.6;
+      margin: 10px 0;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 10px; border-top: 1px solid #f3f4f6; margin-top: 10px;
+    }
+
+    .card-score-wrap { display: flex; gap: 8px; align-items: center; }
+    .upvote-count { font-size: 0.72rem; color: #9ca3af; }
+
+    .state-msg { text-align: center; padding: 60px 20px; color: #9ca3af; }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 0.75rem;
+      color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
+    }
+    footer a { color: #1a4fa0; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      .logo-wrap img { height: 36px; }
+      .company-hero { padding: 28px 16px 24px; }
+      .content { padding: 24px 16px 60px; }
+      .company-stats { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </nav>
+</header>
+
+<div class="company-hero">
+  <a href="index.html" class="back-link">← All Reviews</a>
+  <div id="company-header-content">
+    <div class="state-msg" style="color:rgba(255,255,255,0.5);">Loading...</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="section-title" id="reviews-label"></div>
+
+  <div style="margin-bottom:20px;display:flex;gap:10px;align-items:center;">
+    <div style="position:relative;flex:1;max-width:360px;">
+      <svg width="15" height="15" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none;">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="position-search" placeholder="Filter by position title..."
+        style="width:100%;padding:9px 14px 9px 34px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.88rem;color:#1a1a2e;background:#f9fafb;outline:none;"
+        oninput="filterByPosition(this.value)"
+        onfocus="this.style.borderColor='#1a4fa0';this.style.background='#fff'"
+        onblur="this.style.borderColor='#e5e7eb';this.style.background='#f9fafb'" />
+    </div>
+    <button onclick="clearPositionFilter()" id="clear-position-btn"
+      style="display:none;font-size:0.78rem;font-weight:600;color:#6b7280;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;">
+      ✕ Clear
+    </button>
+  </div>
+
+  <div id="reviews-list">
+    <div class="state-msg">Loading reviews...</div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="about.html">About</a> &nbsp;|&nbsp;
+  <a href="terms.html">Community Guidelines</a>
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://lawteswyjpkovzagnshn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz";
+
+  const urlParams  = new URLSearchParams(window.location.search);
+  const companyName = decodeURIComponent(urlParams.get("name") || "");
+
+  function scoreBadge(band, score) {
+    if (!band) return `<span class="score-badge score-none">No Score</span>`;
+    const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
+    return `<span class="score-badge score-${band}">${labels[band]}${score ? " · " + Math.round(score) + "%" : ""}</span>`;
+  }
+
+  function statusTag(status) {
+    const map = {
+      ghosted:          `<span class="meta-tag tag-ghosted">👻 Ghosted</span>`,
+      formal_rejection: `<span class="meta-tag tag-rejection">✉️ Formal Rejection</span>`,
+      interviewing:     `<span class="meta-tag tag-interview">🤝 Interviewing</span>`,
+      got_the_job:      `<span class="meta-tag tag-hired">🎉 Got the Job</span>`
+    };
+    return map[status] || "";
+  }
+
+  async function loadCompany() {
+    if (!companyName) {
+      document.getElementById("company-header-content").innerHTML =
+        `<div style="color:rgba(255,255,255,0.6);">No company specified. <a href="index.html" style="color:#f5a623;">Go back</a></div>`;
+      return;
+    }
+
+    try {
+      const res     = await fetch(
+        `${SUPABASE_URL}/rest/v1/reviews?employer_name=eq.${encodeURIComponent(companyName)}&status=eq.approved&order=created_at.desc`,
+        { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+      );
+      const reviews = await res.json();
+
+      if (!reviews.length) {
+        document.getElementById("company-header-content").innerHTML =
+          `<div style="color:rgba(255,255,255,0.6);">No reviews found for ${companyName}.</div>`;
+        document.getElementById("reviews-list").innerHTML = "";
+        return;
+      }
+
+      document.title = `${companyName} Reviews – CandidateVoice.org`;
+
+      const website    = reviews[0].employer_website;
+      const total      = reviews.length;
+      const ghosted    = reviews.filter(r => r.ghosted_status === "ghosted").length;
+      const hires      = reviews.filter(r => r.ghosted_status === "got_the_job").length;
+      const scored     = reviews.filter(r => r.experience_score != null);
+      const avgScore   = scored.length
+        ? scored.reduce((a, r) => a + parseFloat(r.experience_score), 0) / scored.length
+        : null;
+      const avgBand    = avgScore == null ? null
+        : avgScore < 25 ? "poor" : avgScore < 50 ? "fair" : avgScore < 75 ? "good" : "excellent";
+      const ghostedPct = Math.round(ghosted / total * 100);
+
+      // Ghosting streak — consecutive ghosted from most recent
+      const sorted = [...reviews].sort((a, b) => new Date(b.date_applied || b.created_at) - new Date(a.date_applied || a.created_at));
+      let streak = 0;
+      for (const r of sorted) {
+        if (r.ghosted_status === "ghosted") streak++;
+        else break;
+      }
+      const streakBadge = streak >= 3
+        ? `<span style="font-size:0.75rem;font-weight:700;background:#fee2e2;color:#dc2626;padding:4px 12px;border-radius:20px;border:1px solid #fca5a5;">👻 ${streak} ghostings in a row</span>`
+        : "";
+
+      // Response time average
+      const rtReviews = reviews.filter(r => r.date_applied && r.date_rejected);
+      const avgDays = rtReviews.length
+        ? Math.round(rtReviews.reduce((a, r) => a + Math.round((new Date(r.date_rejected) - new Date(r.date_applied)) / 86400000), 0) / rtReviews.length)
+        : null;
+
+      const favicon = website
+        ? `<img class="company-favicon" src="https://www.google.com/s2/favicons?domain=${website}&sz=128" onerror="this.style.display='none'" />`
+        : "";
+
+      document.getElementById("company-header-content").innerHTML = `
+        <div class="company-header">
+          ${favicon}
+          <div>
+            <div class="company-name">${companyName} ${streakBadge}</div>
+            ${website ? `<a href="${website}" target="_blank" class="company-website">${website.replace(/https?:\/\//,'')}</a>` : ""}
+          </div>
+        </div>
+        <div class="company-stats">
+          <div>
+            <div class="company-stat-number">${total}</div>
+            <div class="company-stat-label">Total Reviews</div>
+          </div>
+          <div>
+            <div class="company-stat-number">${ghostedPct}%</div>
+            <div class="company-stat-label">Ghosted Rate</div>
+          </div>
+          <div>
+            <div class="company-stat-number">${hires}</div>
+            <div class="company-stat-label">Hires Reported</div>
+          </div>
+          ${avgDays != null ? `<div>
+            <div class="company-stat-number">${avgDays}d</div>
+            <div class="company-stat-label">Avg Response Time</div>
+          </div>` : ""}
+          <div>
+            <div style="margin-bottom:6px;font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">Avg Score</div>
+            ${scoreBadge(avgBand, avgScore)}
+          </div>
+        </div>`;
+
+      document.getElementById("reviews-label").textContent =
+        `${total} review${total !== 1 ? "s" : ""} for ${companyName}`;
+
+      document.getElementById("reviews-list").innerHTML = reviews.map(r => {
+        const dateStr = r.date_applied
+          ? new Date(r.date_applied).toLocaleDateString('en-US', {month:'short', year:'numeric'}) : "";
+        const upvotes = r.upvotes > 0 ? `<span class="upvote-count">👍 ${r.upvotes}</span>` : "";
+        const review  = r.review_general ? `<div class="card-review">${r.review_general}</div>` : "";
+
+        return `
+          <a class="card" href="entry.html?id=${r.id}">
+            <div class="card-header">
+              <div class="card-position">${r.position_applied || "Position not specified"}</div>
+              <div class="card-date">${dateStr}</div>
+            </div>
+            <div style="margin-bottom:8px;">${statusTag(r.ghosted_status)}</div>
+            ${review}
+            <div class="card-footer">
+              <div class="card-score-wrap">
+                ${scoreBadge(r.score_band, r.experience_score)}
+                ${upvotes}
+              </div>
+              <span style="font-size:0.78rem;color:#1a4fa0;font-weight:600;">View details →</span>
+            </div>
+          </a>`;
+      }).join("");
+
+    } catch(e) {
+      document.getElementById("reviews-list").innerHTML =
+        `<div class="state-msg">Could not load reviews. <a href="index.html">Go back</a></div>`;
+      console.error(e);
+    }
+  }
+
+  loadCompany();
+
+  function filterByPosition(query) {
+    const btn   = document.getElementById("clear-position-btn");
+    const cards = document.querySelectorAll("#reviews-list .card");
+    const q     = query.toLowerCase().trim();
+    btn.style.display = q ? "block" : "none";
+    let visible = 0;
+    cards.forEach(card => {
+      const pos = card.querySelector(".card-position");
+      const text = pos ? pos.textContent.toLowerCase() : "";
+      const show = !q || text.includes(q);
+      card.style.display = show ? "block" : "none";
+      if (show) visible++;
+    });
+    document.getElementById("reviews-label").textContent =
+      q ? visible + " result" + (visible !== 1 ? "s" : "") + " matching \"" + query + "\""
+        : cards.length + " review" + (cards.length !== 1 ? "s" : "") + " for " + companyName;
+  }
+
+  function clearPositionFilter() {
+    document.getElementById("position-search").value = "";
+    filterByPosition("");
+  }
+</script>
+</body>
+</html>
