@@ -266,6 +266,62 @@
       .fields-grid { grid-template-columns: 1fr; }
       .score-pct { font-size: 1.4rem; }
     }
+
+    /* ─── Hamburger Menu ──────────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: 1.5px solid #a8c0e8;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #1a4fa0;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0; right: 0;
+      background: #ffffff;
+      border-bottom: 2px solid #e8eaf0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 150;
+      flex-direction: column;
+      padding: 12px 20px 20px;
+      gap: 10px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link {
+      display: block;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+    }
+    .mobile-menu .nav-link.primary {
+      margin-top: 4px;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 0 16px; height: 60px; }
+      .logo-wrap img { height: 44px; }
+      .header-nav { display: none; }
+      .hamburger { display: flex; }
+    }
   </style>
 </head>
 <body>
@@ -278,7 +334,15 @@
     <a href="index.html" class="nav-link">← All Reviews</a>
     <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
   </nav>
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+    <a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </div>
 
 <div class="content">
   <a href="index.html" class="back-link">← Back to all reviews</a>
@@ -389,7 +453,7 @@
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
   <a href="about.html">About</a> &nbsp;|&nbsp;
-  <a href="terms.html">Community Guidelines</a>
+  <a href="terms.html">Community Guidelines</a> &nbsp;|&nbsp; <a href="tos.html">Terms of Service</a>
 </footer>
 
 <script>
@@ -695,14 +759,20 @@
 
   async function submitEdit() {
     const btn = document.getElementById("edit-submit-btn");
+
+    if (!currentReview.employer_name) {
+      alert("Could not load review data. Please refresh the page and try again.");
+      return;
+    }
+
     btn.textContent = "Submitting...";
     btn.disabled    = true;
 
     const payload = {
       employer_name:         currentReview.employer_name,
-      employer_website:      currentReview.employer_website,
-      position_applied:      currentReview.position_applied,
-      ghosted_status:        document.getElementById("edit-ghosted").value || currentReview.ghosted_status,
+      employer_website:      currentReview.employer_website || null,
+      position_applied:      currentReview.position_applied || null,
+      ghosted_status:        document.getElementById("edit-ghosted").value || currentReview.ghosted_status || "ghosted",
       salary_disclosed:      document.getElementById("edit-salary").value     || null,
       cover_letter_required: document.getElementById("edit-cover").value      || null,
       take_home_assignment:  document.getElementById("edit-takehome").value   || null,

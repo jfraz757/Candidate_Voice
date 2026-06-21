@@ -127,7 +127,6 @@
     @media (max-width: 600px) {
       header { padding: 0 12px; height: 60px; }
       .logo-wrap img { height: 44px; }
-      .header-nav { gap: 5px; }
       .nav-link { font-size: 0.68rem; padding: 5px 8px; }
       .nav-link.primary { font-size: 0.68rem; padding: 5px 8px; }
       .hero { padding: 28px 16px 24px; }
@@ -154,6 +153,62 @@
       .row-favicon { width: 28px; height: 28px; }
       .streak-badge { font-size: 0.65rem; }
     }
+
+    /* ─── Hamburger Menu ──────────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: 1.5px solid #a8c0e8;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #1a4fa0;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0; right: 0;
+      background: #ffffff;
+      border-bottom: 2px solid #e8eaf0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 150;
+      flex-direction: column;
+      padding: 12px 20px 20px;
+      gap: 10px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link {
+      display: block;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+    }
+    .mobile-menu .nav-link.primary {
+      margin-top: 4px;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 0 16px; height: 60px; }
+      .logo-wrap img { height: 44px; }
+      .header-nav { display: none; }
+      .hamburger { display: flex; }
+    }
   </style>
 </head>
 <body>
@@ -166,7 +221,15 @@
     <a href="index.html" class="nav-link">← All Reviews</a>
     <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
   </nav>
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link">← All Reviews</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+  </div>
 
 <div class="hero">
   <h1>The <span>Hall of Shame</span> & Honor</h1>
