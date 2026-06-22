@@ -684,6 +684,14 @@
 
       .cv-filter-collapsible.open {
         display: block;
+        position: sticky;
+        top: 60px;
+        background: #ffffff;
+        z-index: 90;
+        padding: 10px 12px 12px;
+        border-bottom: 1px solid #e8eaf0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+        margin: 0 -12px;
       }
     }
 
@@ -1595,12 +1603,6 @@
     const isOpen      = collapsible.classList.contains("open");
     toggle.classList.toggle("open", !isOpen);
     collapsible.classList.toggle("open", !isOpen);
-    // Scroll filter toggle into view when opening so filters don't scroll off screen
-    if (!isOpen) {
-      setTimeout(() => {
-        toggle.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 50);
-    }
   }
 
   function initCVFilters() {
