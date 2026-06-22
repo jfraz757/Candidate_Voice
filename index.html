@@ -1595,6 +1595,12 @@
     const isOpen      = collapsible.classList.contains("open");
     toggle.classList.toggle("open", !isOpen);
     collapsible.classList.toggle("open", !isOpen);
+    // Scroll filter toggle into view when opening so filters don't scroll off screen
+    if (!isOpen) {
+      setTimeout(() => {
+        toggle.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
   }
 
   function initCVFilters() {
