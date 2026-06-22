@@ -688,10 +688,9 @@
         top: 60px;
         background: #ffffff;
         z-index: 90;
-        padding: 10px 12px 12px;
+        padding: 10px 16px 14px;
         border-bottom: 1px solid #e8eaf0;
         box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-        margin: 0 -12px;
       }
     }
 
@@ -812,32 +811,33 @@
     <span>FILTERS</span>
     <span class="cv-chevron">▼</span>
   </div>
-
-  <div class="cv-filter-collapsible" id="cv-filter-collapsible">
-    <div class="filter-row">
-      <span class="filter-label-text">Outcome:</span>
-      <button class="pill active" data-status="all" onclick="filterByStatus(this)">All</button>
-      <button class="pill" data-status="ghosted" onclick="filterByStatus(this)">👻 Ghosted</button>
-      <button class="pill" data-status="formal_rejection" onclick="filterByStatus(this)">✉️ Formal Rejection</button>
-      <button class="pill" data-status="interviewing" onclick="filterByStatus(this)">🤝 Interviewing</button>
-      <button class="pill" data-status="got_the_job" onclick="filterByStatus(this)">🎉 Got the Job</button>
-    </div>
-
-    <div class="filter-row" style="margin-top:8px;">
-      <span class="filter-label-text">Score:</span>
-      <button class="pill active" data-band="all" onclick="filterByBand(this)">All</button>
-      <button class="pill" data-band="poor" onclick="filterByBand(this)">🔴 Poor</button>
-      <button class="pill" data-band="fair" onclick="filterByBand(this)">🟡 Fair</button>
-      <button class="pill" data-band="good" onclick="filterByBand(this)">🟢 Good</button>
-      <button class="pill" data-band="excellent" onclick="filterByBand(this)">⭐ Excellent</button>
-    </div>
-
-    <div class="filter-row" style="margin-top:8px;" id="industry-filter-row">
-      <span class="filter-label-text">Industry:</span>
-      <div id="industry-pills" style="display:contents;"></div>
-    </div>
-  </div>
 </section>
+
+<!-- Filter panel — outside search section so sticky works correctly -->
+<div class="cv-filter-collapsible" id="cv-filter-collapsible">
+  <div class="filter-row">
+    <span class="filter-label-text">Outcome:</span>
+    <button class="pill active" data-status="all" onclick="filterByStatus(this)">All</button>
+    <button class="pill" data-status="ghosted" onclick="filterByStatus(this)">👻 Ghosted</button>
+    <button class="pill" data-status="formal_rejection" onclick="filterByStatus(this)">✉️ Formal Rejection</button>
+    <button class="pill" data-status="interviewing" onclick="filterByStatus(this)">🤝 Interviewing</button>
+    <button class="pill" data-status="got_the_job" onclick="filterByStatus(this)">🎉 Got the Job</button>
+  </div>
+
+  <div class="filter-row" style="margin-top:8px;">
+    <span class="filter-label-text">Score:</span>
+    <button class="pill active" data-band="all" onclick="filterByBand(this)">All</button>
+    <button class="pill" data-band="poor" onclick="filterByBand(this)">🔴 Poor</button>
+    <button class="pill" data-band="fair" onclick="filterByBand(this)">🟡 Fair</button>
+    <button class="pill" data-band="good" onclick="filterByBand(this)">🟢 Good</button>
+    <button class="pill" data-band="excellent" onclick="filterByBand(this)">⭐ Excellent</button>
+  </div>
+
+  <div class="filter-row" style="margin-top:8px;" id="industry-filter-row">
+    <span class="filter-label-text">Industry:</span>
+    <div id="industry-pills" style="display:contents;"></div>
+  </div>
+</div>
 
 
 
