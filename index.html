@@ -653,49 +653,7 @@
       .filter-row { gap: 6px; }
       .pill { font-size: 0.72rem; padding: 4px 10px; }
 
-      .cv-filter-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-        padding: 10px 0 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #1a4fa0;
-        letter-spacing: 0.5px;
-        border-bottom: 1px solid #e8eaf0;
-        margin-bottom: 10px;
-        user-select: none;
-      }
 
-      .cv-filter-toggle .cv-chevron {
-        font-size: 0.65rem;
-        color: #9ca3af;
-        transition: transform 0.25s;
-      }
-
-      .cv-filter-toggle.open .cv-chevron {
-        transform: rotate(180deg);
-      }
-
-      .cv-filter-collapsible {
-        display: none;
-      }
-
-      .cv-filter-collapsible.open {
-        display: block;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background: #ffffff;
-        z-index: 95;
-        padding: 12px 16px 16px;
-        border-bottom: 2px solid #e8eaf0;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-        max-height: 60vh;
-        overflow-y: auto;
-      }
     }
 
     /* ─── Hamburger Menu ──────────────────────────────────────── */
@@ -810,15 +768,6 @@
     <button class="btn-search" onclick="runSearch()">SEARCH</button>
   </div>
 
-  <!-- Filter toggle — mobile only -->
-  <div class="cv-filter-toggle" id="cv-filter-toggle" onclick="toggleCVFilters()">
-    <span>FILTERS</span>
-    <span class="cv-chevron">▼</span>
-  </div>
-</section>
-
-<!-- Filter panel — outside search section so sticky works correctly -->
-<div class="cv-filter-collapsible" id="cv-filter-collapsible">
   <div class="filter-row">
     <span class="filter-label-text">Outcome:</span>
     <button class="pill active" data-status="all" onclick="filterByStatus(this)">All</button>
@@ -841,7 +790,7 @@
     <span class="filter-label-text">Industry:</span>
     <div id="industry-pills" style="display:contents;"></div>
   </div>
-</div>
+</section>
 
 
 
@@ -1597,33 +1546,6 @@
     }
   });
 
-  // ─── COLLAPSIBLE FILTERS (mobile only) ───────────────────────
-  const isMobileCV = () => window.innerWidth <= 640;
-
-  function toggleCVFilters() {
-    if (!isMobileCV()) return;
-    const toggle      = document.getElementById("cv-filter-toggle");
-    const collapsible = document.getElementById("cv-filter-collapsible");
-    const isOpen      = collapsible.classList.contains("open");
-    toggle.classList.toggle("open", !isOpen);
-    collapsible.classList.toggle("open", !isOpen);
-  }
-
-  function initCVFilters() {
-    const toggle      = document.getElementById("cv-filter-toggle");
-    const collapsible = document.getElementById("cv-filter-collapsible");
-    if (isMobileCV()) {
-      toggle.style.display      = "flex";
-      collapsible.classList.remove("open");
-      toggle.classList.remove("open");
-    } else {
-      toggle.style.display      = "none";
-      collapsible.classList.add("open");
-    }
-  }
-
-  window.addEventListener("resize", initCVFilters);
-  initCVFilters();
 </script>
 </body>
 </html>
