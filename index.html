@@ -684,13 +684,17 @@
 
       .cv-filter-collapsible.open {
         display: block;
-        position: sticky;
+        position: fixed;
         top: 60px;
+        left: 0;
+        right: 0;
         background: #ffffff;
-        z-index: 90;
-        padding: 10px 16px 14px;
-        border-bottom: 1px solid #e8eaf0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+        z-index: 95;
+        padding: 12px 16px 16px;
+        border-bottom: 2px solid #e8eaf0;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        max-height: 60vh;
+        overflow-y: auto;
       }
     }
 
