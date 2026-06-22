@@ -1085,6 +1085,8 @@
         ${r.position_applied ? `<div class="card-position">${r.position_applied}</div>` : ""}
         <div class="card-meta">
           ${statusTagHtml(r.ghosted_status)}
+          ${r.interview_invite === 'yes' ? `<span class="meta-tag" style="background:#ede9fe;color:#7c3aed;">🗣️ Interviewed</span>` : ""}
+          ${r.interview_invite === 'no'  ? `<span class="meta-tag" style="background:#f3f4f6;color:#6b7280;">No Interview</span>` : ""}
           ${r.industry ? `<span class="meta-tag" style="background:#ede9fe;color:#7c3aed;">${r.industry}</span>` : ""}
         </div>
         ${review}
