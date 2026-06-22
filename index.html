@@ -1070,7 +1070,7 @@
     const review = r.review_general
       ? `<div class="card-review">${r.review_general}</div>` : "";
     const dateStr = r.date_applied
-      ? `Applied ${new Date(r.date_applied).toLocaleDateString('en-US', {month:'short', year:'numeric'})}` : "";
+      ? `Applied ${(() => { const p = r.date_applied.split('T')[0].split('-'); return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2])).toLocaleDateString('en-US', {month:'short', year:'numeric'}); })()}` : "";
     const upvotes = r.upvotes > 0
       ? `<span class="upvote-count">🙋 ${r.upvotes} me too</span>` : "";
     const rt = responseTime(r.date_applied, r.date_rejected);

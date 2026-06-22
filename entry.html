@@ -497,7 +497,10 @@
 
   function fmtDate(d) {
     if (!d) return "—";
-    return new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    // Parse as UTC to avoid timezone shift (e.g. 2025-08-28 showing as Aug 27)
+    const parts = d.split('T')[0].split('-');
+    const date  = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
 
   function responseTime(dateApplied, dateRejected) {
