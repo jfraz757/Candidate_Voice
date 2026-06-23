@@ -119,7 +119,7 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 | review_best | text | |
 | review_worst | text | |
 | submitter_email | text | Never displayed publicly |
-| status | text | pending / approved / rejected |
+| status | text | pending / approved / rejected — column default is `'pending'` (fixed June 2026 via SQL: `ALTER TABLE submissions ALTER COLUMN status SET DEFAULT 'pending'`) |
 | created_at | timestamp with time zone | |
 | industry | text | |
 | update_notes | text | Used to flag edits — format: "Update to review ID {id}" |
@@ -133,6 +133,7 @@ RLS is enabled on both tables. Current policies:
 ### `reviews`
 - Public can SELECT where `status = 'approved'`
 - Public can PATCH upvotes (used by "Me Too" / upvote feature)
+- **"Allow admin patch reviews"** — UPDATE allowed for all rows (added June 2026) — required for admin edit-approval workflow to PATCH existing review records. Without this policy, PATCH calls return 200 but write nothing (silent RLS block).
 - Admin can do full CRUD via the anon key (no separate admin role — security is via the local-only admin.html)
 
 ### `submissions`
@@ -285,6 +286,14 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 8. **Upvotes use localStorage** to prevent double-voting (key: `voted_{id}`). This is browser-local only — not server-enforced.
 
 9. **cv_entry.html and cv_index.html** appear to be older/alternate versions of entry.html and index.html. Confirm with Joe before editing these — they may be legacy files or test variants.
+
+10. **Supabase PATCH to `reviews` returns 200 even when blocked by RLS.** If an admin approve fires and shows success but the review doesn't update on the live site, check RLS policies on `reviews` first. The "Allow admin patch reviews" UPDATE policy (added June 2026) is required for edit approvals to write through. Without it, the PATCH silently affects zero rows.
+
+11. **`submissions.status` column default must be `'pending'`**, set via SQL: `ALTER TABLE submissions ALTER COLUMN status SET DEFAULT 'pending'`. The Supabase UI save may not commit this reliably — always verify with `SELECT column_default FROM information_schema.columns WHERE table_name = 'submissions' AND column_name = 'status'`. If edit submissions arrive as `approved` and bypass the Pending queue entirely, this default is the first thing to check.
+
+12. **The admin patch object in admin.html must use `!= null` checks, not truthiness checks.** The original code used `if (s.field_name)` which silently drops valid falsy values. The fixed version uses `if (s.field_name != null)`. Also, the patch object must include all editable fields: `ghosted_status`, `when_ghosted`, `interview_invite`, `interview_rounds`, `salary_disclosed`, `cover_letter_required`, `take_home_assignment`, `essay_responses`, `resume_reentry`, `review_general`, `review_best`, `review_worst`, `date_applied`, `date_rejected`, `employer_name`, `employer_website`, `position_applied`, `industry`.
+
+13. **admin.html must be run via a local server, not opened as a file:// URL.** Chrome blocks fetch calls from `file://` origins. Run `python -m http.server 8080` in Git Bash from the repo root and access admin at `http://localhost:8080/admin.html`.
 
 ---
 
