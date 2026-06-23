@@ -439,6 +439,11 @@
         <input type="date" id="edit-date-rejected" />
       </div>
 
+      <div class="form-group">
+        <label>Your Email <span style="color:#9ca3af;font-weight:400;">(used to verify you submitted the original review)</span></label>
+        <input type="email" id="edit-email" placeholder="email@example.com" />
+      </div>
+
       <button class="btn-submit-edit" id="edit-submit-btn" onclick="submitEdit()">SUBMIT UPDATE</button>
     </div>
 
@@ -785,6 +790,7 @@
       review_best:           document.getElementById("edit-best").value.trim()   || null,
       review_worst:          document.getElementById("edit-worst").value.trim()  || null,
       date_rejected:         document.getElementById("edit-date-rejected").value || null,
+      submitter_email:       document.getElementById("edit-email").value.trim() || null,
       update_notes:          `Update to review ID ${id}`,
       status:                "pending"
     };
