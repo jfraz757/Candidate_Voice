@@ -194,6 +194,7 @@ Review appears on live site
 - Has an employer autocomplete (fetches approved `employer_name` + `employer_website` from `reviews`)
 - Contains an inline "Share Your Experience" modal that submits to `submissions` (same logic as submit.html)
 - Stats bar: total reviews, ghosted count, employer count — fetched from `reviews`
+- Cards are rendered by `buildCard(r)`; the whole card is an anchor to `entry.html?id=`. The employer name inside the card is a clickable `<span>` (not a nested anchor) that links to `employers/{slug}.html` via the `goToEmployer` helper. See Section 10, note 15.
 - Honeypot field: `sub_company_confirm` (hidden, bots fill it, humans don't)
 
 ### submit.html
@@ -319,7 +320,7 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 
 13. **admin.html must be run via a local server, not opened as a file:// URL.** Chrome blocks fetch calls from `file://` origins. Run `python -m http.server 8080` in Git Bash from the repo root and access admin at `http://localhost:8080/admin.html`.
 
-15. **Do not add inline anchor tags to employer names on index.html cards.** Wrapping the employer name in an `<a>` tag to link to the employer profile page caused a card layout crash — the card grid jumbled and the display broke. The safe navigation path is the "Read All Reviews" button on each employer's static page and the company.html rollup. Do not revisit inline card linking without a fundamentally different implementation strategy.
+15. **Employer names on index.html cards link to the employer SEO page, implemented June 2026 using a non-anchor span, NOT a nested `<a>`.** The whole card is already an anchor (`<a class="card" href="entry.html?id=...">`). The original attempt wrapped the employer name in its own `<a href="employers/...">`, which produced a nested anchor. Nested anchors are invalid HTML, so the browser parser auto-closed the outer card anchor at the inner one, the card content spilled out of its container, and the grid jumbled. That was the launch-day crash. The working fix does not use a second anchor at all: the name is a `<span class="card-employer card-employer-link" role="link" tabindex="0">` with an `onclick="goToEmployer(event, '${slug}')"` (and an Enter-key `onkeydown`). The `goToEmployer(e, slug)` helper calls `e.preventDefault()` and `e.stopPropagation()` before setting `window.location.href = "employers/" + slug + ".html"`, so clicking the name goes to the employer SEO page and clicking anywhere else on the card still opens `entry.html`. The slug is passed into the handler instead of the raw name, which keeps the inline attribute quote-safe even for names with apostrophes (Macy's, L'Oréal). **The `slugify()` function in index.html must stay byte-for-byte identical to the one in `generate-employer-pages.js`** or the links will point at filenames that do not exist. Do NOT go back to wrapping the name in an `<a>`.
 
 ---
 
@@ -460,3 +461,28 @@ Before editing any file, confirm:
 - [ ] Does the scoring need to change? If so, update the PostgreSQL trigger, not the JavaScript
 - [ ] Does the change affect admin.html fetch calls? All admin fetches must use `SUPABASE_ADMIN_KEY` (service role), not `SUPABASE_KEY` (anon)
 - [ ] Does the change affect RLS policies? If so, test the anon key path (public submission form, Me Too) AND the service role path (admin approve/reject) separately
+
+---
+
+## 16. Recurring Maintenance Tasks
+
+These are the tasks that keep the live site accurate over time. None are one-time. They are listed by how often they come up.
+
+### After every batch of approvals (most important)
+- **Regenerate the employer SEO pages.** Run `node generate-employer-pages.js` from the repo root, then `git add employers/`, `git commit -m "Regenerate employer pages"`, `git push`. The static `employers/{slug}.html` pages are frozen snapshots from the last run. The `company.html` rollup reads Supabase live, so any employer with reviews approved since the last regenerate will show stale or missing counts on its static page until you re-run this. This is the single most common drift source on the site. Treat it as the final step of the admin approval routine, not an occasional cleanup.
+- After the regenerate adds new employer pages, **resubmit the sitemap to Google Search Console** at https://search.google.com/search-console. The sitemap lives at https://candidatevoice.org/employers/sitemap.xml. New employer pages will not get crawled promptly without this.
+
+### Periodically (every few weeks, or when something looks off)
+- **Spot-check a static page against its rollup.** Pick any employer, compare the review count on `employers/{slug}.html` against the count on `company.html?name=`. A mismatch means the pages are overdue for a regenerate. A mismatch that survives a regenerate means a name-mismatch instead (two reviews entered under slightly different employer names, e.g. "Ascension" vs "Ascension Health"), which is fixed by correcting the name in admin, not by regenerating.
+- **Watch for double-scheme website values.** Some reviews have `employer_website` saved with `https://` already included, producing `https://https://...` favicon URLs that 404. Cosmetic only (missing favicon), but worth correcting in admin when noticed.
+
+### Verify, never assume
+- **`submissions.status` default stays `'pending'`.** If edit submissions ever start skipping the pending queue, run `SELECT column_default FROM information_schema.columns WHERE table_name = 'submissions' AND column_name = 'status'` first. See Section 10, note 11.
+- **Deployed files use the anon key; admin.html uses the service role key.** If public submit or Me Too breaks, confirm deployed files still use the anon key. If admin reads 401, confirm admin.html uses the service role key. See Section 5.
+
+### Before every push, always
+- **Run the local testing protocol in Section 13.** No exceptions, including documentation-only pushes that touch HTML. Note the known false positive: the index.html grid needs live Supabase data, so it will not render locally. Verify the grid on the live site immediately after pushing, and use the local run only to confirm a clean console.
+
+### When the code changes
+- **Keep `slugify()` in sync across files.** It exists in both `index.html` and `generate-employer-pages.js` and must stay byte-for-byte identical, or the card name links will point at filenames the generator never wrote. See Section 10, note 15.
+- **Update this document.** Per Section 14, any feature, fix, reverted approach, or architectural decision gets recorded here and committed.
