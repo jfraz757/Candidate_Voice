@@ -248,7 +248,21 @@ new Date(r.date_rejected).toLocaleDateString(...)
 new Date(r.date_rejected + 'T00:00:00').toLocaleDateString(...)
 ```
 
-This fix has been applied to admin.html. Check for this pattern in any file that renders `date_applied` or `date_rejected`. The `created_at` field is a full timestamp with timezone and does NOT need this fix.
+This fix has been applied to admin.html and company.html. Check for this pattern in any file that renders `date_applied` or `date_rejected`. The `created_at` field is a full timestamp with timezone and does NOT need this fix.
+
+**Date arithmetic (e.g. response time in days) has an additional risk.** When both `date_applied` and `date_rejected` are passed to `new Date()` without `T00:00:00`, each date rolls back one day, causing the diff to be off by up to 2 days per record. For short turnarounds (1–2 days), this produces negative response times. Always apply the suffix to both dates and guard against negatives:
+
+```javascript
+// WRONG — can produce negative days for short turnarounds:
+Math.round((new Date(r.date_rejected) - new Date(r.date_applied)) / 86400000)
+
+// CORRECT — T00:00:00 on both, negative guard drops bad data:
+const validDays = rtReviews
+  .map(r => Math.round((new Date(r.date_rejected + 'T00:00:00') - new Date(r.date_applied + 'T00:00:00')) / 86400000))
+  .filter(d => d >= 0);
+```
+
+This bug caused company.html to display -20 days avg response time for National Audubon Society. Fixed June 2026.
 
 ---
 
