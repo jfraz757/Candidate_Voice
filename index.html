@@ -400,6 +400,14 @@
       color: #1a1a2e;
     }
 
+    .card-employer-link {
+      cursor: pointer;
+    }
+    .card-employer-link:hover {
+      color: #1a4fa0;
+      text-decoration: underline;
+    }
+
     .card-position {
       font-size: 0.82rem;
       color: #6b7280;
@@ -1065,7 +1073,23 @@
     return months + " month" + (months !== 1 ? "s" : "");
   }
 
+  // Matches slugify() in generate-employer-pages.js exactly — keep in sync.
+  function slugify(name) {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  // Navigates to the employer SEO page without triggering the card's own anchor.
+  function goToEmployer(e, slug) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "employers/" + slug + ".html";
+  }
+
   function buildCard(r) {
+    const slug = slugify(r.employer_name);
     const favicon = r.employer_website
       ? `<img class="card-favicon" src="https://www.google.com/s2/favicons?domain=${r.employer_website}&sz=64" onerror="this.style.display='none'" />`
       : "";
@@ -1082,7 +1106,9 @@
       <a class="card" href="entry.html?id=${r.id}">
         <div class="card-header">
           ${favicon}
-          <div class="card-employer">${r.employer_name}</div>
+          <span class="card-employer card-employer-link" role="link" tabindex="0"
+                onclick="goToEmployer(event, '${slug}')"
+                onkeydown="if(event.key==='Enter'){goToEmployer(event,'${slug}')}">${r.employer_name}</span>
         </div>
         ${r.position_applied ? `<div class="card-position">${r.position_applied}</div>` : ""}
         <div class="card-meta">
