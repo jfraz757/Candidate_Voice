@@ -255,10 +255,13 @@
         ? `<span style="font-size:0.75rem;font-weight:700;background:#fee2e2;color:#dc2626;padding:4px 12px;border-radius:20px;border:1px solid #fca5a5;">👻 ${streak} ghostings in a row</span>`
         : "";
 
-      // Response time average
+      // Response time average — T00:00:00 fix prevents UTC rollback for CDT users; negative guard drops bad data
       const rtReviews = reviews.filter(r => r.date_applied && r.date_rejected);
-      const avgDays = rtReviews.length
-        ? Math.round(rtReviews.reduce((a, r) => a + Math.round((new Date(r.date_rejected) - new Date(r.date_applied)) / 86400000), 0) / rtReviews.length)
+      const validDays = rtReviews
+        .map(r => Math.round((new Date(r.date_rejected + 'T00:00:00') - new Date(r.date_applied + 'T00:00:00')) / 86400000))
+        .filter(d => d >= 0);
+      const avgDays = validDays.length
+        ? Math.round(validDays.reduce((a, d) => a + d, 0) / validDays.length)
         : null;
 
       const favicon = website
