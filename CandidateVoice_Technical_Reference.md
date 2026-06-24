@@ -23,12 +23,19 @@ CandidateVoice.org is an anonymous job application experience review platform. J
 - **Fonts:** Google Fonts (Inter)
 - **Favicon lookup:** Google Favicon API (`https://www.google.com/s2/favicons?domain=X&sz=32`)
 
-**Supabase credentials (used in every page):**
+**Supabase credentials (used in every deployed page):**
 ```
 SUPABASE_URL = "https://lawteswyjpkovzagnshn.supabase.co"
 SUPABASE_KEY = "sb_publishable_piPBYVy1yGEj_Iv0RCLtnA_PGzdT1bz"
 ```
-The anon key is intentionally public — scoped by RLS policies.
+The anon key is intentionally public — scoped by RLS policies. It is used in all deployed files (index.html, entry.html, submit.html, etc.) for public reads and the Me Too upvote.
+
+**admin.html uses a two-key pattern (local only — never deployed):**
+```
+SUPABASE_KEY      = anon key (above) — no longer used in admin.html as of June 2026
+SUPABASE_ADMIN_KEY = service role key (secret) — stored only in local admin.html, never in the repo
+```
+All fetch calls in admin.html use `SUPABASE_ADMIN_KEY` for both reads and writes. The service role key bypasses RLS entirely, which is safe because admin.html is gitignored and runs locally only. Never put the service role key in any deployed file.
 
 ---
 
@@ -128,20 +135,20 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 
 ## 5. RLS Policies (Row Level Security)
 
-RLS is enabled on both tables. Current policies:
+RLS is enabled on both tables. Current policies (as of June 2026):
 
 ### `reviews`
-- Public can SELECT where `status = 'approved'`
-- Public can PATCH upvotes (used by "Me Too" / upvote feature)
-- **"Allow admin patch reviews"** — UPDATE allowed for all rows (added June 2026) — required for admin edit-approval workflow to PATCH existing review records. Without this policy, PATCH calls return 200 but write nothing (silent RLS block).
-- Admin can do full CRUD via the anon key (no separate admin role — security is via the local-only admin.html)
+- **"Public read approved reviews"** — SELECT allowed for public where `status = 'approved'` — all public pages read through this
+- **"Public patch upvotes"** — UPDATE allowed for anon + authenticated, scoped to `status = 'approved'` rows only — covers the Me Too upvote button on entry.html
+- **"Allow admin insert reviews"** — INSERT restricted to `authenticated` role only — the service role key in admin.html bypasses this entirely for the approve workflow, so this policy is effectively a safety net against direct anon inserts
+- No separate admin UPDATE policy on `reviews` — admin.html uses the service role key which bypasses RLS entirely, so all admin PATCHes (edit approvals, verified toggles) go through without a policy
 
 ### `submissions`
-- **"Public insert submissions"** — INSERT allowed for anon + authenticated — `with_check = true`
-- **"Allow update submissions"** — UPDATE allowed (added June 2026) — needed for admin approval/reject workflow
-- **"Allow select submissions"** — SELECT allowed (added June 2026) — needed for admin page to read pending queue
+- **"Public insert submissions"** — INSERT allowed for anon + authenticated, `with_check = true` — covers submit.html and the index.html modal
+- **"Allow select submissions"** — SELECT restricted to `authenticated` role only — admin.html reads the pending queue via service role key
+- **"Allow update submissions"** — UPDATE restricted to `authenticated` role only — admin.html approve/reject workflow writes via service role key
 
-**Important:** If you add new RLS policies or modify existing ones, test both the public submission form AND the admin approval workflow. Both depend on these policies.
+**Critical:** admin.html uses the service role key (`SUPABASE_ADMIN_KEY`) for all fetch calls, which bypasses RLS entirely. The RLS policies above govern only what the public anon key can do. If you tighten or change any policy, test the public submission form (anon key path) AND the admin workflow (service role path) separately. A 401 on admin reads almost always means the service role key is wrong or missing in admin.html — not an RLS issue.
 
 ---
 
@@ -224,6 +231,7 @@ Review appears on live site
 - Reject button: PATCHes submission `status = 'rejected'`
 - Verify toggle: PATCHes `verified = true/false` on `reviews`
 - Stats tab: pulls counts from both tables
+- **All fetch calls use `SUPABASE_ADMIN_KEY` (service role key)** — both reads and writes. The anon key (`SUPABASE_KEY`) is defined in the file but unused. The service role key bypasses RLS entirely.
 
 ---
 
@@ -287,7 +295,9 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 
 9. **cv_entry.html and cv_index.html** appear to be older/alternate versions of entry.html and index.html. Confirm with Joe before editing these — they may be legacy files or test variants.
 
-10. **Supabase PATCH to `reviews` returns 200 even when blocked by RLS.** If an admin approve fires and shows success but the review doesn't update on the live site, check RLS policies on `reviews` first. The "Allow admin patch reviews" UPDATE policy (added June 2026) is required for edit approvals to write through. Without it, the PATCH silently affects zero rows.
+10. **Supabase PATCH to `reviews` returns 200 even when blocked by RLS.** If an admin approve fires and shows success but the review doesn't update on the live site, check that admin.html is using `SUPABASE_ADMIN_KEY` (service role key) on the PATCH call. The service role bypasses RLS entirely — no separate UPDATE policy on `reviews` is needed as of June 2026. If the service role key is correct and PATCHes still silently fail, check the RLS policies on `reviews`.
+
+14. **admin.html uses a two-key pattern.** `SUPABASE_KEY` (anon) is defined but unused — kept for reference only. `SUPABASE_ADMIN_KEY` (service role) is used for every fetch call. If admin reads return 401, the service role key is wrong, missing, or the anon key was accidentally used instead. If public submission or Me Too upvote breaks, check that the deployed files still use the anon key — the service role key must never appear in any deployed file or the repo.
 
 11. **`submissions.status` column default must be `'pending'`**, set via SQL: `ALTER TABLE submissions ALTER COLUMN status SET DEFAULT 'pending'`. The Supabase UI save may not commit this reliably — always verify with `SELECT column_default FROM information_schema.columns WHERE table_name = 'submissions' AND column_name = 'status'`. If edit submissions arrive as `approved` and bypass the Pending queue entirely, this default is the first thing to check.
 
@@ -295,9 +305,52 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 
 13. **admin.html must be run via a local server, not opened as a file:// URL.** Chrome blocks fetch calls from `file://` origins. Run `python -m http.server 8080` in Git Bash from the repo root and access admin at `http://localhost:8080/admin.html`.
 
+15. **Do not add inline anchor tags to employer names on index.html cards.** Wrapping the employer name in an `<a>` tag to link to the employer profile page caused a card layout crash — the card grid jumbled and the display broke. The safe navigation path is the "Read All Reviews" button on each employer's static page and the company.html rollup. Do not revisit inline card linking without a fundamentally different implementation strategy.
+
 ---
 
-## 11. Design System
+## 11. Employer SEO Pages
+
+Static per-employer HTML pages are generated by `generate-employer-pages.js` and live in the `/employers/` directory. These pages are committed to the repo and deployed via GitHub Pages.
+
+**Script location:** `generate-employer-pages.js` (repo root)
+**Output directory:** `/employers/` (committed to repo)
+**Run command:**
+```bash
+node generate-employer-pages.js
+```
+
+**What the script does:**
+1. Queries Supabase for all approved reviews (paginated, handles 1,000+ records)
+2. Groups reviews by employer and aggregates stats (avg score, ghosting rate, avg response days, hires reported, ghosting streak)
+3. Writes a static HTML file to `/employers/{slug}.html` for each employer
+4. Writes `/employers/sitemap.xml` listing every employer page
+
+**Slugify logic:** employer names are lowercased, non-alphanumeric characters replaced with hyphens, leading/trailing hyphens stripped. Example: "Brown-Forman Corporation" → `brown-forman-corporation`.
+
+**Each employer page includes:**
+- Employer name, favicon (Google Favicon API), review count
+- Ghosting streak badge (shown if 3+ most recent reviews are all ghosted)
+- Stats grid: ghosting rate %, avg experience score with band badge, avg response time in days, hires reported, total reviews
+- CTA linking to `company.html?name=` for full review list and to `submit.html`
+- Canonical URL and Open Graph meta tags for SEO
+
+**Sitemap:** `/employers/sitemap.xml` lists every employer page plus `index.html` and `leaderboard.html`. Submit this sitemap to Google Search Console at `https://search.google.com/search-console` after each regeneration.
+
+**Maintenance frequency:** Regenerate whenever new employers are added (i.e., after a batch of reviews is approved). Add to the post-approval checklist.
+
+**After running:**
+```bash
+git add employers/
+git commit -m "Regenerate employer SEO pages"
+git push
+```
+
+**Node version note:** Script uses native `fetch` (Node 18+). If running an older Node version, install `node-fetch` and require it at the top of the script.
+
+---
+
+## 12. Design System
 
 - **Primary blue:** `#1a4fa0`
 - **Dark navy:** `#0d2d6b`
@@ -317,10 +370,72 @@ Score badge colors:
 
 ---
 
-## 12. Checklist Before Making Changes
+## 13. Local Testing Protocol — REQUIRED Before Every Push
+
+**Never push a change directly to GitHub without testing it locally first.** This applies to every file change on every page, no exceptions.
+
+**Steps:**
+
+1. Make your edit to the file
+2. Open Git Bash, navigate to the repo root (`cd ~/Candidate_Voice`)
+3. Start the local server:
+   ```bash
+   python -m http.server 8080
+   ```
+4. Open your browser to `http://localhost:8080/[changed-file].html`
+5. Verify the change looks correct at full desktop width
+6. Resize the browser window narrow (below 640px) to check mobile layout
+7. Open browser console (F12 → Console tab) and confirm no red errors
+8. Only after all checks pass: `git add`, `git commit`, `git push`
+
+**Stop the local server** when done: Ctrl+C in Git Bash.
+
+This process costs 2 minutes and prevents broken deploys to the live site. Skipping it cost a broken card layout on launch day.
+
+**Known limitations of local testing:**
+
+- The card grid on index.html requires live Supabase data to render correctly. Local testing will show no cards or a broken layout even when the code is fine. This is a false positive — layout verification for index.html must be done on the live site immediately after pushing.
+- The browser console (F12) is still worth checking locally for JavaScript errors even if the visual layout looks wrong.
+
+**If you edited a file locally but have NOT pushed it yet and want to discard the changes:**
+
+```bash
+git checkout -- index.html
+```
+
+Replace `index.html` with whichever file you want to restore. This throws away all local unpushed changes to that file and restores it to exactly what is on GitHub. Run this any time you have a modified file sitting in your local folder that you do not want to push.
+
+---
+
+## 14. Keeping This Document Current
+
+This document is only useful if it reflects what actually happened. After any session where something significant is built, broken, fixed, or decided, update this file and commit it.
+
+**Triggers for updating this document:**
+- A new feature or script is added
+- A bug is found and fixed (add it to Section 10)
+- A known-bad approach is attempted and reverted (add a do-not-revisit note to Section 10)
+- An architectural decision is made (RLS changes, schema changes, new tables)
+- A new file is added to the repo
+
+**Commit it like any other file:**
+```bash
+git add CandidateVoice_Technical_Reference.md
+git commit -m "Update technical reference"
+git push
+```
+
+The version on GitHub is the source of truth. If your local copy and the repo diverge, the repo wins.
+
+**Before pushing any update to the live site**, always follow the local testing protocol in Section 13. No exceptions — this includes documentation-only pushes that touch HTML files.
+
+---
+
+## 15. Checklist Before Making Changes
 
 Before editing any file, confirm:
 
+- [ ] **Local test completed** — ran `python -m http.server 8080`, verified visually at desktop and mobile width, no console errors
 - [ ] Which table does this feature read from / write to? (`reviews` = public approved, `submissions` = pending moderation queue)
 - [ ] Does the change affect the submission flow? Test both index.html modal AND submit.html
 - [ ] Does the change affect the admin approval flow? Test approve, reject, and edit-approval paths
@@ -329,3 +444,5 @@ Before editing any file, confirm:
 - [ ] Is `const SUPABASE_KEY` declared only once per script block?
 - [ ] Is admin.html being pushed to GitHub? (It should never be — it's gitignored)
 - [ ] Does the scoring need to change? If so, update the PostgreSQL trigger, not the JavaScript
+- [ ] Does the change affect admin.html fetch calls? All admin fetches must use `SUPABASE_ADMIN_KEY` (service role), not `SUPABASE_KEY` (anon)
+- [ ] Does the change affect RLS policies? If so, test the anon key path (public submission form, Me Too) AND the service role path (admin approve/reject) separately
