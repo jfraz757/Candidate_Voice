@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/pinterest.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/dayforce.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -25,13 +31,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/regal-rexnard.html</loc>
+    <loc>https://candidatevoice.org/employers/stryker-johnston-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/stryker-johnston-foundation.html</loc>
+    <loc>https://candidatevoice.org/employers/regal-rexnard.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -61,7 +67,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/colors-of-change.html</loc>
+    <loc>https://candidatevoice.org/employers/pay-pal.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -73,25 +79,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pay-pal.html</loc>
+    <loc>https://candidatevoice.org/employers/colors-of-change.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/docusign.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/bath-body-works.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/freedom-forum.html</loc>
+    <loc>https://candidatevoice.org/employers/american-institutes-for-research.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -103,7 +97,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/building-impact-partners.html</loc>
+    <loc>https://candidatevoice.org/employers/bath-body-works.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/docusign.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/freedom-forum.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -115,13 +121,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/aibm.html</loc>
+    <loc>https://candidatevoice.org/employers/building-impact-partners.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/democracy-fund.html</loc>
+    <loc>https://candidatevoice.org/employers/ascension.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/aibm.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -139,7 +151,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-just-trust.html</loc>
+    <loc>https://candidatevoice.org/employers/democracy-fund.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -151,25 +163,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/humana.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/raikes-foundation.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/google.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/ford.html</loc>
+    <loc>https://candidatevoice.org/employers/the-just-trust.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -181,19 +175,37 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/ford.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/raikes-foundation.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/korn-ferry.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/gates-foundation.html</loc>
+    <loc>https://candidatevoice.org/employers/google.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-solutions-project.html</loc>
+    <loc>https://candidatevoice.org/employers/humana.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/gates-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -206,6 +218,12 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/the-humane-league.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/the-solutions-project.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -235,13 +253,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/techsoup-global.html</loc>
+    <loc>https://candidatevoice.org/employers/columbia-public-schools.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/seiu.html</loc>
+    <loc>https://candidatevoice.org/employers/techsoup-global.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -253,13 +271,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/southern-poverty-law-center.html</loc>
+    <loc>https://candidatevoice.org/employers/seiu.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/greater-louisville-ymca.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/southern-poverty-law-center.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/youth-on-course.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -277,13 +307,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/siemens-healthineers.html</loc>
+    <loc>https://candidatevoice.org/employers/college-board.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/college-board.html</loc>
+    <loc>https://candidatevoice.org/employers/siemens-healthineers.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -307,12 +337,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/american-pride-rises.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/council-on-foundations.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -325,31 +349,13 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/american-pride-rises.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/norton-healthcare.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/frontdoor.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/tntp.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/midwest-academy.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/cummins.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -361,7 +367,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/jcps.html</loc>
+    <loc>https://candidatevoice.org/employers/frontdoor.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/midwest-academy.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/tntp.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/cummins.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -385,13 +409,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mfs.html</loc>
+    <loc>https://candidatevoice.org/employers/jcps.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/san-francisco-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/drexel-university.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/mfs.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -433,19 +469,25 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/eat-learn-play-foundation.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/northeastern-illinois-university.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/cities-united.html</loc>
+    <loc>https://candidatevoice.org/employers/chipotle.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/chipotle.html</loc>
+    <loc>https://candidatevoice.org/employers/cities-united.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -463,13 +505,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/robertson-foundation.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/wells-fargo.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/robertson-foundation.html</loc>
+    <loc>https://candidatevoice.org/employers/d-r-media-and-investments.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -499,25 +547,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/community-foundation-of-louisville.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/the-360-group.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/university-of-illinois.html</loc>
+    <loc>https://candidatevoice.org/employers/community-foundation-of-louisville.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/ladders-com.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/university-of-illinois.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -535,6 +583,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/william-flora-hewlett-foundation.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/accelerate.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -542,12 +596,6 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/merit-america.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/william-flora-hewlett-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -571,7 +619,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/coefficient-giving.html</loc>
+    <loc>https://candidatevoice.org/employers/rtx.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -583,13 +631,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/rtx.html</loc>
+    <loc>https://candidatevoice.org/employers/coefficient-giving.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/lg-e-ku.html</loc>
+    <loc>https://candidatevoice.org/employers/mcdonalds.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/national-center-for-state-courts-virginia-ncsc.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -607,12 +661,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/national-center-for-state-courts-virginia-ncsc.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/the-nea-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -625,19 +673,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mcdonalds.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/best-buy.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pinterest.html</loc>
+    <loc>https://candidatevoice.org/employers/lg-e-ku.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/hca-healthcare.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -655,13 +703,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/prudential.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/mastercard.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/prudential.html</loc>
+    <loc>https://candidatevoice.org/employers/chainguard.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -679,12 +733,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/chainguard.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/the-colorado-health-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -697,19 +745,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mattel.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/roundglass.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/coinbase.html</loc>
+    <loc>https://candidatevoice.org/employers/experian.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -721,7 +757,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/experian.html</loc>
+    <loc>https://candidatevoice.org/employers/coinbase.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/roundglass.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/mattel.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -757,12 +805,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/chicago-cubs.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/action-center-on-race-the-economy-acre.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -775,13 +817,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/intuit.html</loc>
+    <loc>https://candidatevoice.org/employers/chicago-cubs.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pew-charitable-trusts.html</loc>
+    <loc>https://candidatevoice.org/employers/intuit.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -799,6 +841,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/pew-charitable-trusts.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/ethos-veterinary-health.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -806,12 +854,6 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/partners-for-rural-transformation.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/j-jill.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -847,6 +889,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/j-jill.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/inland-empire-community-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -865,18 +913,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/yum.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/tennant.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/visit-org.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -889,13 +925,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/liberation-in-a-generation.html</loc>
+    <loc>https://candidatevoice.org/employers/tennant.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-west-end-school.html</loc>
+    <loc>https://candidatevoice.org/employers/yum.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/liberation-in-a-generation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -913,19 +955,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/teach-for-america.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/gap-inc.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/city-of-portland.html</loc>
+    <loc>https://candidatevoice.org/employers/the-west-end-school.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -937,13 +967,25 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/teach-for-america.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/vera-institute-of-justice.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/university-of-richmond.html</loc>
+    <loc>https://candidatevoice.org/employers/city-of-portland.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/gap-inc.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -955,13 +997,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/philanthropy-northwest-pnw.html</loc>
+    <loc>https://candidatevoice.org/employers/american-express.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/american-express.html</loc>
+    <loc>https://candidatevoice.org/employers/philanthropy-northwest-pnw.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -973,7 +1015,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/university-of-richmond.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/national-community-reinvestment-coalition.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/lloyd-a-fry-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1003,24 +1057,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/lloyd-a-fry-foundation.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/bytedance.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/jobs-for-the-future-jff.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/visa.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1033,13 +1069,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/bytedance.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/cribl.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/center-for-leadership-devlopment-cld.html</loc>
+    <loc>https://candidatevoice.org/employers/jobs-for-the-future-jff.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1052,6 +1094,12 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/aclu.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/center-for-leadership-devlopment-cld.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1075,13 +1123,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-lift-fund.html</loc>
+    <loc>https://candidatevoice.org/employers/philanthropy-together.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/philanthropy-together.html</loc>
+    <loc>https://candidatevoice.org/employers/the-lift-fund.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1093,13 +1141,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/center-for-cultural-power.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/allstate.html</loc>
+    <loc>https://candidatevoice.org/employers/stryker.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1111,13 +1153,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/stryker.html</loc>
+    <loc>https://candidatevoice.org/employers/allstate.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/jonathan-rose-companies.html</loc>
+    <loc>https://candidatevoice.org/employers/center-for-cultural-power.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/goodwin.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/seattle-children-s.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1135,13 +1189,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/seattle-children-s.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/goodwin.html</loc>
+    <loc>https://candidatevoice.org/employers/jonathan-rose-companies.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1165,18 +1213,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/agog.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/achieving-the-dream.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/the-richard-m-fairbanks-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1184,6 +1220,18 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/the-coca-cola-company.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/agog.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/achieving-the-dream.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1201,7 +1249,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pivotal.html</loc>
+    <loc>https://candidatevoice.org/employers/home-planet-fun.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1213,7 +1261,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/home-planet-fun.html</loc>
+    <loc>https://candidatevoice.org/employers/pivotal.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1225,7 +1273,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/parks-alliance-of-louisville.html</loc>
+    <loc>https://candidatevoice.org/employers/uofl.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1237,13 +1285,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mufg.html</loc>
+    <loc>https://candidatevoice.org/employers/parks-alliance-of-louisville.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/uofl.html</loc>
+    <loc>https://candidatevoice.org/employers/mufg.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1261,13 +1309,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/climate-united-fund.html</loc>
+    <loc>https://candidatevoice.org/employers/starbucks.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/starbucks.html</loc>
+    <loc>https://candidatevoice.org/employers/climate-united-fund.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1327,12 +1375,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/open-horizon.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/johnson-johnson.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1345,7 +1387,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/goodwill-industries-international.html</loc>
+    <loc>https://candidatevoice.org/employers/open-horizon.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1363,19 +1405,25 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/goodwill-industries-international.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/center-for-employment-opportunites.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/baird.html</loc>
+    <loc>https://candidatevoice.org/employers/integer.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/integer.html</loc>
+    <loc>https://candidatevoice.org/employers/baird.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1393,24 +1441,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/expedia-group.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/riot-games.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/bowen-health.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/tapestry.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1423,19 +1453,37 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/riot-games.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/expedia-group.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/bowen-health.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/compass-group-canteen.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/humanity-united.html</loc>
+    <loc>https://candidatevoice.org/employers/united-way-dc.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/united-way-dc.html</loc>
+    <loc>https://candidatevoice.org/employers/humanity-united.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1477,13 +1525,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/echoing-green.html</loc>
+    <loc>https://candidatevoice.org/employers/the-forum-for-youth-investment.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-forum-for-youth-investment.html</loc>
+    <loc>https://candidatevoice.org/employers/echoing-green.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1501,13 +1549,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/door-dash.html</loc>
+    <loc>https://candidatevoice.org/employers/mercury.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mercury.html</loc>
+    <loc>https://candidatevoice.org/employers/door-dash.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1525,13 +1573,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/proteus-fund.html</loc>
+    <loc>https://candidatevoice.org/employers/symetra.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/symetra.html</loc>
+    <loc>https://candidatevoice.org/employers/proteus-fund.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1573,13 +1621,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mosaic.html</loc>
+    <loc>https://candidatevoice.org/employers/chime.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/chime.html</loc>
+    <loc>https://candidatevoice.org/employers/mosaic.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1609,13 +1657,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/greenhouse.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/heron-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/greenhouse.html</loc>
+    <loc>https://candidatevoice.org/employers/eab-seramount.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1633,12 +1687,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/eab-seramount.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/climateworks.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1646,6 +1694,12 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/open-philanthropy.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/imaginable-futures.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1663,7 +1717,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/imaginable-futures.html</loc>
+    <loc>https://candidatevoice.org/employers/the-clean-slate-initiative.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/churchill-downs.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1675,19 +1735,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-clean-slate-initiative.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/chartis.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/churchill-downs.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1717,6 +1765,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/dropbox.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/brown-forman.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1724,12 +1778,6 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/collaborative-for-gender-reporductibe-equity.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/dropbox.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1789,25 +1837,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pri.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/louisville-msd.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/education-leaders-of-color.html</loc>
+    <loc>https://candidatevoice.org/employers/pri.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/third-plataue-dcc.html</loc>
+    <loc>https://candidatevoice.org/employers/education-leaders-of-color.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1825,13 +1867,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/tcw-global.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/ground-works.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/tcw-global.html</loc>
+    <loc>https://candidatevoice.org/employers/third-plataue-dcc.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1849,7 +1897,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/step-up-for-students.html</loc>
+    <loc>https://candidatevoice.org/employers/webflow.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1861,7 +1909,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/webflow.html</loc>
+    <loc>https://candidatevoice.org/employers/step-up-for-students.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1879,6 +1927,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/sazerac.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/boys-girls-club-of-america.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1886,12 +1940,6 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/coalition.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/sazerac.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1909,13 +1957,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mangodb.html</loc>
+    <loc>https://candidatevoice.org/employers/uofl-health.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/uofl-health.html</loc>
+    <loc>https://candidatevoice.org/employers/mangodb.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1927,43 +1975,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/ascension.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/one-million-degrees.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/core-education.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/alma.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/chewy.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/amazon.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/edgility.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1976,6 +1988,36 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/stanley-house-consulting.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/amazon.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/chewy.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/alma.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/one-million-degrees.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/edgility.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1999,6 +2041,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/convera.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/padsplit.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -2011,7 +2059,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/convera.html</loc>
+    <loc>https://candidatevoice.org/employers/mernarini-group.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2023,19 +2071,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mernarini-group.html</loc>
+    <loc>https://candidatevoice.org/employers/csg.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/planful.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/csg.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2053,19 +2095,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/grants-plus.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/kids-chance-of-america.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/higher-group.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2077,7 +2107,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/grants-plus.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/stand-together.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/higher-group.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2113,25 +2155,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/employment-resrouces-group.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/center-for-black-educator-development.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/lensa.html</loc>
+    <loc>https://candidatevoice.org/employers/employment-resrouces-group.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/union-of-concerned-scientists.html</loc>
+    <loc>https://candidatevoice.org/employers/lensa.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2155,7 +2191,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/mastercard.html</loc>
+    <loc>https://candidatevoice.org/employers/union-of-concerned-scientists.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2167,7 +2203,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/louisville-urban-league.html</loc>
+    <loc>https://candidatevoice.org/employers/mastercard.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/seimens-healthineers.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2179,7 +2221,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/seimens-healthineers.html</loc>
+    <loc>https://candidatevoice.org/employers/louisville-urban-league.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/gilead.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2192,12 +2240,6 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/major-league-soccer.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/gilead.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2227,7 +2269,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/the-new-school.html</loc>
+    <loc>https://candidatevoice.org/employers/avalara.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2245,13 +2287,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/avalara.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/workday.html</loc>
+    <loc>https://candidatevoice.org/employers/the-new-school.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2263,19 +2299,31 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/indeed.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/bonterra.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/indeed.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/workday.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/american-psychological-association.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/nestle.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2293,13 +2341,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/nestle.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://candidatevoice.org/employers/solventum.html</loc>
+    <loc>https://candidatevoice.org/employers/warner-bros.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2311,7 +2353,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/warner-bros.html</loc>
+    <loc>https://candidatevoice.org/employers/solventum.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2371,12 +2413,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/pintrest.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://candidatevoice.org/employers/zillow.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -2401,6 +2437,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://candidatevoice.org/employers/oscar-health.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://candidatevoice.org/employers/github.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -2413,13 +2455,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/oscar-health.html</loc>
+    <loc>https://candidatevoice.org/employers/hopper-dean-family-foundation.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://candidatevoice.org/employers/hopper-dean-family-foundation.html</loc>
+    <loc>https://candidatevoice.org/employers/kansas-city-public-cchools.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
