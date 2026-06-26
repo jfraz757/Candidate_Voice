@@ -806,14 +806,14 @@
           apikey: SUPABASE_KEY,
           Authorization: `Bearer ${SUPABASE_KEY}`,
           "Content-Type": "application/json",
-          Prefer: "return=representation"
+          Prefer: "return=minimal"
         },
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        let data = {};
+        try { data = await res.json(); } catch (_) {}
         console.error("Supabase error:", data);
         alert("Submission failed: " + (data.message || data.hint || JSON.stringify(data)));
         btn.textContent = "SUBMIT UPDATE";
