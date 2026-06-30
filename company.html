@@ -125,6 +125,53 @@
 
     .state-msg { text-align: center; padding: 60px 20px; color: #9ca3af; }
 
+    .comments-section { margin-top: 36px; }
+    .comments-intro { font-size: 0.85rem; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
+
+    .comment-card {
+      background: #ffffff; border: 1.5px solid #e8eaf0;
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 12px;
+    }
+    .comment-text { font-size: 0.88rem; color: #374151; line-height: 1.6; white-space: pre-wrap; }
+    .comment-meta { font-size: 0.72rem; color: #9ca3af; margin-top: 8px; }
+
+    .comment-form-wrap { margin-top: 16px; }
+    .comment-toggle-btn {
+      font-size: 0.85rem; font-weight: 600; color: #1a4fa0;
+      background: #ffffff; border: 1.5px solid #a8c0e8; border-radius: 20px;
+      padding: 8px 18px; cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .comment-toggle-btn:hover { background: #1a4fa0; color: #fff; border-color: #1a4fa0; }
+
+    .comment-textarea {
+      width: 100%; min-height: 90px; margin-top: 12px;
+      padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #1a1a2e;
+      background: #f9fafb; resize: vertical; outline: none;
+    }
+    .comment-textarea:focus { border-color: #1a4fa0; background: #fff; }
+
+    .comment-form-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 10px;
+    }
+    .comment-char-count { font-size: 0.72rem; color: #9ca3af; }
+    .comment-submit-btn {
+      font-size: 0.82rem; font-weight: 600; color: #fff;
+      background: #f5a623; border: none; border-radius: 20px;
+      padding: 8px 18px; cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+    .comment-submit-btn:hover { background: #e09410; }
+    .comment-submit-btn:disabled { background: #d1d5db; cursor: not-allowed; }
+
+    .comment-status-msg { font-size: 0.82rem; margin-top: 10px; min-height: 1em; }
+    .comment-status-msg.success { color: #059669; }
+    .comment-status-msg.error { color: #dc2626; }
+
+    .comment-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
     footer {
       text-align: center; padding: 24px; font-size: 0.75rem;
       color: #9ca3af; border-top: 1px solid #e8eaf0; background: #ffffff;
@@ -137,6 +184,7 @@
       .company-hero { padding: 28px 16px 24px; }
       .content { padding: 24px 16px 60px; }
       .company-stats { gap: 16px; }
+      .comment-form-actions { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
   </style>
 </head>
@@ -181,6 +229,28 @@
 
   <div id="reviews-list">
     <div class="state-msg">Loading reviews...</div>
+  </div>
+
+  <div class="comments-section">
+    <div class="section-title">Company Notes</div>
+    <p class="comments-intro">General comments about this employer that aren't tied to one specific application. Submissions are reviewed before they appear here.</p>
+    <div id="comments-list">
+      <div class="state-msg">Loading comments...</div>
+    </div>
+    <div class="comment-form-wrap">
+      <button type="button" id="comment-toggle-btn" class="comment-toggle-btn" onclick="toggleCommentForm()">+ Add a comment</button>
+      <div id="comment-form" style="display:none;">
+        <textarea id="comment-text" class="comment-textarea" maxlength="1000"
+          placeholder="Share general context about this employer (culture, hiring patterns, anything not specific to a single application)..."
+          oninput="updateCommentCharCount()"></textarea>
+        <input type="text" id="comment_confirm" name="comment_confirm" class="comment-honeypot" tabindex="-1" autocomplete="off" />
+        <div class="comment-form-actions">
+          <span id="comment-char-count" class="comment-char-count">0 / 1000</span>
+          <button type="button" id="comment-submit-btn" class="comment-submit-btn" onclick="submitComment()">Submit for review</button>
+        </div>
+        <div id="comment-status-msg" class="comment-status-msg"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -338,6 +408,126 @@
   }
 
   loadCompany();
+  loadComments();
+
+  function timeAgo(dateStr) {
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const days = Math.floor(diffMs / 86400000);
+    if (days < 1) return "today";
+    if (days === 1) return "1 day ago";
+    if (days < 30) return `${days} days ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} month${months !== 1 ? "s" : ""} ago`;
+    const years = Math.floor(months / 12);
+    return `${years} year${years !== 1 ? "s" : ""} ago`;
+  }
+
+  async function loadComments() {
+    if (!companyName) return;
+    const list = document.getElementById("comments-list");
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/company_comments?employer_name=eq.${encodeURIComponent(companyName)}&status=eq.approved&order=created_at.desc`,
+        { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+      );
+      const comments = await res.json();
+
+      if (!Array.isArray(comments) || !comments.length) {
+        list.innerHTML = `<div class="state-msg">No comments yet for ${companyName}. Be the first to add context.</div>`;
+        return;
+      }
+
+      list.innerHTML = comments.map(c => `
+        <div class="comment-card">
+          <div class="comment-text">${c.comment_text.replace(/</g, "&lt;")}</div>
+          <div class="comment-meta">${timeAgo(c.created_at)}</div>
+        </div>`).join("");
+
+    } catch (e) {
+      list.innerHTML = `<div class="state-msg">Could not load comments.</div>`;
+      console.error(e);
+    }
+  }
+
+  function toggleCommentForm() {
+    const form = document.getElementById("comment-form");
+    const btn  = document.getElementById("comment-toggle-btn");
+    const showing = form.style.display !== "none";
+    form.style.display = showing ? "none" : "block";
+    btn.style.display  = showing ? "inline-block" : "none";
+  }
+
+  function updateCommentCharCount() {
+    const len = document.getElementById("comment-text").value.length;
+    document.getElementById("comment-char-count").textContent = `${len} / 1000`;
+  }
+
+  async function submitComment() {
+    const textEl   = document.getElementById("comment-text");
+    const honeypot = document.getElementById("comment_confirm").value;
+    const statusEl = document.getElementById("comment-status-msg");
+    const btn      = document.getElementById("comment-submit-btn");
+    const text     = textEl.value.trim();
+
+    statusEl.textContent = "";
+    statusEl.className = "comment-status-msg";
+
+    // Honeypot: bots fill this, humans don't. Pretend success, do nothing.
+    if (honeypot) {
+      statusEl.textContent = "Thanks! Your comment has been submitted for review.";
+      statusEl.className = "comment-status-msg success";
+      textEl.value = "";
+      updateCommentCharCount();
+      return;
+    }
+
+    if (text.length < 10) {
+      statusEl.textContent = "Please add a bit more detail (at least 10 characters).";
+      statusEl.className = "comment-status-msg error";
+      return;
+    }
+    if (text.length > 1000) {
+      statusEl.textContent = "Comments are limited to 1000 characters.";
+      statusEl.className = "comment-status-msg error";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/company_comments`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          employer_name: companyName,
+          comment_text: text,
+          status: "pending"
+        })
+      });
+
+      if (!res.ok) throw new Error("Submit failed");
+
+      statusEl.textContent = "Thanks! Your comment has been submitted for review and will appear once approved.";
+      statusEl.className = "comment-status-msg success";
+      textEl.value = "";
+      updateCommentCharCount();
+      setTimeout(() => { toggleCommentForm(); statusEl.textContent = ""; }, 3000);
+
+    } catch (e) {
+      statusEl.textContent = "Something went wrong. Please try again.";
+      statusEl.className = "comment-status-msg error";
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Submit for review";
+    }
+  }
 
   function filterByPosition(query) {
     const btn   = document.getElementById("clear-position-btn");
