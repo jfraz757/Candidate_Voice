@@ -1085,15 +1085,17 @@
       .replace(/^-+|-+$/g, "");
   }
 
-  // Navigates to the employer SEO page without triggering the card's own anchor.
-  function goToEmployer(e, slug) {
+  // Navigates to the live company page (reviews + comments) without triggering
+  // the card's own anchor. Points at company.html?name= rather than the static
+  // employers/{slug}.html SEO snapshot so visitors land one hop from a card on the
+  // interactive page where they can read all reviews and leave a comment.
+  function goToEmployer(e, name) {
     e.preventDefault();
     e.stopPropagation();
-    window.location.href = "employers/" + slug + ".html";
+    window.location.href = "company.html?name=" + encodeURIComponent(name);
   }
 
   function buildCard(r) {
-    const slug = slugify(r.employer_name);
     const favicon = r.employer_website
       ? `<img class="card-favicon" src="https://www.google.com/s2/favicons?domain=${r.employer_website}&sz=64" onerror="this.style.display='none'" />`
       : "";
@@ -1111,8 +1113,9 @@
         <div class="card-header">
           ${favicon}
           <span class="card-employer card-employer-link" role="link" tabindex="0"
-                onclick="goToEmployer(event, '${slug}')"
-                onkeydown="if(event.key==='Enter'){goToEmployer(event,'${slug}')}">${r.employer_name}</span>
+                data-employer="${(r.employer_name || '').replace(/"/g, '&quot;')}"
+                onclick="goToEmployer(event, this.dataset.employer)"
+                onkeydown="if(event.key==='Enter'){goToEmployer(event, this.dataset.employer)}">${r.employer_name}</span>
         </div>
         ${r.position_applied ? `<div class="card-position">${r.position_applied}</div>` : ""}
         <div class="card-meta">
