@@ -64,9 +64,9 @@ Candidate_Voice/
 
 ## 4. Supabase Database Schema
 
-### Two tables: `reviews` and `submissions`
+### Three tables: `reviews`, `submissions`, and `company_comments`
 
-These are separate tables with different purposes. Do not conflate them.
+These are separate tables with different purposes. Do not conflate them. `reviews` and `submissions` are the core review pipeline; `company_comments` is a separate, lighter feature added June 2026 for general company-level commentary (see below).
 
 #### `reviews` — public-facing approved records
 This is what the site displays. Only `status = 'approved'` rows are shown publicly.
@@ -131,6 +131,22 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 | industry | text | |
 | update_notes | text | Used to flag edits — format: "Update to review ID {id}" |
 
+#### `company_comments` — general company-level commentary (added June 2026)
+
+Separate, deliberately lightweight table for general remarks about an employer that are **not tied to one specific application**. This exists because reviews are strictly per-application (one person, one application, one scored experience), and general company commentary kept arriving mis-filed as edits to unrelated specific reviews (the "Sony ghost jobs" submission was the trigger — someone used the entry.html edit flow to overwrite an unrelated Director, D&I review with general commentary about Sony's hiring culture). Company comments give that impulse a correct home without corrupting individual reviews or the scoring model.
+
+| Column | Type | Notes |
+|---|---|---|
+| id | bigint | Primary key, `generated always as identity` |
+| employer_name | text | NOT NULL. Must match `reviews.employer_name` exactly (case + spacing) or the comment won't surface on that company's page — the company.html query filters on exact match |
+| comment_text | text | NOT NULL, CHECK length between 10 and 1000 chars |
+| status | text | pending / approved / rejected — column default `'pending'`, CHECK constraint enforces the three values. Frontend also sends `status: "pending"` explicitly in the insert payload, so display never depends on the column default alone (same lesson as `submissions.status`, Section 10 note 11) |
+| created_at | timestamptz | default `now()` |
+
+No scoring, no trigger, no edit/update branching — comments are simpler than reviews. There is no `submissions`-style holding queue for comments: a single table holds all three statuses, and the moderation split is done purely by `status` + RLS (public reads only `status = 'approved'`; admin reads pending via the service role key). Index: `company_comments_employer_status_idx` on `(employer_name, status)` to keep the company.html lookup fast.
+
+Schema/migration SQL lives in `company_comments_schema.sql` (run once in the Supabase SQL editor for this project; safe to run as one script — all statements are additive).
+
 ---
 
 ## 5. RLS Policies (Row Level Security)
@@ -148,7 +164,36 @@ RLS is enabled on both tables. Current policies (as of June 2026):
 - **"Allow select submissions"** — SELECT restricted to `authenticated` role only — admin.html reads the pending queue via service role key
 - **"Allow update submissions"** — UPDATE restricted to `authenticated` role only — admin.html approve/reject workflow writes via service role key
 
+### `company_comments`
+- **"Public read approved comments"** — SELECT allowed for anon + authenticated where `status = 'approved'` — company.html reads approved comments through this
+- **"Public insert comments"** — INSERT allowed for anon + authenticated, `with_check = true` — covers the "Add a comment" form on company.html
+- No anon SELECT on pending/rejected rows, and no anon UPDATE/DELETE policy at all — admin.html approve/reject uses the service role key, which bypasses RLS. Same pattern as `submissions`: **anon can INSERT but cannot read back**, so the anon insert in company.html uses `Prefer: return=minimal` (do not switch it to `return=representation`, that reintroduces the Section 10 note 16 42501 failure). Do NOT add an anon SELECT policy to expose pending comments — the pending queue is meant to stay admin-only.
+
 **Critical:** admin.html uses the service role key (`SUPABASE_ADMIN_KEY`) for all fetch calls, which bypasses RLS entirely. The RLS policies above govern only what the public anon key can do. If you tighten or change any policy, test the public submission form (anon key path) AND the admin workflow (service role path) separately. A 401 on admin reads almost always means the service role key is wrong or missing in admin.html — not an RLS issue.
+
+### Verified policy snapshot — `submissions` (captured June 2026)
+
+This is the authoritative dump of the `submissions` RLS policies, pulled directly from `pg_policy`. RLS on this table has caused repeated site issues, so when any submission write path breaks, re-run the query below and compare against this table FIRST before theorizing. `polcmd` values: `a` = INSERT, `r` = SELECT, `w` = UPDATE.
+
+| polname | polcmd | permissive | with_check | roles |
+|---|---|---|---|---|
+| Public insert submissions | a (INSERT) | true | `true` | anon, authenticated |
+| Allow select submissions | r (SELECT) | true | (none) | authenticated |
+| Allow update submissions | w (UPDATE) | true | `status = ANY (ARRAY['pending', 'approved', 'rejected'])` | authenticated |
+
+The single most important fact in this snapshot: **anon can INSERT into `submissions` but cannot SELECT from it.** That asymmetry is intentional. It keeps the moderation queue private. It is also the exact root cause of the `return=representation` failure in Section 10, note 16. Because anon cannot read this table, any anon write to it must use `Prefer: return=minimal`, never `Prefer: return=representation`, or PostgREST will try to read the row back, hit the missing SELECT policy, and fail with a misleading 401 / error 42501.
+
+Query to regenerate this snapshot. Swap the table name to capture the equivalent dump for `reviews`, which has not yet been recorded verbatim. Do that the next time you are in the SQL editor and paste the result here.
+
+```sql
+select polname,
+       polcmd,
+       polpermissive,
+       pg_get_expr(polwithcheck, polrelid) as with_check,
+       polroles::regrole[] as roles
+from pg_policy
+where polrelid = 'public.submissions'::regclass;   -- swap to 'public.reviews' for the reviews dump
+```
 
 ---
 
@@ -183,6 +228,26 @@ Check update_notes field         PATCH submissions
 Review appears on live site
 ```
 
+**Comments flow (`company_comments`) — separate and simpler:**
+```
+Visitor fills "Add a comment" form on company.html
+        ↓
+POST to /rest/v1/company_comments  (status: "pending", anon key, return=minimal)
+        ↓
+Joe logs into admin.html locally → Comments tab
+        ↓
+Admin reads /rest/v1/company_comments?status=eq.pending  (service role key)
+        ↓
+   [APPROVE]                          [REJECT]
+        ↓                                 ↓
+PATCH company_comments             PATCH company_comments
+set status = "approved"            set status = "rejected"
+        ↓
+Comment appears on that employer's company.html Company Notes section
+(only if employer_name matches an existing employer's name exactly)
+```
+No edit/update branching, no second table, no score recalc — comments are one table, moderated purely by status.
+
 ---
 
 ## 7. Page-by-Page Reference
@@ -194,7 +259,7 @@ Review appears on live site
 - Has an employer autocomplete (fetches approved `employer_name` + `employer_website` from `reviews`)
 - Contains an inline "Share Your Experience" modal that submits to `submissions` (same logic as submit.html)
 - Stats bar: total reviews, ghosted count, employer count — fetched from `reviews`
-- Cards are rendered by `buildCard(r)`; the whole card is an anchor to `entry.html?id=`. The employer name inside the card is a clickable `<span>` (not a nested anchor) that links to `employers/{slug}.html` via the `goToEmployer` helper. See Section 10, note 15.
+- Cards are rendered by `buildCard(r)`; the whole card is an anchor to `entry.html?id=`. The employer name inside the card is a clickable `<span>` (not a nested anchor) that links to the **live company page (`company.html?name=`)** via the `goToEmployer` helper. **Changed June 2026:** this used to point at the static `employers/{slug}.html` SEO snapshot; it now goes to `company.html?name=` so visitors land one hop from a card on the interactive page where they can read all reviews AND leave a comment. The handler now takes the raw employer name (passed via a `data-employer` attribute, apostrophe/quote-safe) rather than the slug. `slugify()` is no longer called inside `buildCard` but is still defined in the file for `generate-employer-pages.js` parity. See Section 10, note 15.
 - Honeypot field: `sub_company_confirm` (hidden, bots fill it, humans don't)
 
 ### submit.html
@@ -210,6 +275,7 @@ Review appears on live site
 - Upvote ("Me Too") button — PATCHes `upvotes` on `reviews`, uses localStorage to prevent double-voting
 - "Edit / Update" modal — submits to `submissions` with `update_notes: "Update to review ID {id}"` — goes through moderation before applying
 - Share button uses Web Share API with clipboard fallback
+- Footer action row links: "🔗 Share", "✏️ Update this review", "💬 Discuss {Employer}" (added June 2026 — links to `company.html?name=...#comments`, jumping straight to the Company Notes section), and "All {Employer} reviews →" (links to `company.html?name=...` with no fragment, landing at the top). The two company.html links are the same destination page but different scroll targets — Discuss goes to comments, All reviews goes to the top.
 
 ### company.html
 - URL param: `?name=CompanyName`
@@ -217,6 +283,7 @@ Review appears on live site
 - Calculates and displays: total reviews, ghosted rate %, hires reported, avg response time (days), avg experience score
 - Ghosting streak badge: shows if 3+ most recent reviews (by date_applied) are all ghosted
 - Position filter (client-side, no DB call)
+- **Company Notes section (added June 2026):** below the reviews list, `id="comments"` (the target of entry.html's `#comments` anchor, with `scroll-margin-top` so the sticky header doesn't overlap it). Reads approved rows from `company_comments` for this employer, renders them as `.comment-card`s, and offers a toggleable "+ Add a comment" form (10–1000 char limit, live char counter, honeypot field `comment_confirm`). Submits to `company_comments` with the anon key, `status: "pending"`, and `Prefer: return=minimal` (the `res.json()` parse is guarded so an empty 201 body doesn't throw a false failure — same fix as Section 10 note 16). Comments are moderated via the admin Comments tab before appearing. This section is live on `company.html` only — it is intentionally NOT on the static `employers/{slug}.html` SEO pages (those only update on manual regenerate, so live-only avoids another staleness source).
 
 ### leaderboard.html
 - Fetches all approved reviews in one call (limit 1000): `/rest/v1/reviews?select=*&status=eq.approved`
@@ -225,14 +292,15 @@ Review appears on live site
 
 ### admin.html (LOCAL ONLY — NOT IN REPO)
 - Password-protected (hardcoded password in file — reason it's gitignored)
-- Three tabs: Pending, Approved, Rejected
+- Tabs: Pending, Approved, Rejected, **Comments** (added June 2026), Stats
 - Pending tab reads from `submissions` where `status = 'pending'`
 - Approved/Rejected tabs read from `reviews`
-- Approve button: reads submission, checks `update_notes` for edit flag, either PATCHes existing review or POSTs new review, then marks submission as approved
+- **Comments tab** reads from `company_comments` where `status = 'pending'` (has its own pending-count badge, `comments-count`). `buildCommentCard()` renders each; `approveComment()` / `rejectComment()` PATCH `company_comments` status directly — no reviews-table branching, since comments aren't tied to a scored record. `loadComments()` runs as part of `loadAll()` on dashboard load.
+- Approve button (submissions): reads submission, checks `update_notes` for edit flag, either PATCHes existing review or POSTs new review, then marks submission as approved
 - Reject button: PATCHes submission `status = 'rejected'`
 - Verify toggle: PATCHes `verified = true/false` on `reviews`
 - Stats tab: pulls counts from both tables
-- **All fetch calls use `SUPABASE_ADMIN_KEY` (service role key)** — both reads and writes. The anon key (`SUPABASE_KEY`) is defined in the file but unused. The service role key bypasses RLS entirely.
+- **All fetch calls use `SUPABASE_ADMIN_KEY` (service role key)** — both reads and writes, comments included. The anon key (`SUPABASE_KEY`) is defined in the file but unused. The service role key bypasses RLS entirely.
 
 ---
 
@@ -320,7 +388,11 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 
 13. **admin.html must be run via a local server, not opened as a file:// URL.** Chrome blocks fetch calls from `file://` origins. Run `python -m http.server 8080` in Git Bash from the repo root and access admin at `http://localhost:8080/admin.html`.
 
-15. **Employer names on index.html cards link to the employer SEO page, implemented June 2026 using a non-anchor span, NOT a nested `<a>`.** The whole card is already an anchor (`<a class="card" href="entry.html?id=...">`). The original attempt wrapped the employer name in its own `<a href="employers/...">`, which produced a nested anchor. Nested anchors are invalid HTML, so the browser parser auto-closed the outer card anchor at the inner one, the card content spilled out of its container, and the grid jumbled. That was the launch-day crash. The working fix does not use a second anchor at all: the name is a `<span class="card-employer card-employer-link" role="link" tabindex="0">` with an `onclick="goToEmployer(event, '${slug}')"` (and an Enter-key `onkeydown`). The `goToEmployer(e, slug)` helper calls `e.preventDefault()` and `e.stopPropagation()` before setting `window.location.href = "employers/" + slug + ".html"`, so clicking the name goes to the employer SEO page and clicking anywhere else on the card still opens `entry.html`. The slug is passed into the handler instead of the raw name, which keeps the inline attribute quote-safe even for names with apostrophes (Macy's, L'Oréal). **The `slugify()` function in index.html must stay byte-for-byte identical to the one in `generate-employer-pages.js`** or the links will point at filenames that do not exist. Do NOT go back to wrapping the name in an `<a>`.
+15. **Employer names on index.html cards link to the employer SEO page, implemented June 2026 using a non-anchor span, NOT a nested `<a>`.** **⚠ UPDATED (later June 2026): the link target and the argument passed both changed — see the correction at the end of this note. The nested-anchor lesson below is still fully valid; only the destination and the slug-vs-name detail are superseded.** The whole card is already an anchor (`<a class="card" href="entry.html?id=...">`). The original attempt wrapped the employer name in its own `<a href="employers/...">`, which produced a nested anchor. Nested anchors are invalid HTML, so the browser parser auto-closed the outer card anchor at the inner one, the card content spilled out of its container, and the grid jumbled. That was the launch-day crash. The working fix does not use a second anchor at all: the name is a `<span class="card-employer card-employer-link" role="link" tabindex="0">` with an `onclick="goToEmployer(event, '${slug}')"` (and an Enter-key `onkeydown`). The `goToEmployer(e, slug)` helper calls `e.preventDefault()` and `e.stopPropagation()` before setting `window.location.href = "employers/" + slug + ".html"`, so clicking the name goes to the employer SEO page and clicking anywhere else on the card still opens `entry.html`. The slug is passed into the handler instead of the raw name, which keeps the inline attribute quote-safe even for names with apostrophes (Macy's, L'Oréal). **The `slugify()` function in index.html must stay byte-for-byte identical to the one in `generate-employer-pages.js`** or the links will point at filenames that do not exist. Do NOT go back to wrapping the name in an `<a>`.
+
+    **⚠ CORRECTION (later June 2026):** The card employer link no longer points at `employers/{slug}.html`. `goToEmployer` now navigates to `company.html?name=` + the URL-encoded raw employer name, so a card click lands one hop away on the live company page (reviews + Company Notes comments) instead of the static SEO snapshot. The handler signature changed from `goToEmployer(e, slug)` to `goToEmployer(e, name)`, and the name is now passed via a `data-employer` attribute read at click time (`this.dataset.employer`) rather than interpolated into the inline `onclick` — this is more robust than the old slug approach for apostrophes/quotes (Macy's, L'Oréal). `slugify()` is no longer called inside `buildCard`, but it remains defined in index.html and MUST still stay byte-for-byte in sync with `generate-employer-pages.js`, which uses it to name the static files. The nested-anchor prohibition above is unchanged and still critical: `goToEmployer` still navigates via `window.location.href` with `preventDefault()` + `stopPropagation()`, so the card's outer anchor is never nested. The static SEO pages still exist and still link onward to `company.html`; only the internal card link was repointed. Minor SEO tradeoff accepted: internal card links no longer pass link signal to the SEO pages, but those pages rank via the sitemap/Search Console path, which is primary.
+
+16. **`Prefer: return=representation` on a `submissions` INSERT fails for anon with error 42501, even though the INSERT policy allows the row.** entry.html's edit/update flow (`submitEdit()`) POSTs to `submissions` with the anon key. It originally sent `Prefer: return=representation`, which tells PostgREST to read the just-inserted row back and return it in the response body. `submissions` has no anon SELECT policy (SELECT is restricted to `authenticated` so the moderation queue stays private, see Section 5), so the read-back half of the request is blocked by RLS and the whole statement fails. The response is a misleading `401 Unauthorized` carrying `proxy-status: PostgREST; error=42501` and the body `"new row violates row-level security policy for table submissions"`. That message reads like the INSERT policy rejected the row, but the INSERT policy is fine (permissive, `with_check = true`, anon allowed, confirmed in the Section 5 snapshot). What actually failed is the SELECT evaluated for the representation read-back. New submissions from submit.html and the index.html modal were never affected because both already use `Prefer: return=minimal` and never read the row back. **Fix (June 2026):** entry.html `submitEdit()` now sends `Prefer: return=minimal`, and the `const data = await res.json()` parse was moved inside the `if (!res.ok)` branch. This second change is mandatory, not cosmetic: with `return=minimal` a successful insert returns a `201` with an empty body, so an unconditional `res.json()` throws on the empty string, the `catch` block fires, and the user sees a false "Submission failed" even though the row landed. **Do NOT fix this by adding an anon SELECT policy on `submissions`.** That would expose the entire pending moderation queue to the public, the exact opposite of the private-queue design. The rule going forward: any anon write path to `submissions` uses `return=minimal`. Diagnosing this took a full session because the 401 status code and the `WWW-Authenticate: Bearer` header point at authentication, while the real signal was the PostgREST `error=42501` code (Postgres `insufficient_privilege`, the RLS denial code) buried in the `proxy-status` header. When a Supabase write returns 401, read the `proxy-status` header and response body before assuming a key problem.
 
 ---
 
