@@ -697,6 +697,9 @@
                 🔗 Share
               </button>
               <button onclick="openEdit()" class="update-link">✏️ Update this review</button>
+              <a href="company.html?name=${encodeURIComponent(r.employer_name)}#comments" class="company-link">
+                💬 Discuss ${r.employer_name}
+              </a>
               <a href="company.html?name=${encodeURIComponent(r.employer_name)}" class="company-link">
                 All ${r.employer_name} reviews →
               </a>
