@@ -232,7 +232,7 @@
   </div>
 
   <div class="comments-section" id="comments">
-    <div class="section-title">Company Notes</div>
+    <div class="section-title">Discussion</div>
     <p class="comments-intro">General comments about this employer that aren't tied to one specific application. Submissions are reviewed before they appear here.</p>
     <div id="comments-list">
       <div class="state-msg">Loading comments...</div>
@@ -407,8 +407,17 @@
     }
   }
 
-  loadCompany();
-  loadComments();
+  // loadCompany() populates the reviews list, which sits above the comments
+  // section and changes page height once it finishes. If we let the browser's
+  // one-time #comments anchor jump happen on initial load, it fires before that
+  // content exists and lands short once the reviews render in. So: wait for both
+  // async loads, then scroll to the anchor manually if the URL asked for it.
+  (async function initPage() {
+    await Promise.all([loadCompany(), loadComments()]);
+    if (window.location.hash === "#comments") {
+      document.getElementById("comments")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  })();
 
   function timeAgo(dateStr) {
     const diffMs = Date.now() - new Date(dateStr).getTime();
