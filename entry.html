@@ -375,6 +375,32 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label>When Were You Ghosted? <span style="color:#9ca3af;font-weight:400;">(if ghosted)</span></label>
+        <select id="edit-when-ghosted">
+          <option value="">No change</option>
+          <option value="after_applying">After applying</option>
+          <option value="after_interview_invite">After interview invite</option>
+          <option value="after_interviewing">After interviewing</option>
+          <option value="after_offer">After offer</option>
+        </select>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div class="form-group" style="margin:0;">
+          <label>Invited to Interview?</label>
+          <select id="edit-interview-invite">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Interview Rounds</label>
+          <input type="number" id="edit-interview-rounds" min="0" max="20" placeholder="No change" />
+        </div>
+      </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
         <div class="form-group" style="margin:0;">
           <label>Salary Disclosed?</label>
@@ -788,6 +814,9 @@
       employer_website:      currentReview.employer_website || null,
       position_applied:      currentReview.position_applied || null,
       ghosted_status:        document.getElementById("edit-ghosted").value || currentReview.ghosted_status || "ghosted",
+      when_ghosted:          document.getElementById("edit-when-ghosted").value || null,
+      interview_invite:      document.getElementById("edit-interview-invite").value || null,
+      interview_rounds:      document.getElementById("edit-interview-rounds").value !== "" ? parseInt(document.getElementById("edit-interview-rounds").value, 10) : null,
       salary_disclosed:      document.getElementById("edit-salary").value     || null,
       cover_letter_required: document.getElementById("edit-cover").value      || null,
       take_home_assignment:  document.getElementById("edit-takehome").value   || null,
