@@ -291,7 +291,7 @@
     const cls    = { poor: "pill-poor", fair: "pill-fair", good: "pill-good", excellent: "pill-excellent" };
     const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
     const pct    = Math.round(score);
-    const display = pct > 0 ? `${labels[band]} · ${pct}%` : `Avg Experience: ${labels[band]}`;
+    const display = `Avg Experience: ${pct}/100 · ${labels[band]}`;
     return `<span class="stat-pill ${cls[band]}">${display}</span>`;
   }
 
@@ -374,7 +374,7 @@
       case "worst":
         sorted = companies
           .filter(c => c.avgScore != null && c.count >= 3)
-          .sort((a, b) => a.avgScore - b.avgScore)
+          .sort((a, b) => a.avgScore - b.avgScore || b.count - a.count)
           .slice(0, 15);
         break;
       case "most":
@@ -385,7 +385,7 @@
       case "best":
         sorted = companies
           .filter(c => c.avgScore != null && c.count >= 3)
-          .sort((a, b) => b.avgScore - a.avgScore)
+          .sort((a, b) => b.avgScore - a.avgScore || b.count - a.count)
           .slice(0, 15);
         break;
       case "ghosted":
