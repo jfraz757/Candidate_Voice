@@ -266,9 +266,9 @@
   let activeTab  = "worst";
 
   const tabLabels = {
-    worst:   "Companies with the worst candidate experience scores",
+    worst:   "Companies with the worst candidate experience scores (3 reviews minimum)",
     most:    "Companies with the most reviews",
-    best:    "Companies with the best candidate experience scores",
+    best:    "Companies with the best candidate experience scores (3 reviews minimum)",
     ghosted: "Companies with the highest ghosting rates (min. 2 reviews)"
   };
 
@@ -373,7 +373,7 @@
     switch(activeTab) {
       case "worst":
         sorted = companies
-          .filter(c => c.avgScore != null)
+          .filter(c => c.avgScore != null && c.count >= 3)
           .sort((a, b) => a.avgScore - b.avgScore)
           .slice(0, 15);
         break;
@@ -384,7 +384,7 @@
         break;
       case "best":
         sorted = companies
-          .filter(c => c.avgScore != null)
+          .filter(c => c.avgScore != null && c.count >= 3)
           .sort((a, b) => b.avgScore - a.avgScore)
           .slice(0, 15);
         break;
