@@ -439,13 +439,21 @@
             <option value="dont_remember">Don't remember</option>
           </select>
         </div>
-        <div class="form-group" style="margin:0;grid-column:1/-1;">
+        <div class="form-group" style="margin:0;">
           <label>Resume Re-entry?</label>
           <select id="edit-reentry">
             <option value="">No change</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Referral or Reference?</label>
+          <select id="edit-referral">
+            <option value="">No change</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
       </div>
@@ -822,6 +830,7 @@
       take_home_assignment:  document.getElementById("edit-takehome").value   || null,
       essay_responses:       document.getElementById("edit-essay").value      || null,
       resume_reentry:        document.getElementById("edit-reentry").value    || null,
+      had_referral:          document.getElementById("edit-referral").value   || null,
       review_general:        document.getElementById("edit-review").value.trim() || null,
       review_best:           document.getElementById("edit-best").value.trim()   || null,
       review_worst:          document.getElementById("edit-worst").value.trim()  || null,

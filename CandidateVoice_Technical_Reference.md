@@ -54,6 +54,7 @@ Candidate_Voice/
 ├── assets/
 │   ├── Logo_w_name.png
 │   └── Logo_w_o_Name.png
+├── add_referral_column.sql  # One-time migration: had_referral column on submissions + reviews (run July 2026)
 ├── CNAME               # candidatevoice.org
 └── .gitignore          # Excludes admin.html
 ```
@@ -88,6 +89,7 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 | take_home_assignment | text | yes / no / dont_remember |
 | essay_responses | text | yes / no / dont_remember |
 | resume_reentry | text | yes / no / dont_remember |
+| had_referral | text | yes / no — "Did you have a referral or reference when applying?" (added July 2026) |
 | review_general | text | Free text |
 | review_best | text | Free text |
 | review_worst | text | Free text |
@@ -122,6 +124,7 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 | take_home_assignment | text | |
 | essay_responses | text | |
 | resume_reentry | text | |
+| had_referral | text | yes / no (added July 2026) |
 | review_general | text | |
 | review_best | text | |
 | review_worst | text | |
@@ -266,6 +269,7 @@ No edit/update branching, no second table, no score recalc — comments are one 
 - Standalone submission form — same fields as the index.html modal
 - Has its own employer autocomplete (fetches from `reviews` where `status = 'approved'`)
 - Posts to `/rest/v1/submissions` with `status: "pending"`
+- **Referral question (added July 2026):** "Did you have a referral or reference when applying?" — Skip/Yes/No select (`id="referral"`), full-width row at the bottom of the Application Details grid, maps to `had_referral`. Same question exists on the index.html modal (`sub-referral`) and the entry.html edit modal (`edit-referral`). See Section 10, note 20.
 - Had a **critical bug (fixed June 2026):** duplicate `const SUPABASE_KEY` declaration in the same script block caused a silent SyntaxError that killed the entire script (no autocomplete, no submit). Fixed by removing the duplicate declaration.
 - Honeypot field: `company_confirm`
 
@@ -273,7 +277,7 @@ No edit/update branching, no second table, no score recalc — comments are one 
 - Fetches single review by ID from `reviews` where `status = 'approved'`
 - Displays score badge with hover tooltip showing score breakdown by field
 - Upvote ("Me Too") button — PATCHes `upvotes` on `reviews`, uses localStorage to prevent double-voting
-- "Edit / Update" modal — submits to `submissions` with `update_notes: "Update to review ID {id}"` — goes through moderation before applying. **As of July 2026, the modal collects `when_ghosted`, `interview_invite`, and `interview_rounds`** (added after a user was ghosted post-interview and had no way to correct `interview_invite` through the normal edit flow — see Section 10, note 17). Fields sit directly under the Outcome dropdown: a When Were You Ghosted select, an Invited to Interview select, and an Interview Rounds number input, all defaulting to "No change" / empty so untouched fields stay null in the payload
+- "Edit / Update" modal — submits to `submissions` with `update_notes: "Update to review ID {id}"` — goes through moderation before applying. **As of July 2026, the modal collects `when_ghosted`, `interview_invite`, and `interview_rounds`** (added after a user was ghosted post-interview and had no way to correct `interview_invite` through the normal edit flow — see Section 10, note 17). Fields sit directly under the Outcome dropdown: a When Were You Ghosted select, an Invited to Interview select, and an Interview Rounds number input, all defaulting to "No change" / empty so untouched fields stay null in the payload. **As of July 2026 the modal also collects `had_referral`** ("Referral or Reference?" — No change/Yes/No, `id="edit-referral"`, in the Application Details grid next to Resume Re-entry)
 - Share button uses Web Share API with clipboard fallback
 - Footer action row links: "🔗 Share", "✏️ Update this review", "💬 Discuss {Employer}" (added June 2026 — links to `company.html?name=...#comments`, jumping straight to the Discussion section — **renamed from "Company Notes" shortly after launch**), and "All {Employer} reviews →" (links to `company.html?name=...` with no fragment, landing at the top). The two company.html links are the same destination page but different scroll targets — Discuss goes to comments, All reviews goes to the top.
 
@@ -404,6 +408,8 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
     - **Score-at-0 suppression (the confusing symptom):** `scorePill()` used `pct > 0 ? "... · {pct}%" : "Avg Experience: {band}"`, so when a company's average score rounded to 0 (common for all-ghosted employers), the number was hidden and the pill showed only "Avg Experience: Poor." Every worst-offender row then looked identical, making the sort order appear arbitrary even though the underlying scores differed. This is why two "100% ghosted" companies could legitimately rank differently (ghosting only zeroes the 30-point outcome factor; the process factors — salary, cover letter, take-home, essays, resume re-entry — still vary), but the board gave no visible reason. Fixed by always rendering the number: `Avg Experience: {pct}/100 · {band}`.
     - **Count tiebreaker (the enhancement):** when average scores are equal, both Worst and Best now break the tie by review count descending (`.sort((a, b) => a.avgScore - b.avgScore || b.count - a.count)` on worst, `b.avgScore - a.avgScore || b.count - a.count` on best). More corroborating reviews ranks higher on both boards. This is a tiebreaker only, NOT confidence weighting — it moves rows only when scores are equal to the decimal. If near-but-not-equal scores (0.0 vs 0.4) still produce an ordering that feels wrong, that is the signal to consider a confidence-weighted ranking (IMDb-style), which was discussed and deliberately deferred as a larger change that would reorder the whole board.
     - Tab subtitle labels (`tabLabels`) for worst and best were updated to read "(3 reviews minimum)" so the rule is visible to users, matching how the ghosted tab already discloses "(min. 2 reviews)."
+
+20. **`had_referral` field (added July 2026).** "Did you have a referral or reference when applying?" — yes/no, nullable, on both `submissions` and `reviews` (added via `add_referral_column.sql`: `ALTER TABLE ... ADD COLUMN IF NOT EXISTS had_referral text` on each). Collected in three places: submit.html (`id="referral"`, Skip/Yes/No), the index.html submit modal (`id="sub-referral"`, Skip/Yes/No), and the entry.html edit modal (`id="edit-referral"`, No change/Yes/No). admin.html shows it as a field tag on submission cards, lists it in the edit-request "Changes submitted" summary, includes it in the approve-edit PATCH, and copies it into the new-review INSERT on approval — all four spots must stay in sync when adding any future field, or the value silently drops at moderation. The field is NOT part of the scoring trigger and is not yet displayed on entry.html, company.html, or the SEO pages — it is collected and stored only. Remember the SQL must run in Supabase BEFORE the frontend deploys, or inserts fail with an unknown-column error.
 
 ---
 

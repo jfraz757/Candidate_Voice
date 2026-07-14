@@ -428,6 +428,14 @@
             <option value="no">No</option>
           </select>
         </div>
+        <div class="form-group" style="margin:0;grid-column:1/-1;">
+          <label>Did you have a referral or reference when applying?</label>
+          <select id="referral">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
       </div>
 
       <hr class="section-divider" />
@@ -740,6 +748,7 @@
           essay_responses:       document.getElementById("essay").value || null,
           resume_reentry:        document.getElementById("reentry").value || null,
           interview_invite:      document.getElementById("interview-invite").value || null,
+          had_referral:          document.getElementById("referral").value || null,
           review_general:        document.getElementById("review").value.trim() || null,
           review_best:           document.getElementById("best").value.trim() || null,
           review_worst:          document.getElementById("worst").value.trim() || null,

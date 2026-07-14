@@ -934,13 +934,21 @@
             <option value="dont_remember">Don't remember</option>
           </select>
         </div>
-        <div class="form-group" style="margin:0;grid-column:1/-1;">
+        <div class="form-group" style="margin:0;">
           <label>Had to Re-enter Resume?</label>
           <select id="sub-reentry">
             <option value="">Skip</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="dont_remember">Don't remember</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Referral or Reference?</label>
+          <select id="sub-referral">
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
       </div>
@@ -1509,6 +1517,7 @@
           take_home_assignment:  document.getElementById("sub-takehome").value || null,
           essay_responses:       document.getElementById("sub-essay").value || null,
           resume_reentry:        document.getElementById("sub-reentry").value || null,
+          had_referral:          document.getElementById("sub-referral").value || null,
           review_general:        document.getElementById("sub-review").value.trim() || null,
           review_best:           document.getElementById("sub-best").value.trim() || null,
           review_worst:          document.getElementById("sub-worst").value.trim() || null,
