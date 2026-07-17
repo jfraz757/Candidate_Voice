@@ -1354,11 +1354,14 @@
   });
 
   subWebsite.addEventListener("input", function() {
+    // Collapse duplicate protocols (e.g. pasting a full URL after the auto-prefix)
+    const fixed = this.value.replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
+    if (fixed !== this.value) this.value = fixed;
     subStatus.style.display = "none";
   });
 
   subWebsite.addEventListener("blur", function() {
-    let val = this.value.trim();
+    let val = this.value.trim().replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
     if (!val || val === "https://" || val === "http://") {
       this.value = ""; subStatus.style.display = "none"; return;
     }
@@ -1479,6 +1482,7 @@
     let   website  = document.getElementById("sub-website").value.trim();
     const outcome  = document.getElementById("sub-ghosted").value;
 
+    website = website.replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
     if (website && !website.startsWith("http://") && !website.startsWith("https://")) {
       website = "https://" + website;
     }

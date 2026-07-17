@@ -624,19 +624,15 @@
   });
 
   websiteInput.addEventListener("input", function() {
-    const val = this.value.trim();
-    // If user clears the field, reset
-    if (!val) return;
-    // If they typed something without a protocol, prepend
-    if (val && !val.startsWith("http://") && !val.startsWith("https://") && val !== "https://" && val !== "http://") {
-      // Don't interfere while they're still typing the protocol
-    }
+    // Collapse duplicate protocols (e.g. pasting a full URL after the auto-prefix)
+    const fixed = this.value.replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
+    if (fixed !== this.value) this.value = fixed;
     websiteStatus.style.display = "none";
   });
 
   // On blur: clean up and validate
   websiteInput.addEventListener("blur", function() {
-    let val = this.value.trim();
+    let val = this.value.trim().replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
     if (!val || val === "https://" || val === "http://") {
       this.value = "";
       websiteStatus.style.display = "none";
@@ -705,7 +701,8 @@
     let   website  = document.getElementById("website").value.trim();
     const outcome  = document.getElementById("ghosted-status").value;
 
-    // Auto-prefix if user forgot
+    // Collapse duplicate protocols, then auto-prefix if user forgot
+    website = website.replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "");
     if (website && !website.startsWith("http://") && !website.startsWith("https://")) {
       website = "https://" + website;
     }
