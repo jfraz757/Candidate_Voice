@@ -12,6 +12,7 @@ CandidateVoice.org is an anonymous job application experience review platform. J
 **GitHub Repo:** github.com/jfraz757/Candidate_Voice
 **Branch:** main (auto-deploys to GitHub Pages on push)
 **DNS/CDN:** Cloudflare (proxied)
+**Contact email:** contact@candidatevoice.org — a Google Workspace alias on joe@educationtoaction.net (candidatevoice.org added as a secondary domain, July 2026). MX records on Cloudflare point to Google; Cloudflare Email Routing is disabled and must stay disabled — re-enabling it would break mail delivery by reclaiming the MX records. DKIM (`google._domainkey`) and DMARC (`_dmarc`) TXT records live in Cloudflare DNS. Replies go out as contact@ via Gmail "Send mail as" + "Reply from the same address the message was sent to." Site mailto links pre-fill the subject "Candidate Voice" (`?subject=Candidate%20Voice`).
 
 ---
 
@@ -411,6 +412,8 @@ Bands: Poor < 25% · Fair 25–49% · Good 50–74% · Excellent 75%+
 
 20. **`had_referral` field (added July 2026).** "Did you have a referral or reference when applying?" — yes/no, nullable, on both `submissions` and `reviews` (added via `add_referral_column.sql`: `ALTER TABLE ... ADD COLUMN IF NOT EXISTS had_referral text` on each). Collected in three places: submit.html (`id="referral"`, Skip/Yes/No), the index.html submit modal (`id="sub-referral"`, Skip/Yes/No), and the entry.html edit modal (`id="edit-referral"`, No change/Yes/No). admin.html shows it as a field tag on submission cards, lists it in the edit-request "Changes submitted" summary, includes it in the approve-edit PATCH, and copies it into the new-review INSERT on approval — all four spots must stay in sync when adding any future field, or the value silently drops at moderation. The field is NOT part of the scoring trigger and is not yet displayed on entry.html, company.html, or the SEO pages — it is collected and stored only. Remember the SQL must run in Supabase BEFORE the frontend deploys, or inserts fail with an unknown-column error.
 
+21. **Doubled-protocol website values (`https://https://...`) — root cause found and fixed (July 2026).** The website field on both submission forms pre-fills `https://` on focus (added earlier because bare domains broke downstream functionality). Users pasting a full URL landed it after the pre-fill, producing `https://https://example.com` — and every cleanup path only checked `startsWith("https://")`, which the doubled value passes, so nothing caught it. Fix: both forms (submit.html website field, index.html modal `sub-website` field) now collapse repeated protocols with `val.replace(/^(https?:\/\/)+(?=https?:\/\/)/i, "")` at three points — live on `input` (so pastes visibly self-correct), on `blur`, and again inside `submitReview()` as the safety net. Handles triple-stacking and mixed `https://http://`. Existing bad rows in `reviews` and `submissions` (5 at the time) were cleaned with a one-off `regexp_replace` UPDATE in the Supabase SQL Editor (`WHERE employer_website ~* '^(https?://){2,}'`). If a doubled value ever reappears, check that all three dedupe points survived in both files. This closes the "watch for double-scheme website values" maintenance item in Section 16.
+
 ---
 
 ## 11. Employer SEO Pages
@@ -522,6 +525,8 @@ This document is only useful if it reflects what actually happened. After any se
 - An architectural decision is made (RLS changes, schema changes, new tables)
 - A new file is added to the repo
 
+**One-off SQL fixes are NOT repo files.** For ad-hoc Supabase data corrections (like the doubled-protocol cleanup), show the SQL in the chat window for Joe to copy/paste into the SQL Editor — do not save it as a .sql file in the repo. Repo .sql files are reserved for schema changes that future sessions need (e.g., `add_referral_column.sql`). Document the fix itself in Section 10 instead.
+
 **Commit it like any other file:**
 ```bash
 git add CandidateVoice_Technical_Reference.md
@@ -564,7 +569,7 @@ These are the tasks that keep the live site accurate over time. None are one-tim
 
 ### Periodically (every few weeks, or when something looks off)
 - **Spot-check a static page against its rollup.** Pick any employer, compare the review count on `employers/{slug}.html` against the count on `company.html?name=`. A mismatch means the pages are overdue for a regenerate. A mismatch that survives a regenerate means a name-mismatch instead (two reviews entered under slightly different employer names, e.g. "Ascension" vs "Ascension Health"), which is fixed by correcting the name in admin, not by regenerating.
-- **Watch for double-scheme website values.** Some reviews have `employer_website` saved with `https://` already included, producing `https://https://...` favicon URLs that 404. Cosmetic only (missing favicon), but worth correcting in admin when noticed.
+- **Double-scheme website values — RESOLVED July 2026.** Both forms now strip doubled protocols on input/blur/submit, and existing DB rows were cleaned (see Section 10, note 21). If a `https://https://...` value ever appears again, the frontend dedupe has regressed — check both submit.html and the index.html modal.
 
 ### Verify, never assume
 - **`submissions.status` default stays `'pending'`.** If edit submissions ever start skipping the pending queue, run `SELECT column_default FROM information_schema.columns WHERE table_name = 'submissions' AND column_name = 'status'` first. See Section 10, note 11.
