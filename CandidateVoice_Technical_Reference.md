@@ -23,6 +23,7 @@ CandidateVoice.org is an anonymous job application experience review platform. J
 - **Hosting:** GitHub Pages
 - **Fonts:** Google Fonts (Inter)
 - **Favicon lookup:** Google Favicon API (`https://www.google.com/s2/favicons?domain=X&sz=32`)
+- **Analytics:** Cloudflare Web Analytics (automatic mode — zone is Cloudflare-proxied, no code required) + Microsoft Clarity (session recordings/heatmaps, project ID `xr6km3ywvh`). Clarity snippet is in every deployed page's `<head>` except `admin.html`. Added July 2026 to diagnose friction on `submit.html`.
 
 **Supabase credentials (used in every deployed page):**
 ```
