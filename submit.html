@@ -182,6 +182,14 @@
     .btn-submit:hover { background: #e09410; }
     .btn-submit:disabled { opacity: 0.6; cursor: default; }
 
+    .form-error {
+      display: none; background: #fef2f2; border: 1.5px solid #fecaca;
+      color: #b91c1c; border-radius: 8px; padding: 12px 16px;
+      font-size: 0.85rem; font-weight: 600; margin-bottom: 14px;
+    }
+    .form-error.visible { display: block; }
+    .field-invalid { border-color: #dc2626 !important; background: #fef2f2 !important; }
+
     .form-success {
       display: none; text-align: center; padding: 40px 24px;
     }
@@ -487,6 +495,7 @@
         <input type="text" id="company_confirm" name="company_confirm" tabindex="-1" autocomplete="off" />
       </div>
 
+      <div class="form-error" id="form-error"></div>
       <button class="btn-submit" id="submit-btn" onclick="submitReview()">SUBMIT REVIEW</button>
     </div>
 
@@ -592,7 +601,12 @@
     // Clear auto-fill indicator if user edits manually
     document.getElementById("website").classList.remove("ac-filled");
     document.getElementById("website-hint").style.display = "none";
+    this.classList.remove("field-invalid");
     showDropdown(this.value.trim());
+  });
+
+  document.getElementById("ghosted-status").addEventListener("change", function() {
+    this.classList.remove("field-invalid");
   });
 
   document.getElementById("employer").addEventListener("keydown", function(e) {
@@ -674,13 +688,15 @@
       return;
     }
 
-    // Use Google favicon as a proxy to check if domain exists
+    // Use Google favicon as a proxy to check if domain exists. This is a soft
+    // hint, not a real verification — a slow response or missing favicon
+    // doesn't mean the URL is wrong, so failures stay neutral, not alarming.
     const img = new Image();
     const timer = setTimeout(() => {
-      websiteStatus.innerHTML = '⚠️ Could not verify this URL — double-check it\'s correct';
-      websiteStatus.style.color = "#d97706";
+      websiteStatus.innerHTML = 'Couldn\'t preview this link — that\'s OK, we\'ll still save it as entered';
+      websiteStatus.style.color = "#9ca3af";
       websiteStatus.style.display = "block";
-    }, 4000);
+    }, 7000);
 
     img.onload = function() {
       clearTimeout(timer);
@@ -698,8 +714,8 @@
 
     img.onerror = function() {
       clearTimeout(timer);
-      websiteStatus.innerHTML = '⚠️ Could not verify this domain — double-check it\'s correct';
-      websiteStatus.style.color = "#d97706";
+      websiteStatus.innerHTML = 'Couldn\'t preview this link — that\'s OK, we\'ll still save it as entered';
+      websiteStatus.style.color = "#9ca3af";
       websiteStatus.style.display = "block";
     };
 
@@ -726,8 +742,21 @@
     // Honeypot check — real users never fill this in
     if (document.getElementById("company_confirm").value) return;
 
+    const errorBox = document.getElementById("form-error");
+    const employerInput = document.getElementById("employer");
+    const outcomeInput   = document.getElementById("ghosted-status");
+    employerInput.classList.remove("field-invalid");
+    outcomeInput.classList.remove("field-invalid");
+    errorBox.classList.remove("visible");
+
     if (!employer || !outcome) {
-      alert("Please fill in the required fields: Employer Name and Outcome.");
+      const missing = [];
+      if (!employer) { missing.push("Employer Name"); employerInput.classList.add("field-invalid"); }
+      if (!outcome)  { missing.push("Outcome"); outcomeInput.classList.add("field-invalid"); }
+      errorBox.textContent = `Please fill in: ${missing.join(" and ")}.`;
+      errorBox.classList.add("visible");
+      errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      (employer ? outcomeInput : employerInput).focus();
       return;
     }
 
@@ -776,7 +805,9 @@
       }
 
     } catch(e) {
-      alert("Submission failed. Please try again.");
+      errorBox.textContent = "Something went wrong submitting your review. Your answers are still here — please try again.";
+      errorBox.classList.add("visible");
+      errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
       console.error(e);
     }
 
