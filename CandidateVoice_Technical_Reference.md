@@ -24,6 +24,7 @@ CandidateVoice.org is an anonymous job application experience review platform. J
 - **Fonts:** Google Fonts (Inter)
 - **Favicon lookup:** Google Favicon API (`https://www.google.com/s2/favicons?domain=X&sz=32`)
 - **Analytics:** Cloudflare Web Analytics (automatic mode — zone is Cloudflare-proxied, no code required) + Microsoft Clarity (session recordings/heatmaps, project ID `xr6km3ywvh`). Clarity snippet is in every deployed page's `<head>` except `admin.html`. Added July 2026 to diagnose friction on `submit.html`.
+- **Ad conversion tracking:** Meta Pixel (ID `1701634191063097`) on every deployed page except `admin.html`, same rollout as Clarity. Fires a standard `Lead` event on successful submission in both `submit.html` and `index.html`'s inline modal, so Facebook ad campaigns can be measured/optimized natively in Ads Manager. Advanced Matching is intentionally off — no PII (email) is sent to Meta, consistent with the site's anonymity model. Added July 2026.
 
 **Supabase credentials (used in every deployed page):**
 ```
