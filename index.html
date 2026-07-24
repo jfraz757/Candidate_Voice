@@ -1217,6 +1217,7 @@
         map[key].count++;
       });
       allEmployers = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+      document.getElementById("stat-companies").textContent = allEmployers.length;
     } catch(e) {}
   }
 
@@ -1446,24 +1447,22 @@
 
   async function loadStats() {
     try {
-      const [totalRes, ghostedRes, companiesRes] = await Promise.all([
-        fetch(`${SUPABASE_URL}/rest/v1/reviews?select=*&status=eq.approved&limit=1`, {
+      // Count-only requests — the unique-companies stat is filled in by
+      // loadEmployers(), which already downloads every employer_name for the
+      // autocomplete. Fetching the full name column a second time here was a
+      // redundant ~600ms request on every page load.
+      const [totalRes, ghostedRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/reviews?select=id&status=eq.approved&limit=1`, {
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Prefer: "count=exact" }
         }),
-        fetch(`${SUPABASE_URL}/rest/v1/reviews?select=*&status=eq.approved&ghosted_status=eq.ghosted&limit=1`, {
+        fetch(`${SUPABASE_URL}/rest/v1/reviews?select=id&status=eq.approved&ghosted_status=eq.ghosted&limit=1`, {
           headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Prefer: "count=exact" }
-        }),
-        fetch(`${SUPABASE_URL}/rest/v1/reviews?select=employer_name&status=eq.approved`, {
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
         })
       ]);
       const total    = parseInt(totalRes.headers.get("content-range")?.split("/")[1] || "0");
       const ghosted  = parseInt(ghostedRes.headers.get("content-range")?.split("/")[1] || "0");
-      const all      = await companiesRes.json();
-      const unique   = new Set(all.map(r => r.employer_name)).size;
       document.getElementById("stat-total").textContent     = total.toLocaleString();
       document.getElementById("stat-ghosted").textContent   = Math.round(ghosted / total * 100) + "%";
-      document.getElementById("stat-companies").textContent = unique;
     } catch(e) {}
   }
 
@@ -1583,10 +1582,16 @@
     }
   }
 
-  loadStats();
-  loadEmployers();
-  loadIndustryPills();
-  render();
+  // Two-phase startup: the review grid and headline counts are what the
+  // visitor is waiting on, so they get the connection to themselves. The
+  // autocomplete index and industry pill counts aren't visible above the
+  // fold and load right after, reusing the now-warm connection instead of
+  // competing for six cold ones at once.
+  (async () => {
+    await Promise.all([render(), loadStats()]);
+    loadEmployers();
+    loadIndustryPills();
+  })();
 </script>
 <script>
   function toggleMenu() {
