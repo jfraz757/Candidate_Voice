@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -25,7 +26,6 @@
   src="https://www.facebook.com/tr?id=1701634191063097&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="See Which Companies Ghost Job Applicants" />
@@ -375,7 +375,35 @@
       font-weight: 600;
     }
 
-
+    /* ─── Industry filter (collapsible on mobile) ─────────────── */
+    .industry-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      max-width: 100%;
+    }
+    .industry-toggle .filter-label-text {
+      margin-right: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .industry-chev {
+      display: none;               /* desktop: panel always open, no chevron */
+      font-size: 0.65rem;
+      color: #9ca3af;
+      transition: transform 0.2s;
+    }
+    /* Desktop: pills flow inline with the label (like Outcome/Score).
+       Mobile query below overrides this to a collapsible flex panel. */
+    .industry-pills-panel {
+      display: contents;
+    }
 
     /* ─── Results ─────────────────────────────────────────────── */
     .results-section {
@@ -681,21 +709,53 @@
         letter-spacing: 0;
       }
       .nav-link.primary { font-size: 0.68rem; padding: 5px 8px; }
-      .hero { padding: 32px 16px 28px; }
-      .hero h1 { font-size: 1.5rem; }
-      .hero p { font-size: 0.88rem; }
-      .search-section { padding: 16px 12px 14px; }
+      .hero { padding: 22px 16px 18px; }
+      .hero h1 { font-size: 1.4rem; margin-bottom: 8px; }
+      .hero p { font-size: 0.8rem; line-height: 1.5; margin-bottom: 0; }
+      .search-section { padding: 14px 12px 12px; }
       .results-section { padding: 8px 12px 40px; }
       .export-bar { padding: 12px 12px 4px; }
       .cards-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .modal { padding: 20px 16px; }
-      .hero-stats { gap: 20px; padding-top: 20px; margin-top: 24px; }
-      .hero-stat-number { font-size: 1.5rem; }
+      .hero-stats { gap: 18px; padding-top: 14px; margin-top: 16px; }
+      .hero-stat-number { font-size: 1.35rem; }
       .filter-row { gap: 6px; }
       .pill { font-size: 0.72rem; padding: 4px 10px; }
 
+      /* Outcome & Score: single swipeable row instead of wrapping */
+      .filter-row.scroll-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+      }
+      .filter-row.scroll-row::-webkit-scrollbar { display: none; }
+      .filter-row.scroll-row > * { flex: 0 0 auto; }
 
+      /* Industry: collapsed behind a toggle by default */
+      .filter-row-industry { flex-wrap: wrap; }
+      .industry-toggle {
+        border: 1.5px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 4px 12px;
+      }
+      .industry-toggle .filter-label-text { max-width: 68vw; }
+      .industry-chev { display: inline; }
+      .industry-toggle.has-active {
+        border-color: #1a4fa0;
+        color: #1a4fa0;
+      }
+      .industry-toggle.has-active .filter-label-text { color: #1a4fa0; }
+      .industry-pills-panel {
+        display: none;
+        width: 100%;
+        margin-top: 8px;
+      }
+      #industry-filter-row.industry-open .industry-pills-panel { display: flex; }
+      #industry-filter-row.industry-open .industry-chev { transform: rotate(180deg); }
     }
 
     /* ─── Hamburger Menu ──────────────────────────────────────── */
@@ -810,7 +870,7 @@
     <button class="btn-search" onclick="runSearch()">SEARCH</button>
   </div>
 
-  <div class="filter-row">
+  <div class="filter-row scroll-row">
     <span class="filter-label-text">Outcome:</span>
     <button class="pill active" data-status="all" onclick="filterByStatus(this)">All</button>
     <button class="pill" data-status="ghosted" onclick="filterByStatus(this)">👻 Ghosted</button>
@@ -819,7 +879,7 @@
     <button class="pill" data-status="got_the_job" onclick="filterByStatus(this)">🎉 Got the Job</button>
   </div>
 
-  <div class="filter-row" style="margin-top:8px;">
+  <div class="filter-row scroll-row" style="margin-top:8px;">
     <span class="filter-label-text">Score:</span>
     <button class="pill active" data-band="all" onclick="filterByBand(this)">All</button>
     <button class="pill" data-band="poor" onclick="filterByBand(this)">🔴 Poor</button>
@@ -828,9 +888,15 @@
     <button class="pill" data-band="excellent" onclick="filterByBand(this)">⭐ Excellent</button>
   </div>
 
-  <div class="filter-row" style="margin-top:8px;" id="industry-filter-row">
-    <span class="filter-label-text">Industry:</span>
-    <div id="industry-pills" style="display:contents;"></div>
+  <div class="filter-row filter-row-industry" style="margin-top:8px;" id="industry-filter-row">
+    <button type="button" class="industry-toggle" id="industry-toggle"
+            onclick="toggleIndustry()" aria-expanded="false" aria-controls="industry-pills-panel">
+      <span class="filter-label-text" id="industry-toggle-label">Industry</span>
+      <span class="industry-chev" aria-hidden="true">▾</span>
+    </button>
+    <div class="industry-pills-panel" id="industry-pills-panel">
+      <div id="industry-pills" style="display:contents;"></div>
+    </div>
   </div>
 </section>
 
@@ -1215,7 +1281,35 @@
     btn.classList.add("active");
     activeIndustry = btn.dataset.industry;
     currentPage    = 1;
+    syncIndustryToggle();
+    // On mobile, collapse the panel after a pick so results are visible.
+    const row = document.getElementById("industry-filter-row");
+    row.classList.remove("industry-open");
+    document.getElementById("industry-toggle").setAttribute("aria-expanded", "false");
     render();
+  }
+
+  // Expand/collapse the industry pill panel (mobile). Uses a CSS class only —
+  // never inline display — so it can't collide with the load/error handlers
+  // that toggle #industry-filter-row's inline style.
+  function toggleIndustry() {
+    const row  = document.getElementById("industry-filter-row");
+    const open = row.classList.toggle("industry-open");
+    document.getElementById("industry-toggle").setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  // Reflect the active industry on the collapsed toggle button.
+  function syncIndustryToggle() {
+    const toggle = document.getElementById("industry-toggle");
+    const label  = document.getElementById("industry-toggle-label");
+    if (!toggle || !label) return;
+    if (activeIndustry === "all") {
+      label.textContent = "Industry";
+      toggle.classList.remove("has-active");
+    } else {
+      label.textContent = activeIndustry;
+      toggle.classList.add("has-active");
+    }
   }
 
   let allEmployers = [];
