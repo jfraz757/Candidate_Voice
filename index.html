@@ -151,6 +151,23 @@
       line-height: 1.7;
     }
 
+    .btn-hero-cta {
+      display: inline-block;
+      background: #f5a623;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 28px;
+      border-radius: 8px;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-hero-cta:hover {
+      background: #e09410;
+    }
+
     .hero-stats {
       display: flex;
       justify-content: center;
@@ -813,9 +830,47 @@
       .header-nav { display: none; }
       .hamburger { display: flex; }
     }
+
+    /* ─── Sticky mobile CTA bar ──────────────────────────────── */
+    .sticky-cta-bar {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .sticky-cta-bar {
+        display: block;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        z-index: 140;
+        background: #ffffff;
+        border-top: 1px solid #e8eaf0;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      }
+      .sticky-cta-bar a {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #f5a623;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.88rem;
+        padding: 12px;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+      /* Room at the bottom of the page so the fixed bar never covers content */
+      body { padding-bottom: 64px; }
+    }
   </style>
 </head>
 <body>
+
+<!-- ─── Sticky mobile CTA bar ──────────────────────────────── -->
+<div class="sticky-cta-bar">
+  <a href="submit.html">+ Share your experience</a>
+</div>
 
 <!-- ─── Header ─────────────────────────────────────────────── -->
 <header>
@@ -841,6 +896,7 @@
 <section class="hero">
   <h1>Exposing the Ghosters.<br><span>Finding the Humans.</span></h1>
   <p>Anonymous candidate experience reviews. Know what to expect before you apply.</p>
+  <a href="submit.html" class="btn-hero-cta">+ Share your experience</a>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hero-stat-number" id="stat-total">—</div>
