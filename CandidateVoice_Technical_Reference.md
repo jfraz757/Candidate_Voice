@@ -189,9 +189,43 @@ RLS is enabled on both tables. Current policies (as of June 2026):
 
 ### `reviews`
 - **"Public read approved reviews"** — SELECT allowed for public where `status = 'approved'` — all public pages read through this
-- **"Public patch upvotes"** — UPDATE allowed for anon + authenticated, scoped to `status = 'approved'` rows only — covers the Me Too upvote button on entry.html
+- **"Public patch upvotes"** — UPDATE allowed for anon + authenticated, scoped to `status = 'approved'` rows only — covers the Me Too upvote button on entry.html. ⚠️ **See "Column-scope gap" below — the row scope here is not the whole story.**
 - **"Allow admin insert reviews"** — INSERT restricted to `authenticated` role only — the service role key in admin.html bypasses this entirely for the approve workflow, so this policy is effectively a safety net against direct anon inserts
 - No separate admin UPDATE policy on `reviews` — admin.html uses the service role key which bypasses RLS entirely, so all admin PATCHes (edit approvals, verified toggles) go through without a policy
+
+### Column-scope gap on `reviews` — RLS policies do not restrict columns
+
+**Identified July 2026. Fix written but NOT YET APPLIED — see `restrict_anon_update_reviews.sql`.**
+
+"Public patch upvotes" correctly limits anon to `status = 'approved'` **rows**. It cannot limit **columns** — no RLS policy can. Column scope is controlled by `GRANT`, and the grant on `reviews` is table-wide, so the anon role can write *any* column of any approved row:
+
+```
+PATCH /rest/v1/reviews?status=eq.approved
+{"review_general":"arbitrary text","experience_score":100,"verified":true}
+```
+
+The filter is `status=eq.approved`, not `id=eq.N` — PostgREST applies that to **every approved row in one request** (565 rows as of July 2026). The publishable key is in the page source of every deployed page, so this needs no authentication and no special skill.
+
+**Manual moderation does not mitigate this**, and this is the second time that assumption has hidden a real hole (the first was admin.html XSS, Section 4). This is not a submission — it never enters the `submissions` queue, never appears in the pending tab, and produces no log you would routinely check. It is a direct write to already-published rows. You would find out by noticing your own site looks wrong.
+
+Blast radius is content integrity, not disclosure: anon still cannot `INSERT` (restricted to `authenticated`), cannot `DELETE` (no policy), and cannot read the pending queue. The realistic harm is defamatory text appearing under a named real company on candidatevoice.org.
+
+**The rule to carry forward: an RLS policy answers "which rows?" A `GRANT` answers "which columns?" Any time you give anon write access, you must set both.** Checking only the policy is what made this look safe.
+
+Verify current state with `has_column_privilege` — **not** `has_table_privilege`, which returns true when the role has UPDATE on any column and so reads as unchanged after the fix:
+
+```sql
+select has_column_privilege('anon','public.reviews','upvotes','UPDATE')        as can_update_upvotes,
+       has_column_privilege('anon','public.reviews','review_general','UPDATE') as can_update_review_text;
+```
+
+### Backups
+
+`backup_supabase.py` dumps all three tables to `backups/<timestamp>/` as JSON. It reads `SUPABASE_URL` and the service role key out of admin.html so the key stays in one place; it paginates at 1000 rows because PostgREST truncates silently, and it exits non-zero on a zero-row dump so a scheduled run cannot fail quietly.
+
+Supabase's free tier has **no automatic backups**. Before July 2026 there were none at all — a single bad PATCH (above) would have permanently destroyed the whole moderated corpus. Run it before any schema or RLS change.
+
+`backups/` is gitignored and must stay that way: the dump includes the full pending queue and submitter email addresses.
 
 ### `submissions`
 - **"Public insert submissions"** — INSERT allowed for anon + authenticated, `with_check = true` — covers submit.html and the index.html modal

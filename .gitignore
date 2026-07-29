@@ -1,3 +1,7 @@
 admin.html
 .env
 *.env
+
+# Database backups. These contain the full pending moderation queue and submitter
+# email addresses (PII) -- they must never be committed. backup_supabase.py writes here.
+backups/
