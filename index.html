@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Content-Security-Policy: defense-in-depth behind the output escaping added July 2026.
+       'unsafe-inline' in script-src is unavoidable while the pages use inline onclick/onerror
+       handlers, so this does NOT prevent injected script from executing. Its value is the
+       allowlists: connect-src and img-src mean an injected script has nowhere to send data.
+       Directives frame-ancestors / report-uri are NOT supported in a meta tag and are omitted.
+       If you add a third-party script or endpoint, it must be added here or it will be blocked. -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://www.clarity.ms https://clarity.ms https://*.clarity.ms https://connect.facebook.net;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https://www.google.com https://*.gstatic.com https://www.facebook.com https://clarity.ms https://*.clarity.ms;
+    connect-src 'self' https://lawteswyjpkovzagnshn.supabase.co https://clarity.ms https://*.clarity.ms https://www.facebook.com;
+    object-src 'none';
+    base-uri 'none';
+    form-action 'self';
+  " />
   <meta charset="UTF-8" />
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
