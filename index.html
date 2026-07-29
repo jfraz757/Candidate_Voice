@@ -156,11 +156,13 @@
       background: #f5a623;
       color: #ffffff;
       text-decoration: none;
+      font-family: inherit;   /* a <button> does not inherit the page font */
       font-weight: 700;
       font-size: 0.95rem;
       padding: 13px 28px;
       border-radius: 8px;
       border: none;
+      cursor: pointer;
       transition: background 0.2s;
     }
 
@@ -896,7 +898,7 @@
 <section class="hero">
   <h1>Exposing the Ghosters.<br><span>Finding the Humans.</span></h1>
   <p>Anonymous candidate experience reviews. Know what to expect before you apply.</p>
-  <a href="submit.html" class="btn-hero-cta">+ Share your experience</a>
+  <button type="button" class="btn-hero-cta" onclick="focusSearch()">Look up a company</button>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hero-stat-number" id="stat-total">—</div>
@@ -1314,6 +1316,21 @@
     employerQuery = document.getElementById("search-employer").value.trim();
     currentPage   = 1;
     render();
+  }
+
+  // Hero CTA. Clarity (Jul 2026) showed arriving visitors engage by READING -- About page,
+  // leaderboard, individual company reviews -- while the page asked four separate times for
+  // a contribution before offering the lookup they came for. This sends the hero click to
+  // the search box instead; the contribute ask still lives in the header, the mobile menu,
+  // and the sticky bottom bar, which is the better place for it since it catches people
+  // after they have read something and recognised their own experience.
+  function focusSearch() {
+    const el = document.getElementById("search-employer");
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Delay the focus until the smooth scroll settles, otherwise mobile browsers
+    // open the keyboard and fight the scroll.
+    setTimeout(() => el.focus({ preventScroll: true }), 400);
   }
 
   function filterByStatus(btn) {
