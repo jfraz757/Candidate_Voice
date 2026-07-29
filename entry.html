@@ -536,10 +536,29 @@
   const id        = urlParams.get("id");
   let currentReview = {};
 
+  // Escape untrusted values before they enter an innerHTML template string. Review text,
+  // employer names, positions, industry and website are written by anonymous submitters.
+  function esc(val) {
+    if (val == null) return "";
+    return String(val)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // Escaping alone does not neutralize a javascript: URL sitting in an href, so link
+  // targets are restricted to http(s) first and fall back to an inert "#".
+  function safeUrl(url) {
+    const s = String(url ?? "").trim();
+    return /^https?:\/\//i.test(s) ? esc(s) : "#";
+  }
+
   function scoreBadge(band) {
     if (!band) return `<span class="score-badge score-none">Not Scored</span>`;
     const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
-    return `<span class="score-badge score-${band}">${labels[band]}</span>`;
+    return `<span class="score-badge score-${esc(band)}">${labels[band] || ""}</span>`;
   }
 
   function statusTag(status) {
@@ -564,7 +583,7 @@
       after_interviewing: "After interviewing",
       after_offer: "After offer"
     };
-    return `<span class="field-value ${cls}">${labels[val] || val}</span>`;
+    return `<span class="field-value ${cls}">${esc(labels[val] || val)}</span>`;
   }
 
   function fmtDate(d) {
@@ -656,7 +675,7 @@
       document.title = `${r.employer_name} – CandidateVoice.org`;
 
       const favicon = r.employer_website
-        ? `<img class="entry-favicon" src="https://www.google.com/s2/favicons?domain=${r.employer_website}&sz=128" onerror="this.style.display='none'" />`
+        ? `<img class="entry-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(r.employer_website)}&sz=128" onerror="this.style.display='none'" />`
         : "";
 
       const scoreBlock = `
@@ -681,22 +700,22 @@
           ${fieldVal(r.when_ghosted)}
         </div>` : "";
 
-      const reviewSection  = r.review_general ? `<div class="review-section"><h3>Review</h3><p>${r.review_general}</p></div>` : "";
-      const bestSection    = r.review_best    ? `<div class="review-section review-best"><h3>Best Part</h3><p>${r.review_best}</p></div>` : "";
-      const worstSection   = r.review_worst   ? `<div class="review-section review-worst"><h3>Worst Part</h3><p>${r.review_worst}</p></div>` : "";
+      const reviewSection  = r.review_general ? `<div class="review-section"><h3>Review</h3><p>${esc(r.review_general)}</p></div>` : "";
+      const bestSection    = r.review_best    ? `<div class="review-section review-best"><h3>Best Part</h3><p>${esc(r.review_best)}</p></div>` : "";
+      const worstSection   = r.review_worst   ? `<div class="review-section review-worst"><h3>Worst Part</h3><p>${esc(r.review_worst)}</p></div>` : "";
 
       document.getElementById("entry-container").innerHTML = `
         <div class="entry-card">
           <div class="entry-header">
             ${favicon}
             <div class="entry-header-text">
-              <div class="entry-employer">${r.employer_name}${r.verified ? ' <span style="font-size:0.7rem;font-weight:700;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;">✓ Verified</span>' : ""}</div>
-              ${r.employer_website ? `<a href="${r.employer_website}" target="_blank" class="entry-website">${r.employer_website.replace(/https?:\/\//,'')}</a>` : ""}
+              <div class="entry-employer">${esc(r.employer_name)}${r.verified ? ' <span style="font-size:0.7rem;font-weight:700;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;">✓ Verified</span>' : ""}</div>
+              ${r.employer_website ? `<a href="${safeUrl(r.employer_website)}" target="_blank" rel="noopener noreferrer" class="entry-website">${esc(r.employer_website.replace(/https?:\/\//,''))}</a>` : ""}
             </div>
             <div>${statusTag(r.ghosted_status)}</div>
           </div>
 
-          ${r.position_applied ? `<div class="entry-position">${r.position_applied}</div>` : ""}
+          ${r.position_applied ? `<div class="entry-position">${esc(r.position_applied)}</div>` : ""}
 
           ${scoreBlock}
 
@@ -743,7 +762,7 @@
             </div>
             ${r.industry ? `<div class="field-item" style="grid-column:1/-1;">
               <div class="field-label">Industry</div>
-              <div class="field-value" style="color:#7c3aed;">${r.industry}</div>
+              <div class="field-value" style="color:#7c3aed;">${esc(r.industry)}</div>
             </div>` : ""}
           </div>
 
@@ -761,10 +780,10 @@
               </button>
               <button onclick="openEdit()" class="update-link">✏️ Update this review</button>
               <a href="company.html?name=${encodeURIComponent(r.employer_name)}#comments" class="company-link">
-                💬 Discuss ${r.employer_name}
+                💬 Discuss ${esc(r.employer_name)}
               </a>
               <a href="company.html?name=${encodeURIComponent(r.employer_name)}" class="company-link">
-                All ${r.employer_name} reviews →
+                All ${esc(r.employer_name)} reviews →
               </a>
             </div>
           </div>

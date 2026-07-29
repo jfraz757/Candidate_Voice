@@ -291,10 +291,30 @@
   const urlParams  = new URLSearchParams(window.location.search);
   const companyName = decodeURIComponent(urlParams.get("name") || "");
 
+  // Escape untrusted values before they enter an innerHTML template string. Review text,
+  // comments, employer names, positions and websites are written by anonymous submitters,
+  // and companyName comes straight off the ?name= query string.
+  function esc(val) {
+    if (val == null) return "";
+    return String(val)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // Escaping alone does not neutralize a javascript: URL sitting in an href, so link
+  // targets are restricted to http(s) first and fall back to an inert "#".
+  function safeUrl(url) {
+    const s = String(url ?? "").trim();
+    return /^https?:\/\//i.test(s) ? esc(s) : "#";
+  }
+
   function scoreBadge(band, score) {
     if (!band) return `<span class="score-badge score-none">No Score</span>`;
     const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
-    return `<span class="score-badge score-${band}">${labels[band]}${score ? " · " + Math.round(score) + "%" : ""}</span>`;
+    return `<span class="score-badge score-${esc(band)}">${labels[band] || ""}${score ? " · " + Math.round(score) + "%" : ""}</span>`;
   }
 
   function statusTag(status) {
@@ -323,7 +343,7 @@
 
       if (!reviews.length) {
         document.getElementById("company-header-content").innerHTML =
-          `<div style="color:rgba(255,255,255,0.6);">No reviews found for ${companyName}.</div>`;
+          `<div style="color:rgba(255,255,255,0.6);">No reviews found for ${esc(companyName)}.</div>`;
         document.getElementById("reviews-list").innerHTML = "";
         return;
       }
@@ -363,15 +383,15 @@
         : null;
 
       const favicon = website
-        ? `<img class="company-favicon" src="https://www.google.com/s2/favicons?domain=${website}&sz=128" onerror="this.style.display='none'" />`
+        ? `<img class="company-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(website)}&sz=128" onerror="this.style.display='none'" />`
         : "";
 
       document.getElementById("company-header-content").innerHTML = `
         <div class="company-header">
           ${favicon}
           <div>
-            <div class="company-name">${companyName} ${streakBadge}</div>
-            ${website ? `<a href="${website}" target="_blank" class="company-website">${website.replace(/https?:\/\//,'')}</a>` : ""}
+            <div class="company-name">${esc(companyName)} ${streakBadge}</div>
+            ${website ? `<a href="${safeUrl(website)}" target="_blank" rel="noopener noreferrer" class="company-website">${esc(website.replace(/https?:\/\//,''))}</a>` : ""}
           </div>
         </div>
         <div class="company-stats">
@@ -404,12 +424,12 @@
         const dateStr = r.date_applied
           ? new Date(r.date_applied).toLocaleDateString('en-US', {month:'short', year:'numeric'}) : "";
         const upvotes = r.upvotes > 0 ? `<span class="upvote-count">👍 ${r.upvotes}</span>` : "";
-        const review  = r.review_general ? `<div class="card-review">${r.review_general}</div>` : "";
+        const review  = r.review_general ? `<div class="card-review">${esc(r.review_general)}</div>` : "";
 
         return `
           <a class="card" href="entry.html?id=${r.id}">
             <div class="card-header">
-              <div class="card-position">${r.position_applied || "Position not specified"}</div>
+              <div class="card-position">${esc(r.position_applied) || "Position not specified"}</div>
               <div class="card-date">${dateStr}</div>
             </div>
             <div style="margin-bottom:8px;">${statusTag(r.ghosted_status)}</div>
@@ -466,13 +486,13 @@
       const comments = await res.json();
 
       if (!Array.isArray(comments) || !comments.length) {
-        list.innerHTML = `<div class="state-msg">No comments yet for ${companyName}. Be the first to add context.</div>`;
+        list.innerHTML = `<div class="state-msg">No comments yet for ${esc(companyName)}. Be the first to add context.</div>`;
         return;
       }
 
       list.innerHTML = comments.map(c => `
         <div class="comment-card">
-          <div class="comment-text">${c.comment_text.replace(/</g, "&lt;")}</div>
+          <div class="comment-text">${esc(c.comment_text)}</div>
           <div class="comment-meta">${timeAgo(c.created_at)}</div>
         </div>`).join("");
 

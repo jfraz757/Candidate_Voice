@@ -1163,10 +1163,30 @@
   let activeBand    = "all";
   let activeIndustry = "all";
 
+  // Escape untrusted values before they enter an innerHTML template string. Review text,
+  // employer names, positions, industry and website all come from anonymous submissions,
+  // and the autocomplete query comes straight from the search box.
+  function esc(val) {
+    if (val == null) return "";
+    return String(val)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // For values dropped into a quoted JS string inside an inline handler, e.g.
+  // onclick="selectEmployer('...')". Escapes for the JS string literal first, then for
+  // the surrounding HTML attribute -- both layers are needed, neither alone is enough.
+  function jsAttr(val) {
+    return esc(String(val ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'"));
+  }
+
   function scoreBadgeHtml(band, score) {
     if (!band) return `<span class="score-badge score-none">No Score</span>`;
     const labels = { poor: "🔴 Poor", fair: "🟡 Fair", good: "🟢 Good", excellent: "⭐ Excellent" };
-    return `<span class="score-badge score-${band}">${labels[band]}${score ? " · " + Math.round(score) + "%" : ""}</span>`;
+    return `<span class="score-badge score-${esc(band)}">${labels[band] || ""}${score ? " · " + Math.round(score) + "%" : ""}</span>`;
   }
 
   function statusTagHtml(status) {
@@ -1259,10 +1279,10 @@
 
   function buildCard(r) {
     const favicon = r.employer_website
-      ? `<img class="card-favicon" src="https://www.google.com/s2/favicons?domain=${r.employer_website}&sz=64" onerror="this.style.display='none'" />`
+      ? `<img class="card-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(r.employer_website)}&sz=64" onerror="this.style.display='none'" />`
       : "";
     const review = r.review_general
-      ? `<div class="card-review">${r.review_general}</div>` : "";
+      ? `<div class="card-review">${esc(r.review_general)}</div>` : "";
     const dateStr = r.date_applied
       ? `Applied ${(() => { const p = r.date_applied.split('T')[0].split('-'); return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2])).toLocaleDateString('en-US', {month:'short', year:'numeric'}); })()}` : "";
     const upvotes = r.upvotes > 0
@@ -1275,16 +1295,16 @@
         <div class="card-header">
           ${favicon}
           <span class="card-employer card-employer-link" role="link" tabindex="0"
-                data-employer="${(r.employer_name || '').replace(/"/g, '&quot;')}"
+                data-employer="${esc(r.employer_name)}"
                 onclick="goToEmployer(event, this.dataset.employer)"
-                onkeydown="if(event.key==='Enter'){goToEmployer(event, this.dataset.employer)}">${r.employer_name}</span>
+                onkeydown="if(event.key==='Enter'){goToEmployer(event, this.dataset.employer)}">${esc(r.employer_name)}</span>
         </div>
-        ${r.position_applied ? `<div class="card-position">${r.position_applied}</div>` : ""}
+        ${r.position_applied ? `<div class="card-position">${esc(r.position_applied)}</div>` : ""}
         <div class="card-meta">
           ${statusTagHtml(r.ghosted_status)}
           ${r.interview_invite === 'yes' ? `<span class="meta-tag" style="background:#ede9fe;color:#7c3aed;">🗣️ Interviewed</span>` : ""}
           ${r.interview_invite === 'no'  ? `<span class="meta-tag" style="background:#f3f4f6;color:#6b7280;">No Interview</span>` : ""}
-          ${r.industry ? `<span class="meta-tag" style="background:#ede9fe;color:#7c3aed;">${r.industry}</span>` : ""}
+          ${r.industry ? `<span class="meta-tag" style="background:#ede9fe;color:#7c3aed;">${esc(r.industry)}</span>` : ""}
         </div>
         ${review}
         <div class="card-footer">
@@ -1416,10 +1436,9 @@
 
     let html = matches.map(e => {
       const favicon = e.website
-        ? `<img src="https://www.google.com/s2/favicons?domain=${e.website}&sz=32" onerror="this.style.display='none'" />`
+        ? `<img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(e.website)}&sz=32" onerror="this.style.display='none'" />`
         : `<span style="width:20px;"></span>`;
-      const safeName = e.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      return `<div class="autocomplete-item" data-name="${e.name}" onclick="selectEmployer('${safeName}')">
+      return `<div class="autocomplete-item" data-name="${esc(e.name)}" onclick="selectEmployer('${jsAttr(e.name)}')">
         ${favicon}
         <span>${highlightMatch(e.name, query)}</span>
         <span class="item-count">${e.count} review${e.count !== 1 ? "s" : ""}</span>
@@ -1427,7 +1446,7 @@
     }).join("");
 
     if (!exactMatch) {
-      const safeQuery = query.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      const safeQuery = esc(query);
       html += `<div class="autocomplete-add" onclick="addNewCompany()">
         ➕ Add "<strong>${safeQuery}</strong>" as a new company / recruitment agency
       </div>`;
@@ -1439,12 +1458,17 @@
     dropdown.classList.add("visible");
   }
 
+  // Escapes both inputs FIRST, then slices. The <strong> wrapper is the only markup that
+  // survives; everything from the employer name and the search box is inert by the time
+  // it is sliced, so no tag can be reconstructed across the match boundary.
   function highlightMatch(name, query) {
-    const idx = name.toLowerCase().indexOf(query.toLowerCase());
-    if (idx === -1) return name;
-    return name.slice(0, idx)
-      + `<strong style="color:#1a4fa0;">${name.slice(idx, idx + query.length)}</strong>`
-      + name.slice(idx + query.length);
+    const safeName  = esc(name);
+    const safeQuery = esc(query);
+    const idx = safeName.toLowerCase().indexOf(safeQuery.toLowerCase());
+    if (idx === -1) return safeName;
+    return safeName.slice(0, idx)
+      + `<strong style="color:#1a4fa0;">${safeName.slice(idx, idx + safeQuery.length)}</strong>`
+      + safeName.slice(idx + safeQuery.length);
   }
 
   function selectEmployer(name) {
@@ -1480,15 +1504,15 @@
 
     let html = matches.map(e => {
       const favicon = e.website
-        ? '<img src="https://www.google.com/s2/favicons?domain=' + e.website + '&sz=32" style="width:20px;height:20px;border-radius:4px;" onerror="this.style.display=\'none\'" />'
+        ? '<img src="https://www.google.com/s2/favicons?domain=' + encodeURIComponent(e.website) + '&sz=32" style="width:20px;height:20px;border-radius:4px;" onerror="this.style.display=\'none\'" />'
         : '<span style="width:20px;display:inline-block;"></span>';
-      const safeName = e.name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-      const safeWeb  = (e.website || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-      const nameHtml = e.name.replace(new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<strong style="color:#1a4fa0;">$1</strong>');
+      const safeName = jsAttr(e.name);
+      const safeWeb  = jsAttr(e.website || "");
+      const nameHtml = highlightMatch(e.name, query);
       return '<div style="' + itemStyle + '" onmouseover="this.style.background=\'#f0f5ff\'" onmouseout="this.style.background=\'\'" onclick="selectModalEmployer(\'' + safeName + '\', \'' + safeWeb + '\')">' +
         favicon +
         '<div><div>' + nameHtml + '</div>' +
-        (e.website ? '<div style="font-size:0.72rem;color:#9ca3af;">' + e.website.replace(/https?:\/\//, '') + '</div>' : '') +
+        (e.website ? '<div style="font-size:0.72rem;color:#9ca3af;">' + esc(e.website.replace(/https?:\/\//, '')) + '</div>' : '') +
         '</div>' +
         '<span style="margin-left:auto;font-size:0.72rem;color:#9ca3af;white-space:nowrap;">' + e.count + ' review' + (e.count !== 1 ? 's' : '') + '</span>' +
       '</div>';
@@ -1758,7 +1782,7 @@
       const pills = [`<button class="pill active" data-industry="all" onclick="filterByIndustry(this)">All</button>`];
       sorted.forEach(([industry, count]) => {
         pills.push(
-          `<button class="pill" data-industry="${industry}" onclick="filterByIndustry(this)">${industry} <span style="font-size:0.68rem;opacity:0.6;">(${count})</span></button>`
+          `<button class="pill" data-industry="${esc(industry)}" onclick="filterByIndustry(this)">${esc(industry)} <span style="font-size:0.68rem;opacity:0.6;">(${count})</span></button>`
         );
       });
       document.getElementById("industry-pills").innerHTML = pills.join("");

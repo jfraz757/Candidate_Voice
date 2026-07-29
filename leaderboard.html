@@ -302,6 +302,18 @@
     ghosted: "Companies with the highest ghosting rates (min. 2 reviews)"
   };
 
+  // Escape untrusted values before they enter an innerHTML template string. Company names
+  // and websites here are derived from anonymous review submissions.
+  function esc(val) {
+    if (val == null) return "";
+    return String(val)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function rankStyle(i) {
     if (i === 0) return "rank gold";
     if (i === 1) return "rank silver";
@@ -373,18 +385,18 @@
 
   function buildRow(c, i) {
     const favicon = c.website
-      ? `<img class="row-favicon" src="https://www.google.com/s2/favicons?domain=${c.website}&sz=64" onerror="this.style.display='none'" />`
+      ? `<img class="row-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(c.website)}&sz=64" onerror="this.style.display='none'" />`
       : `<div style="width:36px;"></div>`;
 
     const websiteStr = c.website
-      ? ` · <span style="color:#9ca3af;">${c.website.replace(/https?:\/\//, '')}</span>` : "";
+      ? ` · <span style="color:#9ca3af;">${esc(c.website.replace(/https?:\/\//, ''))}</span>` : "";
 
     return `
       <a class="board-row" href="company.html?name=${encodeURIComponent(c.name)}">
         <div class="${rankStyle(i)}">${rankEmoji(i)}</div>
         ${favicon}
         <div class="row-info">
-          <div class="row-name">${c.name} ${c.streak}</div>
+          <div class="row-name">${esc(c.name)} ${c.streak}</div>
           <div class="row-meta">${c.count} review${c.count !== 1 ? "s" : ""}${websiteStr}</div>
         </div>
         <div class="row-stats">
