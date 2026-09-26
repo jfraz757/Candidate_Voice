@@ -227,6 +227,12 @@ Supabase's free tier has **no automatic backups**. Before July 2026 there were n
 
 `backups/` is gitignored and must stay that way: the dump includes the full pending queue and submitter email addresses.
 
+### Windows notification on new pending items (Sept 2026)
+
+The "CandidateVoice Pending Alert" scheduled task runs `notify_pending.ps1` every 10 minutes and at logon. It asks Supabase for pending `submissions` (reviews and review edits) and pending `company_comments`, and shows one Windows notification per newly seen item; clicking it opens `http://localhost:8766/admin.html`, or admin.html directly if admin_server.py isn't running. Already-announced IDs are kept in `backups/.notify_pending_state.json`, and errors go to `backups/notify_pending.log`. It reads the service-role key from admin.html, like `backup_supabase.py`. It only runs while you're logged in and doesn't wake the PC. `install_pending_alert.ps1` creates the task (`-Minutes N` changes the interval, `-Uninstall` removes it), and `notify_pending.ps1 -Test` shows a sample notification.
+
+It replaces `check_pending_submissions.ps1`, which used the anon key. Anon has no SELECT on `submissions`, so that script always counted zero and never fired.
+
 ### `submissions`
 - **"Public insert submissions"** — INSERT allowed for anon + authenticated, `with_check = true` — covers submit.html and the index.html modal
 - **"Allow select submissions"** — SELECT restricted to `authenticated` role only — admin.html reads the pending queue via service role key
