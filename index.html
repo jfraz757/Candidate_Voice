@@ -1223,7 +1223,7 @@
     const params = new URLSearchParams();
     params.set("select", "*");
     params.set("status", "eq.approved");
-    params.set("order", "created_at.desc");
+    params.set("order", "created_at.desc,id.desc");
     params.set("limit",  PAGE_SIZE);
     params.set("offset", (currentPage - 1) * PAGE_SIZE);
 
