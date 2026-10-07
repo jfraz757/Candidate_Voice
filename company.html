@@ -297,6 +297,7 @@
 
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
+  <a href="employers/">All Employers</a> &nbsp;|&nbsp;
   <a href="about">About</a> &nbsp;|&nbsp;
   <a href="terms">Community Guidelines</a>
 </footer>
@@ -366,6 +367,11 @@
       }
 
       document.title = `${companyName} Reviews – CandidateVoice.org`;
+      const canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      canonical.href = "https://candidatevoice.org/employers/" +
+        companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      document.head.appendChild(canonical);
 
       const website    = reviews[0].employer_website;
       const total      = reviews.length;
