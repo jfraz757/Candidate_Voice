@@ -675,7 +675,18 @@
     }
   });
 
-  loadEmployers();
+  // ─── PRE-FILL FROM ?employer= ─────────────────────────────
+  // Lets share links and "be the first" CTAs land with the company already filled in.
+  const prefillEmployer = (new URLSearchParams(location.search).get("employer") || "").trim().slice(0, 200);
+  if (prefillEmployer) document.getElementById("employer").value = prefillEmployer;
+
+  loadEmployers().then(() => {
+    const employerInput = document.getElementById("employer");
+    // Skip if the visitor already changed the field while employers were loading
+    if (!prefillEmployer || employerInput.value !== prefillEmployer) return;
+    const match = allEmployers.find(e => e.name.toLowerCase() === prefillEmployer.toLowerCase());
+    if (match) selectEmployer(match.name, match.website);
+  });
 
   // ─── WEBSITE FIELD HELPERS ────────────────────────────────
   const websiteInput  = document.getElementById("website");

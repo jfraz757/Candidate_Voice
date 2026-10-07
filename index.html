@@ -598,7 +598,10 @@
       margin-bottom: 8px;
     }
 
-    /* ─── Pagination ──────────────────────────────────────────── */
+    .state-msg.empty-cta span { color: #0d2d6b; }
+    .state-msg.empty-cta .btn-hero-cta { margin-top: 18px; }
+
+    /* ─── Pagination──────────────────────────────────────────── */
     .pagination {
       display: flex;
       justify-content: center;
@@ -1257,7 +1260,12 @@
         `${totalCount.toLocaleString()} review${totalCount !== 1 ? "s" : ""} found`;
 
       if (!reviews.length) {
-        grid.innerHTML = `<div class="state-msg"><span>No Results</span>No reviews match your search.</div>`;
+        // A company search with no other filters means nobody has reviewed this employer yet —
+        // turn the dead end into an ask. With filters active, the company may have reviews, so stay generic.
+        const onlyCompanySearch = employerQuery && activeStatus === "all" && activeBand === "all" && activeIndustry === "all";
+        grid.innerHTML = onlyCompanySearch
+          ? `<div class="state-msg empty-cta"><span>No reviews for ${esc(employerQuery)} yet</span>Applied there? Be the first to share how it went. It's anonymous and takes about a minute.<br><button class="btn-hero-cta" onclick="addNewCompany()">Review ${esc(employerQuery)}</button></div>`
+          : `<div class="state-msg"><span>No Results</span>No reviews match your search.</div>`;
         document.getElementById("pagination").innerHTML = "";
         return;
       }
