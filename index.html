@@ -888,27 +888,27 @@
 
 <!-- ─── Sticky mobile CTA bar ──────────────────────────────── -->
 <div class="sticky-cta-bar">
-  <a href="submit.html">+ Share your experience</a>
+  <a href="submit">+ Share your experience</a>
 </div>
 
 <!-- ─── Header ─────────────────────────────────────────────── -->
 <header>
-  <a href="index.html" class="logo-wrap">
+  <a href="./" class="logo-wrap">
     <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
   </a>
   <nav class="header-nav">
-    <a href="about.html" class="nav-link">About</a>
-    <a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="about" class="nav-link">About</a>
+    <a href="leaderboard" class="nav-link">🏆 Leaderboard</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </nav>
   <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 <div class="mobile-menu" id="mobile-menu">
-    <a href="about.html" class="nav-link">About</a>
-    <a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="about" class="nav-link">About</a>
+    <a href="leaderboard" class="nav-link">🏆 Leaderboard</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </div>
 
 <!-- ─── Hero ───────────────────────────────────────────────── -->
@@ -1163,8 +1163,8 @@
 <!-- ─── Footer ────────────────────────────────────────────── -->
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
-  <a href="about.html">About</a> &nbsp;|&nbsp;
-  <a href="terms.html">Community Guidelines</a> &nbsp;|&nbsp; <a href="tos.html">Terms of Service</a> &nbsp;|&nbsp;
+  <a href="about">About</a> &nbsp;|&nbsp;
+  <a href="terms">Community Guidelines</a> &nbsp;|&nbsp; <a href="tos">Terms of Service</a> &nbsp;|&nbsp;
   <a href="mailto:contact@candidatevoice.org?subject=Candidate%20Voice">Contact</a>
 </footer>
 
@@ -1291,7 +1291,7 @@
   function goToEmployer(e, name) {
     e.preventDefault();
     e.stopPropagation();
-    window.location.href = "company.html?name=" + encodeURIComponent(name);
+    window.location.href = "company?name=" + encodeURIComponent(name);
   }
 
   function buildCard(r) {
@@ -1308,7 +1308,7 @@
     const rtHtml = rt ? `<span style="font-size:0.72rem;color:#6b7280;">⏱ ${rt} to hear back</span>` : "";
 
     return `
-      <a class="card" href="entry.html?id=${r.id}">
+      <a class="card" href="entry?id=${r.id}">
         <div class="card-header">
           ${favicon}
           <span class="card-employer card-employer-link" role="link" tabindex="0"

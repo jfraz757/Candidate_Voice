@@ -377,25 +377,25 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo-wrap">
+  <a href="./" class="logo-wrap">
     <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
   </a>
   <nav class="header-nav">
-    <a href="index.html" class="nav-link">← All Reviews</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="./" class="nav-link">← All Reviews</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </nav>
   <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html" class="nav-link">← All Reviews</a>
-    <a href="leaderboard.html" class="nav-link">🏆 Leaderboard</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="./" class="nav-link">← All Reviews</a>
+    <a href="leaderboard" class="nav-link">🏆 Leaderboard</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </div>
 
 <div class="content">
-  <a href="index.html" class="back-link">← Back to all reviews</a>
+  <a href="./" class="back-link">← Back to all reviews</a>
   <div id="entry-container">
     <div class="state-msg">Loading review...</div>
   </div>
@@ -541,8 +541,8 @@
 
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
-  <a href="about.html">About</a> &nbsp;|&nbsp;
-  <a href="terms.html">Community Guidelines</a> &nbsp;|&nbsp; <a href="tos.html">Terms of Service</a>
+  <a href="about">About</a> &nbsp;|&nbsp;
+  <a href="terms">Community Guidelines</a> &nbsp;|&nbsp; <a href="tos">Terms of Service</a>
 </footer>
 
 <script>
@@ -671,7 +671,7 @@
   async function loadEntry() {
     if (!id) {
       document.getElementById("entry-container").innerHTML =
-        `<div class="state-msg">No review ID provided. <a href="index.html">Go back</a></div>`;
+        `<div class="state-msg">No review ID provided. <a href="./">Go back</a></div>`;
       return;
     }
 
@@ -685,7 +685,7 @@
 
       if (!r) {
         document.getElementById("entry-container").innerHTML =
-          `<div class="state-msg">Review not found. <a href="index.html">Go back</a></div>`;
+          `<div class="state-msg">Review not found. <a href="./">Go back</a></div>`;
         return;
       }
 
@@ -796,10 +796,10 @@
                 🔗 Share
               </button>
               <button onclick="openEdit()" class="update-link">✏️ Update this review</button>
-              <a href="company.html?name=${encodeURIComponent(r.employer_name)}#comments" class="company-link">
+              <a href="company?name=${encodeURIComponent(r.employer_name)}#comments" class="company-link">
                 💬 Discuss ${esc(r.employer_name)}
               </a>
-              <a href="company.html?name=${encodeURIComponent(r.employer_name)}" class="company-link">
+              <a href="company?name=${encodeURIComponent(r.employer_name)}" class="company-link">
                 All ${esc(r.employer_name)} reviews →
               </a>
             </div>
@@ -812,7 +812,7 @@
 
     } catch(e) {
       document.getElementById("entry-container").innerHTML =
-        `<div class="state-msg">Could not load review. <a href="index.html">Go back</a></div>`;
+        `<div class="state-msg">Could not load review. <a href="./">Go back</a></div>`;
       console.error(e);
     }
   }

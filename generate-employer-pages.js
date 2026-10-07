@@ -175,9 +175,9 @@ function buildEmployerPage(employer) {
   <meta name="description" content="${description}" />
   <meta property="og:title" content="${name} Hiring Reviews | CandidateVoice" />
   <meta property="og:description" content="${description}" />
-  <meta property="og:url" content="${SITE_URL}/employers/${slug}.html" />
+  <meta property="og:url" content="${SITE_URL}/employers/${slug}" />
   <meta property="og:type" content="website" />
-  <link rel="canonical" href="${SITE_URL}/employers/${slug}.html" />
+  <link rel="canonical" href="${SITE_URL}/employers/${slug}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -244,12 +244,12 @@ function buildEmployerPage(employer) {
 <body>
 
 <nav class="nav">
-  <a href="${SITE_URL}/index.html">
+  <a href="${SITE_URL}/">
     <img src="${SITE_URL}/assets/Logo_w_name.png" alt="CandidateVoice.org" />
   </a>
-  <a href="${SITE_URL}/index.html">← All Reviews</a>
-  <a href="${SITE_URL}/leaderboard.html">Leaderboard</a>
-  <a href="${SITE_URL}/submit.html">+ Share Your Experience</a>
+  <a href="${SITE_URL}/">← All Reviews</a>
+  <a href="${SITE_URL}/leaderboard">Leaderboard</a>
+  <a href="${SITE_URL}/submit">+ Share Your Experience</a>
 </nav>
 
 <div class="container">
@@ -283,16 +283,16 @@ function buildEmployerPage(employer) {
 
   <div class="cta">
     <p>Read all ${total} candidate review${total !== 1 ? "s" : ""} or share your own experience applying to ${name}.</p>
-    <a class="btn-secondary" href="${SITE_URL}/company.html?name=${encodeURIComponent(name)}">Read All Reviews</a>
-    <a class="btn-primary" href="${SITE_URL}/submit.html">Share Your Experience</a>
+    <a class="btn-secondary" href="${SITE_URL}/company?name=${encodeURIComponent(name)}">Read All Reviews</a>
+    <a class="btn-primary" href="${SITE_URL}/submit">Share Your Experience</a>
   </div>
 
 </div>
 
 <footer class="footer">
   © 2025 CandidateVoice.org &nbsp;|&nbsp;
-  <a href="${SITE_URL}/about.html">About</a> &nbsp;|&nbsp;
-  <a href="${SITE_URL}/terms.html">Community Guidelines</a>
+  <a href="${SITE_URL}/about">About</a> &nbsp;|&nbsp;
+  <a href="${SITE_URL}/terms">Community Guidelines</a>
 </footer>
 
 </body>
@@ -305,7 +305,7 @@ function buildSitemap(employers) {
   const today = new Date().toISOString().split("T")[0];
   const urls = employers.map(e => `
   <url>
-    <loc>${SITE_URL}/employers/${slugify(e.name)}.html</loc>
+    <loc>${SITE_URL}/employers/${slugify(e.name)}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -314,13 +314,13 @@ function buildSitemap(employers) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${SITE_URL}/index.html</loc>
+    <loc>${SITE_URL}/</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>${SITE_URL}/leaderboard.html</loc>
+    <loc>${SITE_URL}/leaderboard</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

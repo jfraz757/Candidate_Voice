@@ -48,7 +48,7 @@
   <meta property="og:title" content="Hiring Hall of Shame &amp; Honor – CandidateVoice.org" />
   <meta property="og:description" content="The best and worst hiring experiences, ranked by real applicant reviews. Worst offenders, ghosting rates, and the companies doing it right." />
   <meta property="og:image" content="https://candidatevoice.org/assets/share_card.png?v=2" />
-  <meta property="og:url" content="https://candidatevoice.org/leaderboard.html" />
+  <meta property="og:url" content="https://candidatevoice.org/leaderboard" />
   <meta name="twitter:card" content="summary_large_image" />
   <title>Leaderboard – CandidateVoice.org</title>
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
@@ -265,21 +265,21 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo-wrap">
+  <a href="./" class="logo-wrap">
     <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
   </a>
   <nav class="header-nav">
-    <a href="index.html" class="nav-link">← All Reviews</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="./" class="nav-link">← All Reviews</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </nav>
   <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html" class="nav-link">← All Reviews</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="./" class="nav-link">← All Reviews</a>
+    <a href="about" class="nav-link">About</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </div>
 
 <div class="hero">
@@ -301,8 +301,8 @@
 
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
-  <a href="index.html">Reviews</a> &nbsp;|&nbsp;
-  <a href="about.html">About</a>
+  <a href="./">Reviews</a> &nbsp;|&nbsp;
+  <a href="about">About</a>
 </footer>
 
 <script>
@@ -409,7 +409,7 @@
       ? ` · <span style="color:#9ca3af;">${esc(c.website.replace(/https?:\/\//, ''))}</span>` : "";
 
     return `
-      <a class="board-row" href="company.html?name=${encodeURIComponent(c.name)}">
+      <a class="board-row" href="company?name=${encodeURIComponent(c.name)}">
         <div class="${rankStyle(i)}">${rankEmoji(i)}</div>
         ${favicon}
         <div class="row-info">

@@ -232,17 +232,17 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo-wrap">
+  <a href="./" class="logo-wrap">
     <img src="assets/Logo_w_name.png" alt="CandidateVoice.org" />
   </a>
   <nav class="header-nav">
-    <a href="index.html" class="nav-link">← All Reviews</a>
-    <a href="submit.html" class="nav-link primary">+ Share Your Experience</a>
+    <a href="./" class="nav-link">← All Reviews</a>
+    <a href="submit" class="nav-link primary">+ Share Your Experience</a>
   </nav>
 </header>
 
 <div class="company-hero">
-  <a href="index.html" class="back-link">← All Reviews</a>
+  <a href="./" class="back-link">← All Reviews</a>
   <div id="company-header-content">
     <div class="state-msg" style="color:rgba(255,255,255,0.5);">Loading...</div>
   </div>
@@ -297,8 +297,8 @@
 
 <footer>
   &copy; 2025 CandidateVoice.org &nbsp;|&nbsp;
-  <a href="about.html">About</a> &nbsp;|&nbsp;
-  <a href="terms.html">Community Guidelines</a>
+  <a href="about">About</a> &nbsp;|&nbsp;
+  <a href="terms">Community Guidelines</a>
 </footer>
 
 <script>
@@ -347,7 +347,7 @@
   async function loadCompany() {
     if (!companyName) {
       document.getElementById("company-header-content").innerHTML =
-        `<div style="color:rgba(255,255,255,0.6);">No company specified. <a href="index.html" style="color:#f5a623;">Go back</a></div>`;
+        `<div style="color:rgba(255,255,255,0.6);">No company specified. <a href="./" style="color:#f5a623;">Go back</a></div>`;
       return;
     }
 
@@ -444,7 +444,7 @@
         const review  = r.review_general ? `<div class="card-review">${esc(r.review_general)}</div>` : "";
 
         return `
-          <a class="card" href="entry.html?id=${r.id}">
+          <a class="card" href="entry?id=${r.id}">
             <div class="card-header">
               <div class="card-position">${esc(r.position_applied) || "Position not specified"}</div>
               <div class="card-date">${dateStr}</div>
@@ -463,7 +463,7 @@
 
     } catch(e) {
       document.getElementById("reviews-list").innerHTML =
-        `<div class="state-msg">Could not load reviews. <a href="index.html">Go back</a></div>`;
+        `<div class="state-msg">Could not load reviews. <a href="./">Go back</a></div>`;
       console.error(e);
     }
   }
