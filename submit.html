@@ -580,12 +580,31 @@
     } catch(e) {}
   }
 
+  function esc(val) {
+    if (val == null) return "";
+    return String(val)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // For values dropped into a quoted JS string inside an inline handler, e.g.
+  // onclick="selectEmployer('...')". Escapes for the JS string literal first, then for
+  // the surrounding HTML attribute -- both layers are needed, neither alone is enough.
+  function jsAttr(val) {
+    return esc(String(val ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'"));
+  }
+
   function highlightMatch(name, query) {
-    const idx = name.toLowerCase().indexOf(query.toLowerCase());
-    if (idx === -1) return name;
-    return name.slice(0, idx) +
-      '<strong style="color:#1a4fa0;">' + name.slice(idx, idx + query.length) + '</strong>' +
-      name.slice(idx + query.length);
+    const safeName  = esc(name);
+    const safeQuery = esc(query);
+    const idx = safeName.toLowerCase().indexOf(safeQuery.toLowerCase());
+    if (idx === -1) return safeName;
+    return safeName.slice(0, idx) +
+      '<strong style="color:#1a4fa0;">' + safeName.slice(idx, idx + safeQuery.length) + '</strong>' +
+      safeName.slice(idx + safeQuery.length);
   }
 
   function showDropdown(query) {
@@ -598,15 +617,13 @@
 
     let html = matches.map(e => {
       const favicon = e.website
-        ? '<img src="https://www.google.com/s2/favicons?domain=' + e.website + '&sz=32" onerror="this.style.display=\'none\'" />'
+        ? '<img src="https://www.google.com/s2/favicons?domain=' + encodeURIComponent(e.website) + '&sz=32" onerror="this.style.display=\'none\'" />'
         : '<span style="width:20px;display:inline-block;"></span>';
-      const safeName = e.name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-      const safeWeb  = (e.website || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-      return '<div class="ac-item" data-name="' + e.name + '" data-website="' + (e.website || "") + '" onclick="selectEmployer(\'' + safeName + '\', \'' + safeWeb + '\')">' +
+      return '<div class="ac-item" data-name="' + esc(e.name) + '" data-website="' + esc(e.website || "") + '" onclick="selectEmployer(\'' + jsAttr(e.name) + '\', \'' + jsAttr(e.website || "") + '\')">' +
         favicon +
         '<div>' +
           '<div>' + highlightMatch(e.name, query) + '</div>' +
-          (e.website ? '<span class="ac-website">' + e.website.replace(/https?:\/\//, '') + '</span>' : '') +
+          (e.website ? '<span class="ac-website">' + esc(e.website.replace(/https?:\/\//, '')) + '</span>' : '') +
         '</div>' +
         '<span class="ac-meta">' + e.count + ' review' + (e.count !== 1 ? 's' : '') + '</span>' +
       '</div>';
