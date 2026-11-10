@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -29,6 +29,12 @@
     <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://candidatevoice.org/employers/daniels-health</loc>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://candidatevoice.org/employers/louisville-msd</loc>
