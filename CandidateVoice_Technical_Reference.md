@@ -164,6 +164,7 @@ This is what the site displays. Only `status = 'approved'` rows are shown public
 | created_at | timestamp with time zone | |
 | industry | text | |
 | update_notes | text | Used to flag edits — format: "Update to review ID {id}" |
+| review_id | integer | Set by admin.html when a new submission is approved: the id of the `reviews` row it created. When an edit request arrives, admin.html looks up the approved submission with that `review_id` to compare the original submitter email against the editor's |
 
 #### `company_comments` — general company-level commentary (added June 2026)
 
@@ -195,7 +196,7 @@ RLS is enabled on both tables. Current policies (as of June 2026):
 
 ### Column-scope gap on `reviews` — RLS policies do not restrict columns
 
-**Identified July 2026. Fix written but NOT YET APPLIED — see `restrict_anon_update_reviews.sql`.**
+**Identified July 2026. Fix APPLIED (`restrict_anon_update_reviews.sql`) — confirmed 2026-11-10:** an anon PATCH of `review_general` returns `401 / 42501 permission denied for table reviews`, while an anon PATCH of `upvotes` returns 204. Both were tested against `id=eq.-1` (matches no rows), which is the safe way to re-check this without touching data. The description below is kept as the record of why the grant matters.
 
 "Public patch upvotes" correctly limits anon to `status = 'approved'` **rows**. It cannot limit **columns** — no RLS policy can. Column scope is controlled by `GRANT`, and the grant on `reviews` is table-wide, so the anon role can write *any* column of any approved row:
 
@@ -225,13 +226,17 @@ select has_column_privilege('anon','public.reviews','upvotes','UPDATE')        a
 
 Supabase's free tier has **no automatic backups**. Before July 2026 there were none at all — a single bad PATCH (above) would have permanently destroyed the whole moderated corpus. Run it before any schema or RLS change.
 
+The "CandidateVoice DB Backup" scheduled task runs it daily at 08:00 UTC-5, a fixed offset, so it runs at 9:00 AM during daylight time and 8:00 AM during standard time (Louisville). Since 2026-10-28 each successful run deletes backups older than 14 days, keeping the earliest backup of each month (a failed or zero-row run deletes nothing). `python backup_supabase.py --prune` shows what would be removed without deleting; add `--yes` to remove. The external-drive copy in `D:\Website_Backups` (the "Website Repos - External Drive Backup" task, 30 minutes after the DB backup: 9:30 AM daylight / 8:30 AM standard) never deletes old backups.
+
 `backups/` is gitignored and must stay that way: the dump includes the full pending queue and submitter email addresses.
 
 ### Windows notification on new pending items (Sept 2026)
 
 The "CandidateVoice Pending Alert" scheduled task runs `notify_pending.ps1` every 10 minutes and at logon. It asks Supabase for pending `submissions` (reviews and review edits) and pending `company_comments`, and shows one Windows notification per newly seen item; clicking it opens `http://localhost:8766/admin.html`, or admin.html directly if admin_server.py isn't running. Already-announced IDs are kept in `backups/.notify_pending_state.json`, and errors go to `backups/notify_pending.log`. It reads the service-role key from admin.html, like `backup_supabase.py`. It only runs while you're logged in and doesn't wake the PC. `install_pending_alert.ps1` creates the task (`-Minutes N` changes the interval, `-Uninstall` removes it), and `notify_pending.ps1 -Test` shows a sample notification.
 
-It replaces `check_pending_submissions.ps1`, which used the anon key. Anon has no SELECT on `submissions`, so that script always counted zero and never fired.
+It replaced `check_pending_submissions.ps1` (deleted 2026-11-10), which used the anon key. Anon has no SELECT on `submissions`, so that script always counted zero and never fired.
+
+The task launches through `pythonw.exe run_hidden.pyw notify_pending.ps1`, which starts PowerShell with no window. The earlier `conhost.exe --headless` launch still flashed a window on Windows 11. `run_hidden.pyw` must stay in the repo, because `install_pending_alert.ps1` needs it.
 
 ### `submissions`
 - **"Public insert submissions"** — INSERT allowed for anon + authenticated, `with_check = true` — covers submit.html and the index.html modal
